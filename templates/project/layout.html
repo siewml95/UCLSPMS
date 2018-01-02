@@ -1,0 +1,78 @@
+{% load crispy_forms_tags %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags-->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Notice-Board | </title>
+    <link rel="icon" href="../../favicon.ico">
+    <!-- Bootstrap core CSS-->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+
+    <link href="{% static 'project/css/bootstrap-tagsinput.css' %}" rel="stylesheet" />
+    <link href="{% static 'project/css/index.css' %}" rel="stylesheet" />
+    <link href="{% static 'project/css/ladda-themeless.min.css' %}" rel="stylesheet" />
+
+  </head>
+  <body>
+    <!-- Fixed navbar-->
+    <nav style="z-index:100" class="navbar navbar-default">
+      <div class="container nav-container">
+        <div class="navbar-header">
+          <button type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" class="navbar-toggle collapsed"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+            <div class="ds-nav-button"></div>
+          </button><a href="/project" class="navbar-brand"> Notice-Board</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            {% if user.is_authenticated and user.profile.type == 3%}
+            <li><a href="/project/create">Create Project</a></li>
+            {% endif %}
+            {% if user.is_authenticated%}
+            <li><a href="#" data-toggle="modal" data-target="#bugModal" >Report Bug</a></li>
+            <li><a href="/user/profile">Profile</a></li>
+            <li><a href="/user/logout">Logout</a></li>
+            {% else %}
+            <li><a href="#" data-toggle="modal" data-target="#bugModal" >Report Bug</a></li>
+            <li><a href="/user/register">Register</a></li>
+            <li><a href="/user/login">Login</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div style="padding-top:100px; padding-bottom : 20px">
+      {% block content %}{% endblock %}
+    </div>
+    {% if user.is_authenticated %}
+       {% include "./modal.html" with where="./project/forms/report_bug.html"  id="bugModal" header="Please write report"%}
+    {% else %}
+      {% include "./modal.html" with where="./project/forms/report_bug.html"  id="bugModal" header="Please write report"%}
+    {% endif %}
+      {% include '../footer.html' %}
+  </body>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <script src="{% static 'project/js/jquery.validation.js' %}"></script>
+  <script src="{% static 'project/js/spin.min.js' %}"></script>
+  <script src="{% static 'project/js/ladda.min.js' %}"></script>
+  <script src="{% static 'project/js/layout.js' %}"></script>
+
+  {% if messages %}
+
+          <script type="text/javascript">
+            $(document).ready(function(){
+              {% for message in messages %}
+                  toastr.{{ message.tags }}("{{ message }}");
+              {% endfor %}
+             });
+          </script>
+  {% endif %}
+</html>

@@ -1,0 +1,9 @@
+{% load crispy_forms_tags %}
+{% load bug_form %}
+{% load bug_with_email_form %}
+{% if user.is_authenticated %}
+  {% bug_form as form %}
+{% else %}
+  {% bug_with_email_form as form %}
+{% endif %}
+{% crispy form %}

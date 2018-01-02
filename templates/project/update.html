@@ -1,0 +1,31 @@
+{% extends "./layout.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+  <div class="login-panel panel panel-default">
+                      <div class="panel-heading">
+                          <h3 class="panel-title">Update Project </h3>
+                      </div>
+                      <div class="panel-body">
+                              {% crispy form %}
+                              {{ form.name.errors }}
+
+                      </div>
+                  </div>
+  </div>
+
+
+  </div>
+</div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://unpkg.com/compromise@latest/builds/compromise.min.js"></script>
+  <script src="{% static 'project/js/select2.js'%}"></script>
+
+  <script src="{% static 'project/js/django_select2.js'%}"></script>
+  <script src="{% static 'project/js/index.js'%}"></script>
+{% endblock %}

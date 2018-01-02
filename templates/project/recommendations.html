@@ -1,0 +1,13 @@
+{% if user.is_authenticated%}
+   {% if user.profile.type == 1 or user.profile.type == 2 %}
+   <table style="margin-top:20px;" class="table table-bordered table-sm table-striped">
+     <thead style=" color:white" class="table-color thead-inverse">
+         <th >Recommendations</th>
+     </thead>
+     <tbody id="recommendations" class="recommendations">
+
+     </tbody>
+   </table>
+
+{% endif %}
+{% endif %}

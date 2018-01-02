@@ -1,0 +1,35 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="{% static 'project/css/bootstrap-tagsinput.css' %}" rel="stylesheet" />
+
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        {% crispy filter.form filter.form.helper %}
+        {% for obj in filter.qs %}
+            {{ obj.title }} | {% for keyword in obj.keywords.all%} {{keyword.title}} {% endfor %} || {{obj.deadline}}<br />
+        {% endfor %}
+      </div>
+    </div>
+    <!-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/compromise@latest/builds/compromise.min.js"></script>
+    <script src="{% static 'project/js/fastsearch.min.js'%}"></script>
+    <script src="{% static 'project/js/bootstrap-tagsinput.min.js'%}"></script>
+    <script src="{% static 'project/js/filter.js'%}"></script>
+    <!-->
+    <script src="{% static 'project/js/bundle.js'%}"></script>
+
+
+  </body>
+
+
+</html>

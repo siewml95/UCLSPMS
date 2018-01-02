@@ -1,0 +1,19 @@
+from django.conf.urls import url
+from django.contrib import admin
+
+from .views import (
+                    UserDetailView,
+                    UserProfileDetailView,
+                    UserProfileUpdateView,
+                    UserRegisterView,
+                    UserLoginView
+                   )
+urlpatterns = [
+    '''url(r'^(?P<name>[-\w]+)/$', UserDetailView.as_view()),
+    url(r'^profile$', UserProfileDetailView.as_view()),
+    url(r'^profile/update$', UserProfileUpdateView.as_view()),
+
+    url(r'^register/$', UserRegisterView.as_view()),
+    url(r'^login/$',UserLoginView.as_view())
+    #url(r'^filter/$', projectFilter),'''
+]

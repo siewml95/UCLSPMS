@@ -1,0 +1,48 @@
+{% extends "./layout.html" %}
+{% load static %}
+
+{% block content %}
+  <div class="container">
+    <div class="col-md-8 pj-detail">
+      <h1 class="col-md-12 pj-detail-h1">{{ object.title }}</h1>
+
+      <button type="button" style="z-index:1;position:absolute;right:0;top:20px;" id="modalBtn" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Send Interest {{count}}</button>
+
+      <div class="col-md-4">
+
+
+      <h4 class="pj-detail-h4">Keywords</h4>
+      {% for keyword in object.keywords.all%} {{keyword.title}} {% endfor %}
+      <h4 class="pj-detail-h4">Publisher</h4>
+      <a href="/user/single/{{object.created_by.id}}">{{object.created_by}}</a>
+
+      <h4 class="pj-detail-h4">Deadline</h4>
+      <p>{{object.deadline}}</p>
+      <h4 class="pj-detail-h4">Company</h4>
+      <p>{{object.company}}</p>
+      <div id="project-recommendations" class="project-recommendations">
+        <h4 class="pj-detail-h4">Recommendations</h4>
+      </div>
+    </div>
+    <div class="col-md-8">
+
+      <h4 style="" class="pj-detail-h4">Description</h4>
+      <p>
+         {{object.summary}}
+      </p>
+    </div>
+  </div>
+  <div class="col-md-3 col-md-offset-1">
+    {% include "./recommendations.html" %}
+  </div>
+
+  <input type="hidden" name="id" value="{{object.id}}"/>
+  {% include "./modal.html" with where="./project/forms/interest.html"  id="myModal" header="Are you sure you are interested in this project "%}
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <script src="{% static 'project/js/detail.js'%}"></script>
+  <script src="{% static 'project/js/recommendations.js'%}"></script>
+
+{% endblock %}

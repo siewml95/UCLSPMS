@@ -1,0 +1,74 @@
+[
+  {
+    "model": "project.keyword",
+    "fields": {
+      "title": "git",
+      "status": "True",
+      "type" : 1
+    }
+  },
+  {
+    "model": "project.keyword",
+    "fields": {
+      "title": "github",
+      "status": "True",
+      "type" : 1
+    }
+  },
+  {
+    "model": "project.keyword",
+    "fields": {
+      "title": "big data",
+      "status": "True",
+      "type" : 1
+    }
+  },
+  {
+    "model": "project.keyword",
+    "fields": {
+      "title": "virtual machine",
+      "status": "True",
+      "type" : 1
+    }
+  },
+  {
+    "model": "project.keyword",
+    "fields": {
+      "title": "user interface",
+      "status": "True",
+      "type" : 1
+    }
+  },
+  {
+    "model": "project.keyword",
+    "fields": {
+      "title": "data structure",
+      "status": "True",
+      "type" : 1
+    }
+  },
+  {
+    "model": "project.keyword",
+    "fields": {
+      "title": "ssh",
+      "status": "True",
+      "type" : 1
+    }
+  },
+  {
+    "model": "project.keyword",
+    "fields": {
+      "title": "ethernet",
+      "status": "True",
+      "type" : 1
+    }
+  },
+  {
+    "model": "project.keyword",
+    "fields": {
+      "title": "keyboard",
+      "status": "True",
+      "type" : 1
+    }
+  }
+]

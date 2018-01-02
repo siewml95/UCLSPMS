@@ -1,0 +1,33 @@
+{
+  "name": "js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aureooms/js-itertools": "^3.4.0",
+    "bootstrap": "^3.3.7",
+    "compromise": "^11.0.1",
+    "fastsearch": "^1.11.1",
+    "fastselect": "^0.7.3",
+    "iter-tools": "^1.3.1",
+    "jquery": "^1.9.0",
+    "lapack": "^0.1.0",
+    "natural": "^0.5.4",
+    "node-set": "0.0.1",
+    "normalize-keywords": "^0.2.3",
+    "pos": "^0.4.2",
+    "pycollections": "^0.9.0",
+    "rake-js": "^0.1.1",
+    "rapid-automated-keyword-extraction": "^1.0.1",
+    "set": "^1.1.1",
+    "stopword": "^0.1.8",
+    "string-tokenizer": "0.0.8",
+    "underscore": "^1.8.3",
+    "wordnet-db": "^3.1.6"
+  }
+}

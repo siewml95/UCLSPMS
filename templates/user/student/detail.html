@@ -1,0 +1,27 @@
+{% extends "../layout.html" %}
+{% load static %}
+
+{% block content %}
+  <div class="container">
+    <div class="col-md-8 pj-detail">
+      <img height="150" width="150" src={{object.profile.avatar}} />
+
+      <h4 class="pj-detail-h4">Name : {{ object.first_name }} {{object.last_name}}</h4>
+      <h4 class="pj-detail-h4">email</h4>
+      <p>
+         {{object.email}}
+      </p>
+      <h4 class="pj-detail-h4">Resume/CV</h4>
+      {{object.resume}}
+      <h4 class="pj-detail-h4">Social Media</h4>
+      <div id="recommendations" class="recommendations">
+        <h4 class="pj-detail-h4">Recommendations</h4>
+      </div>
+    </div>
+  <input type="hidden" name="id" value="{{object.id}}"/>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <script src="{% static 'project/js/detail.js'%}"></script>
+{% endblock %}

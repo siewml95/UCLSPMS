@@ -1,0 +1,61 @@
+{% extends "../layout.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+      <div class="row">
+        <div class="card">
+
+      <ul class="nav nav-tabs">
+        <li ><a href="/user/profile/">Profile</a></li>
+        {% if user.is_authenticated %}
+             {% if user.profile.type == 1 or user.profile.type == 3 %}
+        <li><a href="/user/profile/password-change" >Password</a></li>
+             {% endif %}
+             {% if user.profile.type == 1 or user.profile.type == 2 %}
+        <li><a href="/user/profile/preferences" >Preferences</a></li>
+        <li><a href="/user/profile/project-interests" >Projects Interested</a></li>
+        {% endif %}
+        {% endif %}
+
+        {% if user.is_authenticated and user.profile.type == 3 %}
+        <li class="active"><a href="#" >Projects Created</a></li>
+        <li ><a href="/user/profile/interests" >Student Interests</a></li>
+
+        {% endif %}
+
+
+      </ul>
+      <div class="tab-pane" style="padding:15px" id="profile">
+
+                <table class="table table-bordered table-sm table-striped">
+                  <thead style="color:white" class="table-color thead-inverse">
+                    <tr>
+                      <th class="col-md-6">Name</th>
+                      <th class="col-md-2">Posted At</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+
+                    {% for article in object_list %}
+                    <tr>
+                      <td class="col-md-6"><a href="/project/{{article.id}}/update">{{article.title}}</a></td>
+                      <td class="time col-md-3" data-datetime="{{article.timestamp}}">{{article.timestamp}}</td>
+                    </tr>
+                    {% empty %}
+                        <li>No articles yet.</li>
+                    {% endfor %}
+                  </tbody>
+
+                </table>
+                {%  include '../../pagination.html' %}
+      </div>
+     </div>
+    </div>
+  </div>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/compromise@latest/builds/compromise.min.js"></script>
+{% endblock %}

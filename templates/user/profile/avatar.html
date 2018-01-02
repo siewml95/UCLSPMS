@@ -1,0 +1,26 @@
+{% load crispy_forms_field %}
+
+<div class="form-group ">
+  <label for="id_avatar" class="control-label col-sm-2">
+                Avatar
+            </label>
+        <div class="kv-avatar control-label col-sm-10">
+          {% if field.value.url %}
+
+             <div>
+               <img style="display:block" height="150" width="150" src="{{ field.value.url }}" />
+
+             </div>
+                <div style="position:absolute; top:0px; left:170px">
+                  <input  type="checkbox" name="{{ field.checkbox_name }}" id="{{ field.checkbox_id }}" />
+                  <label   for="{{ field.checkbox_id }}">Remove</label>
+                </div>
+          {% endif %}
+
+
+                <input style="margin-top:25px" type="file" name="{{ field.name }}" />
+
+                <div class="kv-avatar-hint"><small>Select file < 1500 KB</small></div>
+
+        </div>
+    </div>
