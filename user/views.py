@@ -143,7 +143,7 @@ class StudentRequiredMixin(UserPassesTestMixin):
       def test_func(self):
         try:
           user_type = self.request.user.profile.type
-          if user_type == 0 or user_type == 1:
+          if user_type == 1 or user_type == 2:
              return True
           else:
              return False
