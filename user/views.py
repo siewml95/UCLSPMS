@@ -276,20 +276,6 @@ class UserProfilePreferenceView(LoginRequiredMixin,StudentRequiredMixin,UpdateVi
     login_url = '/user/login/'
     form_class = UserProfilePreferenceForm
 
-    def post(self, request, *args, **kwargs):
-        """
-        Handle POST requests: instantiate a form instance with the passed
-        POST variables and then check if it's valid.
-        """
-        form = self.get_form()
-        print("post")
-        print(form.__dict__)
-        print(form.errors)
-        print(form.is_valid())
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
     def get_context_data(self, **kwargs):
           context = super(UserProfilePreferenceView, self).get_context_data(**kwargs)
           print(context)
