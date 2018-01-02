@@ -17,13 +17,20 @@ from django.contrib import messages
 
 def sendInterest(request):
     if request.user.is_authenticated and request.GET["id"]:
+       print('if request.user.is_authenticated and request.GET["id"]')
+
        if request.user.profile.type == 3:
-           response = JsonResponse({"error" : "You must hava a student account!"})
+           print('request.user.profile.type == 3')
+
+           response = JsonResponse({"error" : "Must hava a student account!"})
            response.status_code = 403
            return response
        try:
          project = Project.objects.get(pk=request.GET["id"])
+         print('project = Project.objects.get(pk=request.GET["id"])')
+
          if project.created_by != request.user:
+            print("project.created_by != request.user:")
             flag = Interest.objects.get(user=request.user,project=project)
          else:
           response = JsonResponse({"error" : "Cannot be interest in your own project"})
@@ -31,11 +38,14 @@ def sendInterest(request):
           return response
 
        except Interest.DoesNotExist:
+                 print('except Interest.DoesNotExist:')
+
                  Interest.objects.create(user=request.user,project=project,description=request.GET["description"])
                  send_notification(request)
                  count = Interest.objects.filter(project=request.GET["id"]).count()
                  return JsonResponse({"interest": [],"amount":count})
        except Project.DoesNotExist:
+          print('except Project.DoesNotExist:')
           response = JsonResponse({"error" : "The project do not exists"})
           response.status_code = 403
           return response
