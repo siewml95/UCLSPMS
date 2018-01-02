@@ -43,6 +43,7 @@ def sendInterest(request):
                  Interest.objects.create(user=request.user,project=project,description=request.GET["description"])
                  send_notification(request)
                  count = Interest.objects.filter(project=request.GET["id"]).count()
+                 print("count")
                  return JsonResponse({"interest": [],"amount":count})
        except Project.DoesNotExist:
           print('except Project.DoesNotExist:')
@@ -68,6 +69,7 @@ def send_notification(request):
             message = "Dear Sir/Madam\n I am writing this email to inform you that I am interested in this project\n\n Project Name : {} \n Email: {}\n".format(project.title,project.created_by.email)
             from_email = 'contact.dataspartan@gmail.com'
             to_email = [project.created_by.email]
+            print("send_mail")
             send_mail(subject,message,from_email,to_email,fail_silently=False)
         else:
             return None
