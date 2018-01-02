@@ -17,20 +17,13 @@ from django.contrib import messages
 
 def sendInterest(request):
     if request.user.is_authenticated and request.GET["id"]:
-       print('if request.user.is_authenticated and request.GET["id"]')
-
        if request.user.profile.type == 3:
-           print('request.user.profile.type == 3')
-
            response = JsonResponse({"error" : "Must hava a student account!"})
            response.status_code = 403
            return response
        try:
          project = Project.objects.get(pk=request.GET["id"])
-         print('project = Project.objects.get(pk=request.GET["id"])')
-
          if project.created_by != request.user:
-            print("project.created_by != request.user:")
             flag = Interest.objects.get(user=request.user,project=project)
          else:
           response = JsonResponse({"error" : "Cannot be interest in your own project"})
@@ -38,8 +31,6 @@ def sendInterest(request):
           return response
 
        except Interest.DoesNotExist:
-                 print('except Interest.DoesNotExist:')
-
                  Interest.objects.create(user=request.user,project=project,description=request.GET["description"])
                  try :
                    send_notification(request)
@@ -48,14 +39,11 @@ def sendInterest(request):
                     response.status_code = 403
                     return response
                  count = Interest.objects.filter(project=request.GET["id"]).count()
-                 print("count")
                  return JsonResponse({"interest": [],"amount":count})
        except Project.DoesNotExist:
-          print('except Project.DoesNotExist:')
           response = JsonResponse({"error" : "The project do not exists"})
           response.status_code = 403
           return response
-
        response = JsonResponse({"error" : "You already done it"})
        response.status_code = 403
        return response
@@ -80,7 +68,6 @@ def send_notification(request):
     else:
         return None
 
-
 def sendBug(request):
     if request.user.is_authenticated:
         user = request.user
@@ -93,7 +80,6 @@ def sendBug(request):
             to_email = ['contact.dataspartan@gmail.com']
             send_mail(subject,message,from_email,to_email,fail_silently=False)
             return JsonResponse({})
-
         else:
               response = JsonResponse({"error" : "Some Error Occured"})
               response.status_code = 403
@@ -108,7 +94,6 @@ def sendBug(request):
             to_email = [user.email]
             send_mail(subject,message,from_email,to_email,fail_silently=False)
             return JsonResponse({})
-
         else:
             response = JsonResponse({"error" : "Some Error Occured"})
             response.status_code = 403
