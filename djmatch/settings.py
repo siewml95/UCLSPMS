@@ -153,38 +153,27 @@ EMAIL_HOST_PASSWORD = 'dataspartan123'
 EMAIL_PORT = 587
 LOGIN_REDIRECT_URL = '/project'
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-    },
-    'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        },
-        'logfile': {
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.getenv('LOGFILE', 'django.log')
-        }
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-        'django': {
-            'handlers': ['logfile'],
-            'level': 'INFO',
-            'propagate': False,
-        }
-    }
-}
+ 'version': 1,
+ 'disable_existing_loggers': False,
+ 'filters': {
+ 'require_debug_false': {
+ '()': 'django.utils.log.RequireDebugFalse'
+ }
+ },
+ 'handlers': {
+ 'logfile': {
+ 'class': 'logging.handlers.WatchedFileHandler',
+ 'filename': 'D:\home\site\wwwroot\myapp.log'
+ }
+ },
+ 'loggers': {
+ 'django': {
+ 'handlers': ['logfile'],
+ 'level': 'ERROR',
+ 'propagate': False,
+ }
+ }
+ }
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 #STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
