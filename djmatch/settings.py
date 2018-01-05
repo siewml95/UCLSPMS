@@ -95,13 +95,16 @@ DATABASES = {
 SELECT2_CSS = 'project/css/select2.css'
 SELECT2_JS = 'project/js/select2.js'
 
+
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': '/var/tmp/django_cache',
-        'TIMEOUT' : None
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'my_cache_table',
+        "TIMEOUT" : 300000,
+
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -120,6 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
 
 
 

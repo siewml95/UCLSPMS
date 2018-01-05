@@ -21,9 +21,11 @@ from django.contrib import admin
 from django.conf.urls import url
 
 from .views import NewView
-
+from project.views import ProjectListView
 urlpatterns = [
+    url(r'^$', ProjectListView.as_view()),
     url(r'^admin/', admin.site.urls),
+
     url(r'^project/', include('project.urls',namespace="project")),
     url(r'^user/', include('user.urls',namespace="user")),
     url(r'^uclapi/', include('uclapi.urls',namespace="uclapi")),
