@@ -122,16 +122,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'djmatch',
-        'USER': 'djmatch',
-        'PASSWORD': 'qwerty12',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
 
 
 # Internationalization
