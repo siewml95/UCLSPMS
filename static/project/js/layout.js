@@ -60,7 +60,7 @@ $('#bugModal button[name="submit"]').click(function(e){
   if($form.valid()) {
     console.log('submitHandler')
     content = $form.find('textarea[name="content"]').val()
-    content = $form.find('input[name="email"]').val()
+    email = $form.find('input[name="email"]').val()
 
     $.ajax({
       method : 'GET',

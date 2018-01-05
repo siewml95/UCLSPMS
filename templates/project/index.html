@@ -1,4 +1,4 @@
-{% extends "./layout.html" %}
+{% extends "../layout.html" %}
 {% load crispy_forms_tags %}
 {% load static %}
 
@@ -31,8 +31,8 @@
 
             {% for article in object_list %}
             <tr>
-              <td class="col-md-6"><a href="/project/single/{{article.slug}}">{{article.title}}</a></td>
-              <td class="col-md-4"><a href="/user/single/{{article.created_by.id}}">{{article.created_by.first_name}} {{article.created_by.last_name}}</a> </td>
+              <td class="col-md-6"><a href="{% url 'project:single' article.slug %}">{{article.title}}</a></td>
+              <td class="col-md-4"><a href="{% url 'user:single' article.created_by.id %}">{{article.created_by.first_name}} {{article.created_by.last_name}}</a> </td>
               <td class="time col-md-3" data-datetime="{{article.timestamp}}">{{article.timestamp|date:"d M Y"  }}</td>
             </tr>
             {% empty %}

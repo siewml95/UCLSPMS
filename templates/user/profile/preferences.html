@@ -1,4 +1,4 @@
-{% extends "../layout.html" %}
+{% extends "../../layout.html" %}
 {% load crispy_forms_tags %}
 {% load static %}
 
@@ -8,21 +8,21 @@
         <div class="card">
 
       <ul class="nav nav-tabs">
-        <li ><a href="/user/profile/">Profile</a></li>
+        <li ><a href="{% url 'user:profile' %}">Profile</a></li>
         {% if user.is_authenticated %}
              {% if user.profile.type == 1 or user.profile.type == 3 %}
-        <li><a href="/user/profile/password-change" >Password</a></li>
+             <li><a href="{% url 'user:password-change' %}">Password</a></li>
         {% endif %}
 
              {% if user.profile.type == 1 or user.profile.type == 2 %}
         <li class="active" ><a href="#" >Preferences</a></li>
-        <li><a href="/user/profile/project-interests" >Projects Interested</a></li>
+        <li><<a href="{% url 'user:project-interests' %}" >Projects Interested</a></li>
         {% endif %}
         {% endif %}
 
         {% if user.is_authenticated and user.profile.type == 3 %}
-        <li><a href="/user/profile/projects" >Projects Created</a></li>
-        <li ><a href="/user/profile/interests" >Student Interests</a></li>
+        <li ><a href="{% url 'user:projects' %}" >Projects Created</a></li>
+        <li ><a href="{% url 'user:interests' %}" >Student Interests</a></li>
 
         {% endif %}
       </ul>

@@ -1,0 +1,724 @@
+Internal Server Error: /
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 507, in parse
+    compile_func = self.tags[command]
+KeyError: 'URL'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 215, in _get_response
+    response = response.render()
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/response.py", line 107, in render
+    self.content = self.rendered_content
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/response.py", line 84, in rendered_content
+    content = template.render(context, self._request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/backends/django.py", line 66, in render
+    return self.template.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 207, in render
+    return self._render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 957, in render_annotated
+    return self.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 154, in render
+    compiled_parent = self.get_parent(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 151, in get_parent
+    return self.find_template(parent, context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 131, in find_template
+    template_name, skip=history,
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/engine.py", line 136, in find_template
+    name, template_dirs=dirs, skip=skip,
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loaders/base.py", line 44, in get_template
+    contents, origin, origin.template_name, self.engine,
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 191, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 230, in compile_nodelist
+    return parser.parse()
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 509, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 571, in invalid_block_tag
+    "or load this tag?" % (token.lineno, command)
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 32: 'URL'. Did you forget to register or load this tag?
+"GET / HTTP/1.1" 500 170618
+Internal Server Error: /
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/urls/base.py", line 77, in reverse
+    extra, resolver = resolver.namespace_dict[ns]
+KeyError: 'djmatch'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 215, in _get_response
+    response = response.render()
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/response.py", line 107, in render
+    self.content = self.rendered_content
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/response.py", line 84, in rendered_content
+    content = template.render(context, self._request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/backends/django.py", line 66, in render
+    return self.template.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 207, in render
+    return self._render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 957, in render_annotated
+    return self.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 177, in render
+    return compiled_parent._render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 957, in render_annotated
+    return self.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/defaulttags.py", line 458, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/urls/base.py", line 87, in reverse
+    raise NoReverseMatch("%s is not a registered namespace" % key)
+django.urls.exceptions.NoReverseMatch: 'djmatch' is not a registered namespace
+"GET / HTTP/1.1" 500 149704
+Internal Server Error: /
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/urls/base.py", line 77, in reverse
+    extra, resolver = resolver.namespace_dict[ns]
+KeyError: 'djmatch'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 215, in _get_response
+    response = response.render()
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/response.py", line 107, in render
+    self.content = self.rendered_content
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/response.py", line 84, in rendered_content
+    content = template.render(context, self._request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/backends/django.py", line 66, in render
+    return self.template.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 207, in render
+    return self._render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 957, in render_annotated
+    return self.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 177, in render
+    return compiled_parent._render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 957, in render_annotated
+    return self.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/defaulttags.py", line 458, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/urls/base.py", line 87, in reverse
+    raise NoReverseMatch("%s is not a registered namespace" % key)
+django.urls.exceptions.NoReverseMatch: 'djmatch' is not a registered namespace
+"GET / HTTP/1.1" 500 149704
+Internal Server Error: /
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 215, in _get_response
+    response = response.render()
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/response.py", line 107, in render
+    self.content = self.rendered_content
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/response.py", line 84, in rendered_content
+    content = template.render(context, self._request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/backends/django.py", line 66, in render
+    return self.template.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 207, in render
+    return self._render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 957, in render_annotated
+    return self.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 177, in render
+    return compiled_parent._render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 957, in render_annotated
+    return self.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/defaulttags.py", line 458, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/urls/base.py", line 91, in reverse
+    return force_text(iri_to_uri(resolver._reverse_with_prefix(view, prefix, *args, **kwargs)))
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/urls/resolvers.py", line 497, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'index' not found. 'index' is not a valid view function or pattern name.
+"GET / HTTP/1.1" 500 149608
+Internal Server Error: /user/login/
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 215, in _get_response
+    response = response.render()
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/response.py", line 107, in render
+    self.content = self.rendered_content
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/response.py", line 84, in rendered_content
+    content = template.render(context, self._request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/backends/django.py", line 66, in render
+    return self.template.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 207, in render
+    return self._render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 957, in render_annotated
+    return self.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 177, in render
+    return compiled_parent._render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 957, in render_annotated
+    return self.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/defaulttags.py", line 458, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/urls/base.py", line 91, in reverse
+    return force_text(iri_to_uri(resolver._reverse_with_prefix(view, prefix, *args, **kwargs)))
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/urls/resolvers.py", line 497, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'index' not found. 'index' is not a valid view function or pattern name.
+"GET /user/login/ HTTP/1.1" 500 147866
+Internal Server Error: /user/ajax/getIndexRecommendations/
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/siew/djmatch/src/user/views.py", line 119, in getIndexRecommendations
+    p = Project.objects.filter(reduce(operator.or_,p_expressions)).exclude(created_by=request.user).exclude(id__in=interested)
+TypeError: reduce() of empty sequence with no initial value
+"GET /user/ajax/getIndexRecommendations/?id=0 HTTP/1.1" 500 17990
+Internal Server Error: /user/ajax/getIndexRecommendations/
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/siew/djmatch/src/user/views.py", line 119, in getIndexRecommendations
+    p = Project.objects.filter(reduce(operator.or_,p_expressions)).exclude(created_by=request.user).exclude(id__in=interested)
+TypeError: reduce() of empty sequence with no initial value
+"GET /user/ajax/getIndexRecommendations/?id=1 HTTP/1.1" 500 18000
+Internal Server Error: /user/ajax/getIndexRecommendations/
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/siew/djmatch/src/user/views.py", line 119, in getIndexRecommendations
+    p = Project.objects.filter(reduce(operator.or_,p_expressions)).exclude(created_by=request.user).exclude(id__in=interested)
+TypeError: reduce() of empty sequence with no initial value
+"GET /user/ajax/getIndexRecommendations/?id=0 HTTP/1.1" 500 17982
+Internal Server Error: /user/ajax/getIndexRecommendations/
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/siew/djmatch/src/user/views.py", line 119, in getIndexRecommendations
+    p = Project.objects.filter(reduce(operator.or_,p_expressions)).exclude(created_by=request.user).exclude(id__in=interested)
+TypeError: reduce() of empty sequence with no initial value
+"GET /user/ajax/getIndexRecommendations/?id=1 HTTP/1.1" 500 18000
+Internal Server Error: /user/ajax/getIndexRecommendations/
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/siew/djmatch/src/user/views.py", line 119, in getIndexRecommendations
+    p = Project.objects.filter(reduce(operator.or_,p_expressions)).exclude(created_by=request.user).exclude(id__in=interested)
+TypeError: reduce() of empty sequence with no initial value
+"GET /user/ajax/getIndexRecommendations/?id=0 HTTP/1.1" 500 17982
+Internal Server Error: /user/ajax/getIndexRecommendations/
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/siew/djmatch/src/user/views.py", line 119, in getIndexRecommendations
+    p = Project.objects.filter(reduce(operator.or_,p_expressions)).exclude(created_by=request.user).exclude(id__in=interested)
+TypeError: reduce() of empty sequence with no initial value
+"GET /user/ajax/getIndexRecommendations/?id=0 HTTP/1.1" 500 19680
+Internal Server Error: /user/ajax/getIndexRecommendations/
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/siew/djmatch/src/user/views.py", line 119, in getIndexRecommendations
+    p = Project.objects.filter(reduce(operator.or_,p_expressions)).exclude(created_by=request.user).exclude(id__in=interested)
+TypeError: reduce() of empty sequence with no initial value
+"GET /user/ajax/getIndexRecommendations/?id=0 HTTP/1.1" 500 19737
+Internal Server Error: /
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/defaulttags.py", line 1038, in find_library
+    return parser.libraries[name]
+KeyError: 'compress'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 215, in _get_response
+    response = response.render()
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/response.py", line 107, in render
+    self.content = self.rendered_content
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/response.py", line 84, in rendered_content
+    content = template.render(context, self._request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/backends/django.py", line 66, in render
+    return self.template.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 207, in render
+    return self._render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 957, in render_annotated
+    return self.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 154, in render
+    compiled_parent = self.get_parent(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 151, in get_parent
+    return self.find_template(parent, context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 131, in find_template
+    template_name, skip=history,
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/engine.py", line 136, in find_template
+    name, template_dirs=dirs, skip=skip,
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loaders/base.py", line 44, in get_template
+    contents, origin, origin.template_name, self.engine,
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 191, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 230, in compile_nodelist
+    return parser.parse()
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 515, in parse
+    raise self.error(token, e)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 513, in parse
+    compiled_result = compile_func(self, token)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/defaulttags.py", line 1095, in load
+    lib = find_library(parser, name)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/defaulttags.py", line 1042, in find_library
+    name, "\n".join(sorted(parser.libraries.keys())),
+django.template.exceptions.TemplateSyntaxError: 'compress' is not a registered tag library. Must be one of:
+admin_list
+admin_modify
+admin_static
+admin_urls
+bug_form
+bug_with_email_form
+cache
+crispy_forms_field
+crispy_forms_filters
+crispy_forms_tags
+crispy_forms_utils
+i18n
+l10n
+log
+static
+staticfiles
+tz
+"GET / HTTP/1.1" 500 176184
+Internal Server Error: /
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/defaulttags.py", line 1038, in find_library
+    return parser.libraries[name]
+KeyError: 'compress'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 215, in _get_response
+    response = response.render()
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/response.py", line 107, in render
+    self.content = self.rendered_content
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/response.py", line 84, in rendered_content
+    content = template.render(context, self._request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/backends/django.py", line 66, in render
+    return self.template.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 207, in render
+    return self._render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 957, in render_annotated
+    return self.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 154, in render
+    compiled_parent = self.get_parent(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 151, in get_parent
+    return self.find_template(parent, context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 131, in find_template
+    template_name, skip=history,
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/engine.py", line 136, in find_template
+    name, template_dirs=dirs, skip=skip,
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loaders/base.py", line 44, in get_template
+    contents, origin, origin.template_name, self.engine,
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 191, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 230, in compile_nodelist
+    return parser.parse()
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 515, in parse
+    raise self.error(token, e)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 513, in parse
+    compiled_result = compile_func(self, token)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/defaulttags.py", line 1095, in load
+    lib = find_library(parser, name)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/defaulttags.py", line 1042, in find_library
+    name, "\n".join(sorted(parser.libraries.keys())),
+django.template.exceptions.TemplateSyntaxError: 'compress' is not a registered tag library. Must be one of:
+admin_list
+admin_modify
+admin_static
+admin_urls
+bug_form
+bug_with_email_form
+cache
+crispy_forms_field
+crispy_forms_filters
+crispy_forms_tags
+crispy_forms_utils
+i18n
+l10n
+log
+static
+staticfiles
+tz
+"GET / HTTP/1.1" 500 176184
+Internal Server Error: /
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 215, in _get_response
+    response = response.render()
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/response.py", line 107, in render
+    self.content = self.rendered_content
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/response.py", line 84, in rendered_content
+    content = template.render(context, self._request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/backends/django.py", line 66, in render
+    return self.template.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 207, in render
+    return self._render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 957, in render_annotated
+    return self.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 154, in render
+    compiled_parent = self.get_parent(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 151, in get_parent
+    return self.find_template(parent, context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 131, in find_template
+    template_name, skip=history,
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/engine.py", line 136, in find_template
+    name, template_dirs=dirs, skip=skip,
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loaders/base.py", line 44, in get_template
+    contents, origin, origin.template_name, self.engine,
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 191, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 230, in compile_nodelist
+    return parser.parse()
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 515, in parse
+    raise self.error(token, e)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 513, in parse
+    compiled_result = compile_func(self, token)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 361, in do_include
+    bits[1] = construct_relative_path(parser.origin.template_name, bits[1])
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 285, in construct_relative_path
+    "template '%s' is in." % (relative_name, current_template_name)
+django.template.exceptions.TemplateSyntaxError: The relative path ''../footer.html'' points outside the file hierarchy that template 'layout.html' is in.
+"GET / HTTP/1.1" 500 173146
+Internal Server Error: /
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/backends/django.py", line 66, in render
+    return self.template.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 207, in render
+    return self._render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 957, in render_annotated
+    return self.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 177, in render
+    return compiled_parent._render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 957, in render_annotated
+    return self.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/defaulttags.py", line 322, in render
+    return nodelist.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 957, in render_annotated
+    return self.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 204, in render
+    template = context.template.engine.get_template(template_name)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/engine.py", line 162, in get_template
+    template, origin = self.find_template(template_name)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/engine.py", line 148, in find_template
+    raise TemplateDoesNotExist(name, tried=tried)
+django.template.exceptions.TemplateDoesNotExist: modal.html
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 215, in _get_response
+    response = response.render()
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/response.py", line 107, in render
+    self.content = self.rendered_content
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/response.py", line 84, in rendered_content
+    content = template.render(context, self._request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/backends/django.py", line 68, in render
+    reraise(exc, self.backend)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/backends/django.py", line 89, in reraise
+    six.reraise(exc.__class__, new, sys.exc_info()[2])
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/utils/six.py", line 685, in reraise
+    raise value.with_traceback(tb)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/backends/django.py", line 66, in render
+    return self.template.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 207, in render
+    return self._render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 957, in render_annotated
+    return self.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 177, in render
+    return compiled_parent._render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 957, in render_annotated
+    return self.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/defaulttags.py", line 322, in render
+    return nodelist.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 957, in render_annotated
+    return self.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 204, in render
+    template = context.template.engine.get_template(template_name)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/engine.py", line 162, in get_template
+    template, origin = self.find_template(template_name)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/engine.py", line 148, in find_template
+    raise TemplateDoesNotExist(name, tried=tried)
+django.template.exceptions.TemplateDoesNotExist: modal.html
+"GET / HTTP/1.1" 500 257417
+Internal Server Error: /user/ajax/getIndexRecommendations/
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/siew/djmatch/src/user/views.py", line 119, in getIndexRecommendations
+    p = Project.objects.filter(reduce(operator.or_,p_expressions)).exclude(created_by=request.user).exclude(id__in=interested)
+TypeError: reduce() of empty sequence with no initial value
+"GET /user/ajax/getIndexRecommendations/?id=0 HTTP/1.1" 500 17982
+Internal Server Error: /user/profile/
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/backends/django.py", line 66, in render
+    return self.template.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 207, in render
+    return self._render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 957, in render_annotated
+    return self.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 154, in render
+    compiled_parent = self.get_parent(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 151, in get_parent
+    return self.find_template(parent, context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 131, in find_template
+    template_name, skip=history,
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/engine.py", line 148, in find_template
+    raise TemplateDoesNotExist(name, tried=tried)
+django.template.exceptions.TemplateDoesNotExist: user/layout.html
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 215, in _get_response
+    response = response.render()
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/response.py", line 107, in render
+    self.content = self.rendered_content
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/response.py", line 84, in rendered_content
+    content = template.render(context, self._request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/backends/django.py", line 68, in render
+    reraise(exc, self.backend)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/backends/django.py", line 89, in reraise
+    six.reraise(exc.__class__, new, sys.exc_info()[2])
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/utils/six.py", line 685, in reraise
+    raise value.with_traceback(tb)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/backends/django.py", line 66, in render
+    return self.template.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 207, in render
+    return self._render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 957, in render_annotated
+    return self.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 154, in render
+    compiled_parent = self.get_parent(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 151, in get_parent
+    return self.find_template(parent, context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 131, in find_template
+    template_name, skip=history,
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/engine.py", line 148, in find_template
+    raise TemplateDoesNotExist(name, tried=tried)
+django.template.exceptions.TemplateDoesNotExist: user/layout.html
+"GET /user/profile/ HTTP/1.1" 500 176489
+Internal Server Error: /user/profile/projects/
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/backends/django.py", line 66, in render
+    return self.template.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 207, in render
+    return self._render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 957, in render_annotated
+    return self.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 154, in render
+    compiled_parent = self.get_parent(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 151, in get_parent
+    return self.find_template(parent, context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 131, in find_template
+    template_name, skip=history,
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/engine.py", line 148, in find_template
+    raise TemplateDoesNotExist(name, tried=tried)
+django.template.exceptions.TemplateDoesNotExist: user/layout.html
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 217, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 215, in _get_response
+    response = response.render()
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/response.py", line 107, in render
+    self.content = self.rendered_content
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/response.py", line 84, in rendered_content
+    content = template.render(context, self._request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/backends/django.py", line 68, in render
+    reraise(exc, self.backend)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/backends/django.py", line 89, in reraise
+    six.reraise(exc.__class__, new, sys.exc_info()[2])
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/utils/six.py", line 685, in reraise
+    raise value.with_traceback(tb)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/backends/django.py", line 66, in render
+    return self.template.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 207, in render
+    return self._render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 990, in render
+    bit = node.render_annotated(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/base.py", line 957, in render_annotated
+    return self.render(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 154, in render
+    compiled_parent = self.get_parent(context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 151, in get_parent
+    return self.find_template(parent, context)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/loader_tags.py", line 131, in find_template
+    template_name, skip=history,
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/template/engine.py", line 148, in find_template
+    raise TemplateDoesNotExist(name, tried=tried)
+django.template.exceptions.TemplateDoesNotExist: user/layout.html
+"GET /user/profile/projects/ HTTP/1.1" 500 178153
+Internal Server Error: /user/ajax/getIndexRecommendations/
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/siew/djmatch/src/user/views.py", line 119, in getIndexRecommendations
+    p = Project.objects.filter(reduce(operator.or_,p_expressions)).exclude(created_by=request.user).exclude(id__in=interested)
+TypeError: reduce() of empty sequence with no initial value
+"GET /user/ajax/getIndexRecommendations/?id=0 HTTP/1.1" 500 17983
+Internal Server Error: /user/ajax/getIndexRecommendations/
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/siew/djmatch/src/user/views.py", line 119, in getIndexRecommendations
+    p = Project.objects.filter(reduce(operator.or_,p_expressions)).exclude(created_by=request.user).exclude(id__in=interested)
+TypeError: reduce() of empty sequence with no initial value
+"GET /user/ajax/getIndexRecommendations/?id=0 HTTP/1.1" 500 18039

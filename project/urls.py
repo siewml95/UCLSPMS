@@ -15,10 +15,10 @@ from .views import (
                    )
 urlpatterns = [
     url(r'^$', ProjectListView.as_view()),
-    url(r'^create/$', ProjectCreateView.as_view()),
-    url(r'^single/(?P<slug>[-\w]+)/$', ProjectDetailView.as_view()),
+    url(r'^create/$', ProjectCreateView.as_view(),name="create"),
+    url(r'^single/(?P<slug>[-\w]+)/$', ProjectDetailView.as_view(),name="single"),
 
-    url(r'^(?P<pk>[-\w]+)/update/$', ProjectUpdateView.as_view()),
+    url(r'^(?P<pk>[-\w]+)/update/$', ProjectUpdateView.as_view(),name="update"),
     url(r'^list/$',ProjectFilterView.as_view(),name="project_list"),
     url(r'^ajax/$', ProjectGetKeywords),
     url(r'^ajax/getKeywords/$', AjaxGetKeywords),

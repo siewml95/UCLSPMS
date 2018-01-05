@@ -1,4 +1,4 @@
-{% extends "./layout.html" %}
+{% extends "../layout.html" %}
 {% load static %}
 
 {% block content %}
@@ -14,7 +14,7 @@
       <h4 class="pj-detail-h4">Keywords</h4>
       {% for keyword in object.keywords.all%} {{keyword.title}} {% endfor %}
       <h4 class="pj-detail-h4">Publisher</h4>
-      <a href="/user/single/{{object.created_by.id}}">{{object.created_by}}</a>
+      <a href="{% url 'user:single' object.created_by.id %}">{{object.created_by}}</a>
 
       <h4 class="pj-detail-h4">Deadline</h4>
       <p>{{object.deadline}}</p>

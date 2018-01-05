@@ -23,7 +23,7 @@ from django.conf.urls import url
 from .views import NewView
 from project.views import ProjectListView
 urlpatterns = [
-    url(r'^$', ProjectListView.as_view()),
+    url(r'^$', ProjectListView.as_view(),name="index"),
     url(r'^admin/', admin.site.urls),
 
     url(r'^project/', include('project.urls',namespace="project")),
