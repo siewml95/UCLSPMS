@@ -1,0 +1,80 @@
+Internal Server Error: /user/ajax/getIndexRecommendations/
+Traceback (most recent call last):
+  File "/home/siew/venvs/djproject/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/djproject/lib/python3.5/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/djproject/lib/python3.5/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/siew/djmatch/src/user/views.py", line 119, in getIndexRecommendations
+    p = Project.objects.filter(reduce(operator.or_,p_expressions)).exclude(created_by=request.user).exclude(id__in=interested)
+TypeError: reduce() of empty sequence with no initial value
+"GET /user/ajax/getIndexRecommendations/?id=0 HTTP/1.1" 500 18896
+Internal Server Error: /user/ajax/getIndexRecommendations/
+Traceback (most recent call last):
+  File "/home/siew/venvs/djproject/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/djproject/lib/python3.5/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/djproject/lib/python3.5/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/siew/djmatch/src/user/views.py", line 119, in getIndexRecommendations
+    p = Project.objects.filter(reduce(operator.or_,p_expressions)).exclude(created_by=request.user).exclude(id__in=interested)
+TypeError: reduce() of empty sequence with no initial value
+"GET /user/ajax/getIndexRecommendations/?id=0 HTTP/1.1" 500 18896
+Internal Server Error: /uclapi/login/process_login
+Traceback (most recent call last):
+  File "/home/siew/venvs/djproject/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/djproject/lib/python3.5/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/djproject/lib/python3.5/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/siew/venvs/djproject/lib/python3.5/site-packages/django/utils/decorators.py", line 149, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/home/siew/djmatch/src/uclapi/views.py", line 29, in process_login
+    auth_url = UCLAPI_URL + "/oauth/authorise"
+TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'
+"GET /uclapi/login/process_login HTTP/1.1" 500 79133
+Internal Server Error: /uclapi/login/process_login
+Traceback (most recent call last):
+  File "/home/siew/venvs/djproject/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/djproject/lib/python3.5/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/djproject/lib/python3.5/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/siew/venvs/djproject/lib/python3.5/site-packages/django/utils/decorators.py", line 149, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/home/siew/djmatch/src/uclapi/views.py", line 29, in process_login
+    auth_url = UCLAPI_URL + "/oauth/authorise"
+TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'
+"GET /uclapi/login/process_login HTTP/1.1" 500 79133
+Internal Server Error: /uclapi/login/process_login
+Traceback (most recent call last):
+  File "/home/siew/venvs/djproject/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/djproject/lib/python3.5/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/djproject/lib/python3.5/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/siew/venvs/djproject/lib/python3.5/site-packages/django/utils/decorators.py", line 149, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/home/siew/djmatch/src/uclapi/views.py", line 29, in process_login
+    auth_url = UCLAPI_URL + "/oauth/authorise"
+TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'
+"GET /uclapi/login/process_login HTTP/1.1" 500 79133
+Internal Server Error: /uclapi/login/process_login
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/utils/decorators.py", line 149, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/home/siew/djmatch/src/uclapi/views.py", line 29, in process_login
+    auth_url = os.environ.get("UCLAPI_URL") + "/oauth/authorise"
+TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'
+"GET /uclapi/login/process_login HTTP/1.1" 500 77889

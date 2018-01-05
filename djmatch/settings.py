@@ -11,7 +11,10 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
-
+from os.path import join, dirname
+from dotenv import load_dotenv
+dotenv_path = join(dirname(__file__), '../.env')
+load_dotenv(dotenv_path)
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -118,6 +121,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'djmatch',
+        'USER': 'djmatch',
+        'PASSWORD': 'qwerty12',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
 
 
 # Internationalization

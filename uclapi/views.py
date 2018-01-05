@@ -13,6 +13,10 @@ import os
 import json
 import requests
 
+UCLAPI_CLIENT_ID= os.environ.get("UCLAPI_CLIENT_ID")
+UCLAPI_CLIENT_SECRET=os.environ.get("UCLAPI_CLIENT_SECRET")
+UCLAPI_URL= os.environ.get("UCLAPI_URL")
+TOKEN_DEBUG_ENABLED=False
 
 def render_login_button(request):
     return render(request, 'login.html')
@@ -22,8 +26,8 @@ def render_login_button(request):
 def process_login(request):
     state = generate_state()
     request.session["state"] = state
-    auth_url = "https://uclapi.com" + "/oauth/authorise"
-    auth_url += "?client_id=" + "2178137238250957.7149726856307571"
+    auth_url = os.environ.get("UCLAPI_URL") + "/oauth/authorise"
+    auth_url += "?client_id=" + os.environ.get("UCLAPI_CLIENT_ID")
     auth_url += "&state=" + state
 
     return redirect(auth_url)
@@ -68,12 +72,12 @@ def allowed(request):
             "error": "There is no session cookie set containing a state"
         })
 
-    url = "https://uclapi.com" + "/oauth/token"
+    url = UCLAPI_URL + "/oauth/token"
     params = {
         'grant_type': 'authorization_code',
-        'client_id' : '2178137238250957.7149726856307571',
+        'client_id' : os.environ.get("UCLAPI_CLIENT_ID"),
         'code': code,
-        'client_secret': "b0c0e519f49149091b04f6d7dceb2a9f4d9f106e6133753d8d20993c8f773bea"
+        'client_secret': os.environ.get("UCLAPI_CLIENT_SECRET")
     }
 
     r = requests.get(url, params=params)
@@ -113,10 +117,10 @@ def allowed(request):
 
     token.save()
 
-    url = "https://uclapi.com" + "/oauth/user/data"
+    url = os.environ.get("UCLAPI_URL")  + "/oauth/user/data"
     params = {
         'token': token_code,
-        'client_secret': "b0c0e519f49149091b04f6d7dceb2a9f4d9f106e6133753d8d20993c8f773bea"
+        'client_secret': os.environ.get("UCLAPI_CLIENT_SECRET")
     }
 
     r = requests.get(url, params=params)
@@ -174,7 +178,7 @@ def token_test(request):
 
     params = {
         'token': token,
-        'client_secret': "b0c0e519f49149091b04f6d7dceb2a9f4d9f106e6133753d8d20993c8f773bea"
+        'client_secret': os.environ.get("UCLAPI_CLIENT_SECRET")
     }
 
     r = requests.get(url, params=params)
