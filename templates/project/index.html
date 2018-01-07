@@ -5,19 +5,6 @@
 {% block content %}
     <div class="container">
       <div class="col-sm-9"><strong style="color:#00619D">Projects List</strong>
-        <div class="pj-filter-link">
-          <i class="fa fa-cog" aria-hidden="true"></i>
-          <span>
-             [
-              <a class="pj-filter-click" href="#">{% if submit %}Hide Filter {%else%} Show Filter{% endif %}</a>
-             ]
-          </span>
-        </div>
-
-        <div class="pj-filter-form {% if submit %}active{% endif %}">
-          {% crispy filter.form filter.form.helper %}
-        </div>
-
         <table class="table table-bordered table-sm table-striped">
           <thead style=" color:white" class="table-color thead-inverse">
             <tr>
@@ -26,7 +13,6 @@
               <th class="col-md-2">Posted At</th>
             </tr>
           </thead>
-
           <tbody>
 
             {% for article in object_list %}
@@ -45,18 +31,17 @@
       </div>
       <div class="col-sm-3">
         {% include "./recommendations.html" %}
+        {% crispy filter.form filter.form.helper %}
 
       </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://unpkg.com/compromise@latest/builds/compromise.min.js"></script>
-    <script src="{% static 'project/js/fastsearch.min.js'%}"></script>
-    <script src="{% static 'project/js/bootstrap-tagsinput.min.js'%}"></script>
+
     <script src="{% static 'project/js/select2.js'%}"></script>
-    <script src="{% static 'project/js/filter.js'%}"></script>
     <script src="{% static 'project/js/recommendations.js'%}"></script>
     <script src="{% static 'project/js/filter_django_select2.js'%}"></script>
+    <script src="{% static 'project/js/panel.js' %}"></script>
 
 {% endblock %}

@@ -16,7 +16,7 @@
 
              {% if user.profile.type == 1 or user.profile.type == 2 %}
         <li class="active" ><a href="#" >Preferences</a></li>
-        <li><<a href="{% url 'user:project-interests' %}" >Projects Interested</a></li>
+        <li><a href="{% url 'user:project-interests' %}" >Projects Interested</a></li>
         {% endif %}
         {% endif %}
 
@@ -37,5 +37,6 @@
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://unpkg.com/compromise@latest/builds/compromise.min.js"></script>
+    <script src="{% static 'project/js/select2.js'%}"></script>
     <script src="{% static 'project/js/django_select2.js'%}"></script>
 {% endblock %}

@@ -5,7 +5,7 @@ from django.views.generic.edit import CreateView,UpdateView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .filters import ProjectFilter
-from .forms import ProjectModelForm, ProjectFilterForm
+from .forms import ProjectModelForm, ProjectFilterForm,ProjectDetailFilterForm
 from .models import Project,Keyword
 from user.models import Interest
 from user.forms import InterestForm
@@ -64,12 +64,14 @@ def CheckKeywordExists(request):
 class ProjectDetailView(DetailView):
     model = Project
     template_name="project/detail.html"
+    form_class = ProjectDetailFilterForm
 
     def get_context_data(self,**kwargs):
        context = super(ProjectDetailView, self).get_context_data(**kwargs)
        print(context)
        context["count"] = Interest.objects.filter(project=context["object"].id).count()
        context["modalForm"] = InterestForm()
+       context["form"] = ProjectDetailFilterForm()
        return context
 
 class ProjectListView(ListView):

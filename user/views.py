@@ -368,3 +368,14 @@ class UserStudentDetailView(LoginRequiredMixin,StaffRequiredMixin,DetailView):
     template_name="user/student/detail.html"
     model = User
     login_url = "/user/login"
+
+from .forms import UserProfileAvatarForm
+
+class UserProfileAvatarView(LoginRequiredMixin,UpdateView):
+    template_name="user/profile/avatar2.html"
+    model = User
+    form_class = UserProfileAvatarForm
+    login_url = "/user/login/"
+
+    def get_object(self):
+        return get_user(self.request).profile

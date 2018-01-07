@@ -1,4 +1,5 @@
 {% extends "../layout.html" %}
+{% load crispy_forms_tags %}
 {% load static %}
 
 {% block content %}
@@ -34,15 +35,19 @@
   </div>
   <div class="col-md-3 col-md-offset-1">
     {% include "./recommendations.html" %}
+    {% crispy form %}
   </div>
 
   <input type="hidden" name="id" value="{{object.id}}"/>
-  {% include "./modal.html" with where="./project/forms/interest.html"  id="myModal" header="Are you sure you are interested in this project "%}
+  {% include "../modal.html" with where="./project/forms/interest.html"  id="myModal" header="Are you sure you are interested in this project "%}
   </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="{% static 'project/js/select2.js'%}"></script>
 
-  <script src="{% static 'project/js/detail.js'%}"></script>
+  <script src="{% static 'project/js/filter_django_select2.js'%}"></script>
+
   <script src="{% static 'project/js/recommendations.js'%}"></script>
+  <script src="{% static 'project/js/panel.js' %}"></script>
+  <script src="{% static 'project/js/detail.js'%}"></script>
 
 {% endblock %}

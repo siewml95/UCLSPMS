@@ -134,6 +134,13 @@ class UserForm(forms.ModelForm):
      fields = ('email', 'first_name', 'last_name')
 
 
+class UserProfileAvatarForm(forms.ModelForm):
+
+
+    class Meta:
+        model = Profile
+        fields = ('avatar',)
+
 class UserProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         # magic
@@ -162,7 +169,8 @@ class UserProfileForm(forms.ModelForm):
              Field('email', rows="6", css_class='input-xlarge'),
              Field('first_name', rows="6", css_class='input-xlarge'),
              Field('last_name', rows="6", css_class='input-xlarge'),
-             Field('avatar',template="user/profile/avatar.html",rows="6", css_class='input-xlarge')
+             Field('avatar',template="user/profile/avatar.html",rows="6", css_class='input-xlarge'),
+             Field('checkbox',template="empty.html")
         )
         # define fields order if needed
 
@@ -170,12 +178,19 @@ class UserProfileForm(forms.ModelForm):
     def save(self,*args, **kwargs):
         # save both forms
         self.uf.save(*args, **kwargs)
-        return super(UserProfileForm, self).save(*args, **kwargs)
+        profile = super(UserProfileForm, self).save(*args, **kwargs)
+        print()
+        print("avatar save")
+        print(self.__dict__)
+        if self.cleaned_data.get("checkbox"):
+         profile.avatar = ""
+         profile.save()
+        return profile
 
     class Meta:
         model = Profile
         fields = ('avatar',)
-
+    checkbox = forms.BooleanField(required=False)
 class UserProfilePreferenceForm(forms.ModelForm):
     class Meta:
         model = Profile
@@ -262,7 +277,7 @@ class UserProfilePasswordForm(forms.ModelForm):
              Field('passwordcurrent', rows="6", css_class='input-xlarge'),
              Field('password1', rows="6", css_class='input-xlarge'),
              Field('password2', rows="6", css_class='input-xlarge'),
-
+             Field('last_login',template="empty.html")
         )
 
 class InterestForm(forms.Form):

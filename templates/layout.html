@@ -1,6 +1,6 @@
 {% load crispy_forms_tags %}
 {% load static %}
-
+{% load pipeline %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -13,6 +13,8 @@
     <title>Notice-Board | </title>
     <link rel="icon" href="../../favicon.ico">
     <!-- Bootstrap core CSS-->
+    {% stylesheet 'my_app' %}
+
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
@@ -20,7 +22,8 @@
     <link href="{% static 'project/css/bootstrap-tagsinput.css' %}" rel="stylesheet" />
     <link href="{% static 'project/css/index.css' %}" rel="stylesheet" />
     <link href="{% static 'project/css/ladda-themeless.min.css' %}" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="{% static 'project/js/jquery.min.js' %}"></script>
+
   </head>
   <body>
     <!-- Fixed navbar-->
@@ -61,7 +64,8 @@
   </body>
 
 
-  <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  {% javascript 'layout' %}
+  <script src="{% static 'project/js/toastr.min.js' %}"></script>
   <script src="{% static 'project/js/jquery.validation.js' %}"></script>
   <script src="{% static 'project/js/spin.min.js' %}"></script>
   <script src="{% static 'project/js/ladda.min.js' %}"></script>

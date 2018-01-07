@@ -17,6 +17,7 @@ from .views import (
                     UserProfileStaffInterestView,
                     UserStaffRegisterView,
                     UserStudentDetailView,
+                    UserProfileAvatarView
                    )
 urlpatterns = [
    url(r'^register/$', UserRegisterView.as_view()),
@@ -34,6 +35,7 @@ urlpatterns = [
    url(r'^profile/projects/$',UserProfileProjectView.as_view(),name="projects"),
    url(r'^profile/project-interests/$',UserProfileInterestView.as_view(),name="project-interests"),
    url(r'^profile/interests/$',UserProfileStaffInterestView.as_view(),name="interests"),
+   url(r'^profile/avatar/$',UserProfileAvatarView.as_view(),name="avatar"),
 
    url(r'^ajax/getIndexRecommendations/$',getIndexRecommendations),
    url(r'^ajax/sendInterest/$',sendInterest,name='sendInterest'),

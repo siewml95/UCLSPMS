@@ -58,7 +58,7 @@ class Profile(models.Model):
     type = models.IntegerField(default=1)
     birth_date = models.DateField(null=True, blank=True)
     preferences = models.ManyToManyField(Keyword)
-    avatar = models.FileField(default="https://www.w3schools.com/w3css/img_fjords.jpg")
+    avatar = models.FileField()
     linkedin = models.URLField(blank=True)
     objects = models.Manager()
 

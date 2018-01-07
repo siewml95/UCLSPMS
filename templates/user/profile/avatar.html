@@ -5,20 +5,20 @@
                 Avatar
             </label>
         <div class="kv-avatar control-label col-sm-10">
-          {% if field.value.url %}
+          {% if field.value  %}
 
              <div>
                <img style="display:block" height="150" width="150" src="{{ field.value.url }}" />
 
              </div>
                 <div style="position:absolute; top:0px; left:170px">
-                  <input  type="checkbox" name="{{ field.checkbox_name }}" id="{{ field.checkbox_id }}" />
-                  <label   for="{{ field.checkbox_id }}">Remove</label>
+                  <input  type="checkbox" name="checkbox" id="id_checkbox" />
+                  <label   for="id_checkbox">Remove</label>
                 </div>
           {% endif %}
 
 
-                <input style="margin-top:25px" type="file" name="{{ field.name }}" />
+                <input style="margin-top:25px" type="file" name="avatar" />
 
                 <div class="kv-avatar-hint"><small>Select file < 1500 KB</small></div>
 

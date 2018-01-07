@@ -17,8 +17,10 @@ from __future__ import absolute_import, unicode_literals
 
 from django.conf.urls import url,include
 from django.contrib import admin
+from django.conf.urls.static import static
 
 from django.conf.urls import url
+from django.conf import settings
 
 from .views import NewView
 from project.views import ProjectListView
@@ -29,8 +31,7 @@ urlpatterns = [
     url(r'^project/', include('project.urls',namespace="project")),
     url(r'^user/', include('user.urls',namespace="user")),
     url(r'^uclapi/', include('uclapi.urls',namespace="uclapi")),
-
     url(r"^select2/fields/auto.json$",
         NewView.as_view(), name="django_select2-json"),
 
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

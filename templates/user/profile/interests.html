@@ -16,7 +16,7 @@
 
              {% if user.profile.type == 1 or user.profile.type == 2 %}
         <li  ><a href="{% url 'user:preferences' %}" >Preferences</a></li>
-        <li><<a href="{% url 'user:project-interests' %}" >Projects Interested</a></li>
+        <li><a href="{% url 'user:project-interests' %}" >Projects Interested</a></li>
         {% endif %}
         {% endif %}
 

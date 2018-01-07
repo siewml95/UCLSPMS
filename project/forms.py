@@ -1,9 +1,9 @@
 from django import forms
 from crispy_forms.bootstrap import Field, InlineRadios, TabHolder, Tab
-from crispy_forms.layout import  Submit, Layout, Div, Fieldset,HTML,MultiField
+from crispy_forms.layout import  Submit, Layout, Div, Fieldset,HTML,MultiField,Button
 from crispy_forms.helper import FormHelper
 from django.core.urlresolvers import reverse
-from django_select2.forms import HeavySelect2Widget,ModelSelect2TagWidget
+from django_select2.forms import HeavySelect2Widget,ModelSelect2TagWidget, Select2TagWidget
 from crispy_forms.bootstrap import PrependedText
 from django.utils.encoding import force_text
 from django.forms.models import ModelChoiceIterator
@@ -12,7 +12,6 @@ from django.forms.renderers import get_default_renderer
 from django.utils.safestring import mark_safe
 
 from .models import Project,Keyword
-
 class ModelSelect2TagWidgetCustom(ModelSelect2TagWidget):
 
     def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
@@ -179,20 +178,132 @@ class ProjectModelForm(forms.ModelForm):
         )
         #print(self.helper)
 
+class Select2TagWidgetCustom(Select2TagWidget):
+            def value_from_datadict(self, data, files, name):
+                values = super(Select2TagWidgetCustom, self).value_from_datadict(data, files, name)
+                if values is None:
+                 return []
+                else:
+                 return values
+            def optgroups(self, name, value, attrs=None):
+                selected = set(value)
+                subgroup = [self.create_option(name, v, v, selected, i) for i, v in enumerate(value)]
+                return [(None, subgroup, 0)]
+
+class ProjectDetailFilterForm(forms.Form):
+
+        title = forms.CharField(required=False)
+        company = forms.CharField(required=False)
+        summary = forms.ChoiceField(widget=Select2TagWidgetCustom,required=False)
+        keywords = forms.ModelMultipleChoiceField(widget=ModelSelect2TagWidgetCustom(
+                queryset=Keyword.objects.all(),
+                search_fields=['title__icontains'],
+            ), queryset=Keyword.objects.all(), required=False)
+
+            #$requirements = MyField(widget=forms.TextInput,required=False).set_attributes_from_name("keywords")
+        deadline =  forms.DateField(required=False,
+                widget=forms.TextInput(
+                    attrs={'type': 'date'}
+                )
+            )
+        def __init__(self,*args,**kwargs):
+            super(ProjectDetailFilterForm,self).__init__(*args,**kwargs)
+            self.helper = FormHelper(self)
+            self.helper.form_id = "id-personal"
+            self.helper.form_method = "GET"
+            self.helper.form_action = '/'
+            self.helper.form_class = 'form-horizontal'
+            self.helper.field_class = "col-sm-12"
+            self.helper.layout = Layout(
+                 Div(
+                   Div(
+                     'title',
+                      template = 'project/panel-content.html',
+                      css_id="1",
+                      css_class="Title"
+                   ),
+                   Div(
+                      'company',
+                      template = 'project/panel-content.html',
+                      title="Company",
+                      css_id="2",
+                      css_class="Company"
+                   ),
+                   Div(
+                     Field('summary',template = 'project/filter-conditions.html',data_token_separators="[',']",data_minimum_results_for_search="-1",data_minimum_input_length="0",data_delay="300",multiple="multiple",ajax__cache="true"),
+                     template = 'project/panel-content.html',
+                     css_id="3",
+                     css_class="Summary"
+                  ),
+                   Div(
+                     Field('keywords',data_tags="false",template = 'project/filter-conditions.html',data_token_separators="[',']",data_minimum_results_for_search="-1",data_minimum_input_length="0",data_delay="300",multiple="multiple",ajax__cache="true"),
+                     HTML('<div class="control-label col-sm-2"></div><span class="help-block" display:inline>Grey: approved keywords. Green : users created keywords. Blue : keywords not created yet</span>'),
+                     template = 'project/panel-content.html',
+                     css_id="4",
+                     css_class="Keywords"
+                   ),
+                   Div(
+                     Field('deadline'),
+                     template = 'project/panel-content.html',
+                     css_id="5",
+                     css_class="Deadline"
+                   ),
+                    template = 'project/panel.html'
+
+
+                 ),
+
+                Submit('submit', 'Submit'),
+                Button('reset', 'Reset'),
+
+            )
 class ProjectFilterForm(FormHelper):
 
         form_id = "id-personal"
         form_method = "GET"
-        form_action = '.'
-        form_class = 'form-horizontal container'
-        label_class ="col-sm-2"
-        field_class = "col-sm-10"
+        form_action = '/'
+        form_class = 'form-horizontal'
+        field_class = "col-sm-12"
         layout = Layout(
-             Field('title'),
-             Field('company'),
-             Field('summary',template = 'project/filter-conditions.html',data_token_separators="[',']",data_minimum_results_for_search="-1",data_minimum_input_length="0",data_delay="300",multiple="multiple",ajax__cache="true"),
-             Field('keywords',data_tags="false",template = 'project/filter-conditions.html',data_token_separators="[',']",data_minimum_results_for_search="-1",data_minimum_input_length="0",data_delay="300",multiple="multiple",ajax__cache="true"),
-             HTML('<div class="control-label col-sm-2"></div><span class="help-block" display:inline>Grey: approved keywords. Green : users created keywords. Blue : keywords not created yet</span>'),
-             Field('deadline'),
-             Submit('submit', 'Submit'),
+             Div(
+               Div(
+                 'title',
+                  template = 'project/panel-content.html',
+                  css_id="1",
+                  css_class="Title"
+               ),
+               Div(
+                  'company',
+                  template = 'project/panel-content.html',
+                  title="Company",
+                  css_id="2",
+                  css_class="Company"
+               ),
+               Div(
+                 Field('summary',template = 'project/filter-conditions.html',data_token_separators="[',']",data_minimum_results_for_search="-1",data_minimum_input_length="0",data_delay="300",multiple="multiple",ajax__cache="true"),
+                 template = 'project/panel-content.html',
+                 css_id="3",
+                 css_class="Summary"
+              ),
+               Div(
+                 Field('keywords',data_tags="false",template = 'project/filter-conditions.html',data_token_separators="[',']",data_minimum_results_for_search="-1",data_minimum_input_length="0",data_delay="300",multiple="multiple",ajax__cache="true"),
+                 HTML('<div class="control-label col-sm-2"></div><span class="help-block" display:inline>Grey: approved keywords. Green : users created keywords. Blue : keywords not created yet</span>'),
+                 template = 'project/panel-content.html',
+                 css_id="4",
+                 css_class="Keywords"
+               ),
+               Div(
+                 Field('deadline'),
+                 template = 'project/panel-content.html',
+                 css_id="5",
+                 css_class="Deadline"
+               ),
+                template = 'project/panel.html'
+
+
+             ),
+
+            Submit('submit', 'Submit'),
+            Button('reset', 'Reset'),
+
         )
