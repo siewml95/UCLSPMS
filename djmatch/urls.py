@@ -22,12 +22,12 @@ from django.conf.urls.static import static
 from django.conf.urls import url
 from django.conf import settings
 
-from .views import NewView
+from .views import NewView,sign_s3
 from project.views import ProjectListView
 urlpatterns = [
     url(r'^$', ProjectListView.as_view(),name="index"),
     url(r'^admin/', admin.site.urls),
-
+    url(r'^sign_s3/',sign_s3),
     url(r'^project/', include('project.urls',namespace="project")),
     url(r'^user/', include('user.urls',namespace="user")),
     url(r'^uclapi/', include('uclapi.urls',namespace="uclapi")),

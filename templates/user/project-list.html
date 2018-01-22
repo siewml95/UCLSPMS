@@ -6,6 +6,8 @@
     <div class="container">
       <div class="tab-pane" id="profile">
            <h2>{{first_name}} {{last_name}}</h2>
+             <div class="col-md-8 pj-detail">
+
                 <table class="table table-bordered table-sm table-striped">
                   <thead style="color:white" class="table-color thead-inverse">
                     <tr>
@@ -22,16 +24,23 @@
                       <td class="time col-md-3" data-datetime="{{article.timestamp}}">{{article.timestamp|date:"d M Y"  }}</td>
                     </tr>
                     {% empty %}
-                        <li>No articles yet.</li>
+                      <h3 class="no-data">No Projects yet.</h3>
                     {% endfor %}
                   </tbody>
 
                 </table>
+              </div>
+              <div class="col-md-3 col-md-offset-1">
+                {% include "../project/recommendations.html" %}
+                {% crispy filterForm %}
+              </div>
                 {%  include '../pagination.html' %}
      </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://unpkg.com/compromise@latest/builds/compromise.min.js"></script>
+    <script src="{% static 'project/js/select2.js'%}"></script>
+    <script src="{% static 'project/js/filter_django_select2.js'%}"></script>
+    <script src="{% static 'project/js/panel.js' %}"></script>
 {% endblock %}

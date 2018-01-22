@@ -1,8 +1,9 @@
 from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from cuser.forms import AuthenticationForm
 
-
+from .forms import PasswordResetForm,SetPasswordForm,AuthenticationForm
 from .views import (
                     UserRegisterView,
                     UserProfileView,
@@ -12,21 +13,28 @@ from .views import (
                     getIndexRecommendations,
                     sendInterest,
                     sendBug,
+                    UserActivationView,
                     UserProfilePreferenceView,
                     UserProfileInterestView,
                     UserProfileStaffInterestView,
                     UserStaffRegisterView,
                     UserStudentDetailView,
-                    UserProfileAvatarView
+                    UserResendActivationView,
                    )
 urlpatterns = [
    url(r'^register/$', UserRegisterView.as_view()),
-   url(r'^login/$', auth_views.login, {'template_name': 'user/login.html'},name='login'),
+   url(r'^login/$', auth_views.LoginView.as_view(authentication_form=AuthenticationForm, template_name='user/login.html'),name='login'),
    url(r'^logout/$', auth_views.logout, {'next_page': '/project'}, name='logout'),
+   url(r'^password_reset/$',auth_views.PasswordResetView.as_view(form_class=PasswordResetForm,success_url = "/user/password_reset/done/"), name='password_reset'),
+   url(r'^password_reset/done/$', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+   url(r'^reset/done/$', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+   url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        auth_views.PasswordResetConfirmView.as_view(form_class = SetPasswordForm,success_url = "/user/reset/done/"), name='password_reset_confirm'),
    url(r'^single/(?P<pk>[-\w]+)/$',UserProjectListView.as_view(),name="single"),
    url(r'^student/(?P<pk>[-\w]+)/$',UserStudentDetailView.as_view(),name="student"),
    url(r'^invitation/(?P<pk>\b[0-9A-Fa-f]{8}\b(-\b[0-9A-Fa-f]{4}\b){3}-\b[0-9A-Fa-f]{12}\b)/$',UserStaffRegisterView.as_view()),
-
+   url(r'^activation/(?P<key>[-\w]+)/$',UserActivationView.as_view()),
+   url(r'^resend-activation/$',UserResendActivationView.as_view(),name="resend-activation"),
    url(r'^profile/$',UserProfileView.as_view(),name="profile"),
 
    url(r'^profile/preferences/$',UserProfilePreferenceView.as_view(),name="preferences"),
@@ -35,7 +43,6 @@ urlpatterns = [
    url(r'^profile/projects/$',UserProfileProjectView.as_view(),name="projects"),
    url(r'^profile/project-interests/$',UserProfileInterestView.as_view(),name="project-interests"),
    url(r'^profile/interests/$',UserProfileStaffInterestView.as_view(),name="interests"),
-   url(r'^profile/avatar/$',UserProfileAvatarView.as_view(),name="avatar"),
 
    url(r'^ajax/getIndexRecommendations/$',getIndexRecommendations),
    url(r'^ajax/sendInterest/$',sendInterest,name='sendInterest'),

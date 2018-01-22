@@ -73,6 +73,7 @@
 
   $(function () {
     var x = $('#id_keywords').djangoSelect2({
+      placeholder: "Select a state",
       width: '100%',
       templateSelection: formatSelectionCssClass,
       createTag: function (params) {

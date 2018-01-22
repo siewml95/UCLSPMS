@@ -15,16 +15,17 @@
             <label for="{{ field.id_for_label }}" class="control-label {{ label_class }}{% if field.field.required %} requiredField{% endif %}">
                 {{ field.label|safe }}{% if field.field.required %}<span class="asteriskField">*</span>{% endif %}
 
-                 <select name="strict_{{ field.id_for_label }}" id="strict_{{ field.id_for_label }}" class="select sf">
-                    {% if field.id_for_label == "id_keywords" %}
-                     <option value="0" {% if strict_id_keywords %}selected=""{% endif %}>AND</option>
-                     <option value="1" {% if not strict_id_keywords %}selected=""{% endif %}>OR</option>
-                    {% else %}
-                    <option value="0" data-hello="{{strict_id_summary}}" {% if strict_id_summary %}selected=""{% endif %}>AND</option>
-                    <option value="1" {% if not strict_id_summary %}selected=""{% endif %}>OR</option>
-                    {% endif %}
-                   </select>
+
             </label>
+            <select name="strict_{{ field.id_for_label }}" id="strict_{{ field.id_for_label }}" class="select sf">
+               {% if field.id_for_label == "id_keywords" %}
+                <option value="0" {% if strict_id_keywords %}selected=""{% endif %}>AND</option>
+                <option value="1" {% if not strict_id_keywords %}selected=""{% endif %}>OR</option>
+               {% else %}
+               <option value="0" data-hello="{{strict_id_summary}}" {% if strict_id_summary %}selected=""{% endif %}>AND</option>
+               <option value="1" {% if not strict_id_summary %}selected=""{% endif %}>OR</option>
+               {% endif %}
+              </select>
         {% endif %}
 
         {% if not field|is_checkboxselectmultiple and not field|is_radioselect %}

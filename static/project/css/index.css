@@ -211,7 +211,7 @@ footer p {
 }
 
 
-.panel-item label {
+.panel-item label.control-label {
   display:none;
 }
 
@@ -228,4 +228,32 @@ footer p {
 
 #button-id-reset {
   float:right;
+}
+
+.select.sf {
+  margin-bottom:5px;
+  margin-left:15px;
+}
+
+table {
+  margin-bottom:50px !important;
+}
+
+.no-data {
+  position:absolute;
+  left:33%;
+  top:50px;
+}
+
+.tab-pane {
+  position:relative;
+}
+
+.kv-avatar-hint {
+  text-align:left;
+  color:black!important;
+}
+
+.help-block {
+  text-align:left;
 }

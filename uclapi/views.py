@@ -6,7 +6,7 @@ from django.contrib.auth import login, authenticate
 import requests
 
 from .models import OAuthToken
-from user.models import User
+from cuser.models import CUser as User
 from .helpers import generate_state
 
 import os
@@ -143,9 +143,10 @@ def allowed(request):
 
        except User.DoesNotExist:
           print('does not exists')
-          user = User.objects.create(email=data["email"],username=data["email"],first_name=data["given_name"])
+          user = User.objects.create(email=data["email"],first_name=data["given_name"])
           print('create')
           user.profile.type=2
+          user.profile.is_verified = True
           print("profile")
           user.save()
           login(request,user)

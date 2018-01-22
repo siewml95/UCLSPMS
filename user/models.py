@@ -1,11 +1,14 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser,User
+from django.contrib.auth.models import AbstractUser,BaseUserManager
 from project.models import Project,Keyword
 # Create your models here.
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 import uuid
 from django.core.mail import send_mail
+from django.utils.translation import ugettext_lazy as _
+from cuser.models import CUser as User
+
 
 class InterestQuerySet(models.QuerySet):
     def active(self):
@@ -59,7 +62,11 @@ class Profile(models.Model):
     birth_date = models.DateField(null=True, blank=True)
     preferences = models.ManyToManyField(Keyword)
     avatar = models.FileField()
+    resume = models.FileField(blank=True,null=True)
     linkedin = models.URLField(blank=True)
+    activation_key = models.CharField(max_length=40,blank=True)
+    key_expires = models.DateTimeField(blank=True,null=True)
+    is_verified = models.BooleanField(default=False)
     objects = models.Manager()
 
 
@@ -78,7 +85,6 @@ def create_invitation(sender,instance,created,**kwargs):
 @receiver(post_save,sender=User)
 def create_user_profile(sender,instance,created,**kwargs):
     if created:
-
         try:
          if instance.type == 2:
                 profile  = Profile.objects.create(user=instance,type=2)

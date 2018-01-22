@@ -1,0 +1,22 @@
+{% load crispy_forms_field %}
+
+<div class="form-group ">
+  <label for="id_avatar" class="control-label col-sm-2">
+                {{field.label}}
+            </label>
+        <div class="kv-avatar col-sm-10">
+          {% if field.value  %}
+
+                 <a target="_blank" href="{{ field.value.url }}">{{ field.value.url }}</a>
+
+                  <input  type="checkbox" name="resume_checkbox" id="id_resume_checkbox" />
+                  <label   for="id_checkbox">Remove</label>
+          {% endif %}
+
+
+                <input style="margin-top:25px" type="file" name="resume" />
+
+                <div class="kv-avatar-hint"><small>Select file < 1500 KB</small></div>
+
+        </div>
+    </div>

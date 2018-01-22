@@ -70,5 +70,50 @@
       "status": "True",
       "type" : 1
     }
+  },
+  {
+    "model": "cuser.cuser",
+    "fields" : {
+      "email": "siewml295@gmail.com",
+      "password" : "12345678@"
+    }
+  },
+  {
+    "model": "project.project",
+    "fields" : {
+      "title" : "Project 1",
+      "summary" : "Project 1",
+      "created_by" : 1,
+      "keywords" : [1,2],
+      "deadline" : "2020-09-01",
+      "updated" : "2020-09-01",
+      "timestamp" : "2020-09-01"
+    }
+  },
+  {
+    "model": "project.project",
+    "fields" : {
+      "title" : "Project 2",
+      "summary" : "Project 2",
+      "created_by" : 1,
+      "keywords" : [1,2,3],
+      "deadline" : "2020-09-01",
+      "updated" : "2020-09-01",
+      "timestamp" : "2020-09-01"
+
+
+    }
+  },
+  {
+    "model": "project.project",
+    "fields" : {
+      "title" : "Project 3",
+      "summary" : "Project 3",
+      "created_by" : 1,
+      "keywords" : [2,3],
+      "deadline" : "2020-09-01",
+      "updated" : "2020-09-01",
+      "timestamp" : "2020-09-01"
+    }
   }
 ]

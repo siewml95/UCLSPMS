@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.db.models.signals import pre_save
 from django.utils import timezone
 from .utils import unique_slug_generator
-from django.contrib.auth.models import User
+from cuser.models import CUser as User
 
 # Create your models here.
 
@@ -55,7 +55,7 @@ class Project(models.Model):
     summary = models.TextField(blank=False)
     company = models.CharField(max_length=250,blank=False)
     draft = models.BooleanField(default=False)
-
+    image = models.FileField(blank=True,null=True)
     #publish = models.DateField(auto_now=False,auto_now_add=False)
     updated = models.DateTimeField(auto_now=True,auto_now_add=False)
     timestamp = models.DateTimeField(auto_now=False,auto_now_add=True)

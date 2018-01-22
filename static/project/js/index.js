@@ -227,6 +227,7 @@ function select(text,selectData) {
 
 
 function select3(text) {
+  text = decodeURIComponent(text)
   $.ajax({
     url : '/project/CheckKeywordExists',
     method : 'GET',
@@ -247,81 +248,6 @@ function select3(text) {
     var array = "["
     var temp;
     var keyword = $('#id_keywords')
-    /*keyword.select2({
-      ajax:{
-        "url" : "/project/ajax",
-        type : "GET",
-        delay: 500,
-        closeOnSelect: false,
-        data : function(params) {
-          console.log(params)
-          return {
-            term : params.term,
-            page : params.page || 0,
-            page_limit : 10
-          }
-        },
-        processResults : function(data,page){
-          var more = (page * 10) < data.total;
-          console.log(data.keyword)
-          return {
-            results : $.map(data.keyword,function(item,i){
-              console.log(i)
-              return {
-                text : item.text,
-                id : item.value
-              }
-            }
-          ),
-          more : more
-          }
-        }
-      }
-    })
-    /*
-    var my_list = keyword.val().split(",")
-    my_list = keyword.val().split(",")
-    for(var i = 0;i<my_list.length;i++) {
-       if(my_list[i] !== "") {
-         console.log(my_list[i])
-         temp = my_list[i]
-         array+= '{"text":"' + temp + '","value":"' + temp + '"},'
-       }
-    }
-    array = array.slice(0, -1);
-    if(array.length > 1) {
-      array+="]"
-    }
-
-    keyword.attr("data-initial-value",array)
-     fastSelectInstance = new $.Fastselect(keyword.get(0), {
-      loadOnce: true,
-      userOptionAllowed: true,
-      "url" : "/project/ajax",
-      parseData: function(data) {
-         return data.keyword
-      },
-      onItemSelect : function(self, $item, model, self, fastsearch) {
-        console.log('onItemSelect')
-      },
-      onItemCreate : function() {
-        console.log('onItemCreate')
-      },
-    });
-
-    $.ajax({
-      method : 'GET',
-      url : '/project/ajax/getKeywords/',
-      data : {},
-      success : function(data) {
-        console.log(data)
-        keywords = data.keywords
-      },
-      error : function(err) {
-        keywords = []
-      }
-    })
-   */
 
 
 

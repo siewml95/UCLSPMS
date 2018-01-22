@@ -139,7 +139,7 @@ class ProjectModelForm(forms.ModelForm):
 
     class Meta:
         model = Project
-        fields = ['title','company','summary','keywords','deadline']
+        fields = ['title','company','summary','keywords','deadline','image']
     #keywords = MyField(widget=forms.TextInput,required=False)
     #keywords = MyField(required=False)
     #keywords =  forms.ChoiceField(widget=HeavySelect2Widget(data_url="/project/ajax"))
@@ -155,6 +155,20 @@ class ProjectModelForm(forms.ModelForm):
         )
     )
     #keywords = forms.CharField(required=False)
+    checkbox = forms.BooleanField(required=False)
+
+
+    def save(self,created_by=None):
+        # save both forms
+        project =  super(ProjectModelForm, self).save()
+        project.created_by = created_by
+        print(self.cleaned_data)
+        if self.cleaned_data.get("checkbox"):
+            project.image = None
+        project.save()
+        print("image")
+        print(project.image)
+        return project
 
     def __init__(self,*args,**kwargs):
         super(ProjectModelForm,self).__init__(*args,**kwargs)
@@ -163,14 +177,16 @@ class ProjectModelForm(forms.ModelForm):
         self.helper.form_method = "POST"
         self.helper.form_action = '.'
         self.helper.add_input(Submit('submit','Submit',data_style="expand-right",css_class="ladda-button btn-primary"))
-        self.helper.form_class = 'form-horizontal container'
+        self.helper.form_class = 'form-horizontal container form-file'
         self.helper.label_class ="col-sm-2"
         self.helper.field_class = "col-sm-10"
         self.helper.layout = Layout(
              Field('title',css_class="form-control col-sm-10",label_class = 'hello'),
+             Field('image',template="file.html"),
+             Field('checkbox',template="empty.html"),
              Field('summary',help_text="bitch",rows="6", css_class='input-xlarge'),
              Field('keywords',help_text="",data_tags="true",data_token_separators="[',']",data_minimum_input_length="0",data_delay="300",multiple="multiple",ajax__cache="true"),
-             HTML('<div class="control-label col-sm-2"></div><span class="help-block" display:inline>Grey: approved keywords. Green : users created keywords. Blue : keywords not created yet</span>'),
+             HTML('<div class="form-group"><div class="control-label col-sm-2"></div><span class="help-block" style="color:black; padding-left:10px;" display:inline><p style="color:grey; display:inline;">Grey : </p> Approved keywords. <p style="color:green; display:inline;">Green : </p> Users-created keywords. <p style="color:blue; display:inline;">Blue : </p>Keywords not created yet</span>'),
 
              HTML("<div class='form-group'><div class=' control-label col-sm-2'><p>Recommended:</p></div><div class='recommended </div>'><span></span></div></div>"),
              Field('company',css_class="form-control col-sm-10",label_class = 'hello'),
@@ -196,6 +212,7 @@ class ProjectDetailFilterForm(forms.Form):
         company = forms.CharField(required=False)
         summary = forms.ChoiceField(widget=Select2TagWidgetCustom,required=False)
         keywords = forms.ModelMultipleChoiceField(widget=ModelSelect2TagWidgetCustom(
+                placeholder="Search for Keywords",
                 queryset=Keyword.objects.all(),
                 search_fields=['title__icontains'],
             ), queryset=Keyword.objects.all(), required=False)
@@ -217,13 +234,13 @@ class ProjectDetailFilterForm(forms.Form):
             self.helper.layout = Layout(
                  Div(
                    Div(
-                     'title',
+                      Field('title',placeholder="Type in title..."),
                       template = 'project/panel-content.html',
                       css_id="1",
                       css_class="Title"
                    ),
                    Div(
-                      'company',
+                      Field('company',placeholder="Type in Company..."),
                       template = 'project/panel-content.html',
                       title="Company",
                       css_id="2",
@@ -236,8 +253,8 @@ class ProjectDetailFilterForm(forms.Form):
                      css_class="Summary"
                   ),
                    Div(
-                     Field('keywords',data_tags="false",template = 'project/filter-conditions.html',data_token_separators="[',']",data_minimum_results_for_search="-1",data_minimum_input_length="0",data_delay="300",multiple="multiple",ajax__cache="true"),
-                     HTML('<div class="control-label col-sm-2"></div><span class="help-block" display:inline>Grey: approved keywords. Green : users created keywords. Blue : keywords not created yet</span>'),
+                       Field('keywords',data_tags="false",template = 'project/filter-conditions.html',data_token_separators="[',']",data_minimum_results_for_search="-1",data_minimum_input_length="0",data_delay="300",multiple="multiple",ajax__cache="true"),
+                     HTML('<span class="help-block" style="color:black" display:inline><p style="color:grey; display:inline;">Grey : </p> Approved keywords. <br /><p style="color:green; display:inline;">Green : </p> Users-created keywords. <br /><p style="color:blue; display:inline;">Blue : </p>Keywords not created yet</span>'),
                      template = 'project/panel-content.html',
                      css_id="4",
                      css_class="Keywords"
@@ -267,13 +284,13 @@ class ProjectFilterForm(FormHelper):
         layout = Layout(
              Div(
                Div(
-                 'title',
+                  Field('title',placeholder="Type in title..."),
                   template = 'project/panel-content.html',
                   css_id="1",
-                  css_class="Title"
+                  css_class="Title",
                ),
                Div(
-                  'company',
+                  Field('company',placeholder="Type in Company..."),
                   template = 'project/panel-content.html',
                   title="Company",
                   css_id="2",
@@ -286,14 +303,14 @@ class ProjectFilterForm(FormHelper):
                  css_class="Summary"
               ),
                Div(
-                 Field('keywords',data_tags="false",template = 'project/filter-conditions.html',data_token_separators="[',']",data_minimum_results_for_search="-1",data_minimum_input_length="0",data_delay="300",multiple="multiple",ajax__cache="true"),
-                 HTML('<div class="control-label col-sm-2"></div><span class="help-block" display:inline>Grey: approved keywords. Green : users created keywords. Blue : keywords not created yet</span>'),
+                 Field('keywords',placeholder="Search for keywords",data_tags="false",template = 'project/filter-conditions.html',data_token_separators="[',']",data_minimum_results_for_search="-1",data_minimum_input_length="0",data_delay="300",multiple="multiple",ajax__cache="true"),
+                     HTML('<span class="help-block" style="color:black" display:inline><p style="color:grey; display:inline;">Grey : </p> Approved keywords. <br /><p style="color:green; display:inline;">Green : </p> Users-created keywords. <br /><p style="color:blue; display:inline;">Blue : </p>Keywords not created yet</span>'),
                  template = 'project/panel-content.html',
                  css_id="4",
                  css_class="Keywords"
                ),
                Div(
-                 Field('deadline'),
+                  Field('deadline',placeholder="Type in Deadline"),
                  template = 'project/panel-content.html',
                  css_id="5",
                  css_class="Deadline"

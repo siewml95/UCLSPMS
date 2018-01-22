@@ -22,7 +22,7 @@
               <td class="time col-md-3" data-datetime="{{article.timestamp}}">{{article.timestamp|date:"d M Y"  }}</td>
             </tr>
             {% empty %}
-                <li>No articles yet.</li>
+                <h3 class="no-data">No Projects yet.</h3>
             {% endfor %}
           </tbody>
 
@@ -36,8 +36,6 @@
       </div>
     </div>
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://unpkg.com/compromise@latest/builds/compromise.min.js"></script>
 
     <script src="{% static 'project/js/select2.js'%}"></script>
     <script src="{% static 'project/js/recommendations.js'%}"></script>

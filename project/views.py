@@ -16,7 +16,7 @@ from django.db.models import Q,Count
 from  functools import reduce
 import operator,numbers
 from django.contrib import messages
-from user.views import StudentRequiredMixin,StaffRequiredMixin
+from user.views import StudentRequiredMixin,StaffRequiredMixin,StaffVerifiedRequiredMixin
 
 
 def AjaxGetKeywords(request):
@@ -29,10 +29,9 @@ def AjaxGetDetailRecommendations(request):
         if q_expressions != [] :
          q = Project.objects.filter(reduce(operator.or_, q_expressions)).exclude(pk=project.pk)
          k =  q.values("pk","slug","title").annotate(keyword_count=Count("keywords")).order_by('-keyword_count')[0:5]
-         return JsonResponse({"keywords" : list(k)})
-
+         return JsonResponse({"keywords" : list(k)},status=200)
         else :
-         return JsonResponse({"keywords" : []})
+         return JsonResponse({"keywords" : list(k)},status=200)
 
 
 def ProjectGetKeywords(request):
@@ -72,6 +71,8 @@ class ProjectDetailView(DetailView):
        context["count"] = Interest.objects.filter(project=context["object"].id).count()
        context["modalForm"] = InterestForm()
        context["form"] = ProjectDetailFilterForm()
+       context["strict_id_summary"] = True
+       context["strict_id_keywords"] = True
        return context
 
 class ProjectListView(ListView):
@@ -109,12 +110,13 @@ class ProjectListView(ListView):
             print(self.request.user.is_authenticated())
             return context
 
-class ProjectCreateView(LoginRequiredMixin,StaffRequiredMixin,CreateView):
+class ProjectCreateView(LoginRequiredMixin,StaffVerifiedRequiredMixin,CreateView):
     template_name="project/create.html"
     form_class = ProjectModelForm
     model = Project
     login_url = '/user/login/'
     success_url="/project/"
+    required_url = "/user/profile/"
 
     def form_invalid(self, form):
         response = super(ProjectCreateView, self).form_invalid(form)
@@ -123,15 +125,10 @@ class ProjectCreateView(LoginRequiredMixin,StaffRequiredMixin,CreateView):
     def form_valid(self,form):
          print("good")
          if self.request.user.is_authenticated():
-             print("hello")
-             title = self.request.POST["title"]
-             summary = self.request.POST["summary"]
-             company = self.request.POST["company"]
+             project = form.save(created_by=self.request.user)
              keywords = self.request.POST.getlist("keywords")
-             print(company)
-             #requirements = self.request.POST["keywords_1"]
-             deadline = self.request.POST["deadline"]
-             project = Project.objects.create(title=title,summary=summary,deadline=deadline,created_by=self.request.user,company=company)
+
+             # project = Project.objects.create(title=title,summary=summary,deadline=deadline,created_by=self.request.user,company=company)
              array = []
              for item in keywords:
                  print(item)
@@ -144,19 +141,20 @@ class ProjectCreateView(LoginRequiredMixin,StaffRequiredMixin,CreateView):
              if isinstance(array, list):
                  project.keywords.add(*array)
              project.save()
+             print(project.keywords.all())
              messages.add_message(self.request, messages.SUCCESS, 'Project Created!.')
              return HttpResponseRedirect("/project")
          else:
              return HttpResponseRedirect("/project")
 
 
-class ProjectUpdateView(LoginRequiredMixin,StaffRequiredMixin,UpdateView):
+class ProjectUpdateView(LoginRequiredMixin,StaffVerifiedRequiredMixin,UpdateView):
     template_name="project/create.html"
     form_class = ProjectModelForm
     model = Project
     login_url = '/user/login/'
     success_url = "/user/profile/projects"
-
+    required_url = "/user/profile/"
     #def get(self, request, *args, **kwargs):
     #    return super(ProjectUpdateView, self).get(request, *args, **kwargs)
 
@@ -165,14 +163,11 @@ class ProjectUpdateView(LoginRequiredMixin,StaffRequiredMixin,UpdateView):
          print("update form valid")
          project = Project.objects.get(pk=self.kwargs['pk'])
          if project.created_by == self.request.user:
-             print("hello update view")
-             title = self.request.POST["title"]
-             summary = self.request.POST["summary"]
-             company = self.request.POST["company"]
              keywords = self.request.POST.getlist("keywords")
-             print(keywords)
+             project = form.save(created_by=self.request.user)
+             print('project')
+             print(project.__dict__)
              #requirements = self.request.POST["keywords_1"]
-             deadline = self.request.POST["deadline"]
              array = []
              for item in keywords:
                  print(item)
@@ -184,10 +179,6 @@ class ProjectUpdateView(LoginRequiredMixin,StaffRequiredMixin,UpdateView):
              project.keywords.clear()
              if isinstance(array, list):
                   project.keywords.add(*array)
-             project.title = title
-             project.summary = summary
-             project.company = company
-             project.save(update_fields=['title','summary','company'])
              messages.add_message(self.request, messages.SUCCESS, 'Project Updated!.')
 
              return HttpResponseRedirect("/user/profile/projects")
@@ -198,6 +189,7 @@ class ProjectUpdateView(LoginRequiredMixin,StaffRequiredMixin,UpdateView):
             context = super(ProjectUpdateView, self).get_context_data(**kwargs)
             context["v"] = "update"
             project = get_object_or_404(Project,pk=self.kwargs['pk'])
+
             if self.request.user == project.created_by:
               return context
             else:

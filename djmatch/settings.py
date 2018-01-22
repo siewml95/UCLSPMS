@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'djmatch.finders.MyStaticFilesConfig',
+    'cuser',
     'project',
     'user',
     'uclapi',
@@ -49,7 +50,8 @@ INSTALLED_APPS = [
     'django_filters',
     'django_select2',
     'storages',
-    'pipeline'
+    'pipeline',
+    'social_widgets'
 
 ]
 
@@ -106,7 +108,7 @@ CACHES = {
     }
 }
 
-
+AUTH_USER_MODEL = 'cuser.CUser'
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
