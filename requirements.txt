@@ -26,6 +26,7 @@ jsmin==2.2.2
 nltk==3.2.5
 python-dateutil==2.6.1
 python-dotenv==0.7.1
+pytz==2017.2
 rake-nltk==1.0.1
 rcssmin==1.0.6
 redis==2.10.6
