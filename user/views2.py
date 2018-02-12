@@ -5,7 +5,6 @@ from django.views.generic.edit import CreateView,UpdateView,FormView
 from django.views.generic.detail import DetailView
 from django.views.generic.base import TemplateView
 from django.core.mail import send_mail
-
 from .models import  Interest, Profile,Invitation
 from project.models import Project,Keyword
 from project.forms import ProjectDetailFilterForm
@@ -111,8 +110,8 @@ def sendBug(request):
 def getIndexRecommendations(request):
     if request.user.is_authenticated:
       interests = Interest.objects.filter(user=request.user)
-      preferences = request.user.profile.preferences.all()
-      q_expressions = [[keyword.id for keyword in interest.project.keywords.all()] for interest  in interests]
+      preferences = request.user.profile.preferences.active()
+      q_expressions = [[keyword.id for keyword in interest.project.keywords.active()] for interest  in interests]
       q_list =  set(itertools.chain.from_iterable(q_expressions))
       p_list = set([x.id for x in preferences])
       q_list_exclude = [x for x in q_list if x not in p_list]
@@ -125,11 +124,11 @@ def getIndexRecommendations(request):
         interested = [interest.project.id for interest in interests]
         interested.append(current_project_id)
       if p_expressions != []:
-       p = Project.objects.filter(reduce(operator.or_,p_expressions)).exclude(created_by=request.user).exclude(id__in=interested)
+       p = Project.objects.published().filter(reduce(operator.or_,p_expressions)).exclude(created_by=request.user).exclude(id__in=interested)
       else:
        p = []
       if q_expressions != []:
-        q = Project.objects.filter(reduce(operator.or_,q_expressions)).exclude(created_by=request.user).exclude(id__in=interested)
+        q = Project.objects.published().filter(reduce(operator.or_,q_expressions)).exclude(created_by=request.user).exclude(id__in=interested)
       else:
         q = []
       if p != []:
@@ -175,6 +174,7 @@ class UserResendActivationView(LoginRequiredMixin,FormView):
     template_name = "user/profile/tab.html"
     form_class = UserResendActivationForm
     success_url = "."
+    title = "Resend Activation Link"
 
     def form_valid(self,form):
         profile = self.request.user.profile
@@ -195,14 +195,16 @@ class UserResendActivationView(LoginRequiredMixin,FormView):
     def get_context_data(self,**kwargs):
         context = super(UserResendActivationView, self).get_context_data(**kwargs)
         context["page_name"] = 'resend'
+        context["title"] = self.title
         return context
 
 
 class UserActivationView(TemplateView):
     template_name = "user/activation.html"
-
+    title = "Activating Account"
     def get_context_data(self,**kwargs):
         context = super(UserActivationView, self).get_context_data(**kwargs)
+        context["title"] = self.title
         activation_key = self.kwargs['key']
         activation_expired = False
         already_active = False
@@ -331,7 +333,7 @@ class UserStaffRegisterView(CreateView):
     form_class = CustomUserStaffCreationForm
     model = User
     success_url="/user/profile"
-
+    title = "Register Staff Account"
     def form_valid(self,form):
         obj = form.save(commit=True)
         uuid = self.kwargs['pk']
@@ -349,6 +351,7 @@ class UserStaffRegisterView(CreateView):
         return HttpResponseRedirect("/user/profile")
     def get_context_data(self,**kwargs):
         context = super(UserStaffRegisterView, self).get_context_data(**kwargs)
+        context["title"] = self.title
         uuid = self.kwargs['pk']
         invitation = get_object_or_404(Invitation,id=uuid)
         currenttime = datetime.datetime.now(datetime.timezone.utc)
@@ -360,13 +363,12 @@ class UserStaffRegisterView(CreateView):
             return HttpResponseRedirect('/project')
 
 
-
-
 class UserRegisterView(CreateView):
     template_name="user/register.html"
     form_class = CustomUserCreationForm
     model = User
     success_url="/user/register"
+    title = "Register Student Account"
 
     def form_valid(self,form):
         print("form-valid")
@@ -385,7 +387,7 @@ class UserRegisterView(CreateView):
 
     def get_context_data(self, **kwargs):
           context = super(UserRegisterView, self).get_context_data(**kwargs)
-          print("reload")
+          context["title"] = self.title
           return context
 
 class UserProfileView(LoginRequiredMixin,UpdateView):
@@ -394,15 +396,17 @@ class UserProfileView(LoginRequiredMixin,UpdateView):
     form_class = UserProfileForm
     success_url = "/project/"
     login_url = "/user/login/"
-
+    title = "Profile"
     def get_object(self):
       return self.request.user.profile
     def get_context_data(self, *args,**kwargs):
           context = super(UserProfileView, self).get_context_data(**kwargs)
+          context["title"] = self.title
           print(self.request.user.profile.__dict__)
           print(context)
           context["page_name"] = 'profile'
           return context
+
     def form_valid(self,form):
         print("form_valid")
         obj = super(UserProfileView,self).form_valid(form)
@@ -416,15 +420,20 @@ class UserProfilePasswordView(LoginRequiredMixin,UpdateView):
     model = User
     form_class = UserProfilePasswordForm
     login_url = "/user/login/"
-
+    title = "Password Change"
 
     def get_context_data(self,**kwargs):
           context = super(UserProfilePasswordView, self).get_context_data(**kwargs)
           context["page_name"] = 'password'
+          context["title"] = self.title
           return context
     def get_object(self):
       return self.request.user
 
+    def form_invalid(self,form):
+        print("invalid")
+        print(self.__dict__)
+        print(form.__dict__)
     def form_valid(self,form):
      print("form_valid")
      try:
@@ -448,10 +457,11 @@ class UserProfilePreferenceView(LoginRequiredMixin,StudentRequiredMixin,UpdateVi
     login_url = '/user/login/'
     required_url = '/user/profile/'
     form_class = UserProfilePreferenceForm
-
+    title = "Preferences"
     def get_context_data(self, **kwargs):
           context = super(UserProfilePreferenceView, self).get_context_data(**kwargs)
           context["page_name"] = "preference"
+          context["title"] = self.title
           return context
     def get_object(self):
         return get_user(self.request).profile
@@ -469,9 +479,11 @@ class UserProfilePreferenceView(LoginRequiredMixin,StudentRequiredMixin,UpdateVi
              if item.isdigit():
                array.append(item)
              else :
-               print("creating")
-               keyword = Keyword.objects.create(title=item,type=2)
-               keyword.save()
+               try:
+                 keyword = Keyword.objects.get(title=item)
+               except Keyword.DoesNotExist:
+                 keyword = Keyword.objects.create(title=item,type=2,status=True)
+                 array.append(keyword.pk)
                array.append(keyword.pk)
          if isinstance(array, list):
              user.profile.preferences.clear()
@@ -486,12 +498,14 @@ class UserProfilePreferenceView(LoginRequiredMixin,StudentRequiredMixin,UpdateVi
          return HttpResponseRedirect("/user/profile/preferences/")
      else:
          return HttpResponseRedirect("/user/profile/preferences/")
+
 class UserProfileProjectView(LoginRequiredMixin,StaffRequiredMixin,ListView):
     template_name="user/profile/tab.html"
     model = Project
     login_url = '/user/login/'
     required_url = '/user/profile/'
     paginate_by = '10'
+    title = "Profile - Projects"
 
     def get_queryset(self,**kwargs):
         qs = super(UserProfileProjectView, self).get_queryset()
@@ -500,6 +514,8 @@ class UserProfileProjectView(LoginRequiredMixin,StaffRequiredMixin,ListView):
     def get_context_data(self, **kwargs):
           context = super(UserProfileProjectView, self).get_context_data(**kwargs)
           context["page_name"] = "project"
+          context["title"] = self.title
+          context["today"] = datetime.date.today()
           return context
 
 class UserProfileInterestView(LoginRequiredMixin,StudentRequiredMixin,ListView):
@@ -507,7 +523,7 @@ class UserProfileInterestView(LoginRequiredMixin,StudentRequiredMixin,ListView):
     model = Interest
     login_url = '/user/login/'
     required_url = '/user/profile/'
-
+    title = "Profile - Interests"
     paginate_by = '10'
 
     def get_queryset(self,**kwargs):
@@ -518,6 +534,7 @@ class UserProfileInterestView(LoginRequiredMixin,StudentRequiredMixin,ListView):
     def get_context_data(self, **kwargs):
           context = super(UserProfileInterestView, self).get_context_data(**kwargs)
           context["page_name"] = "interest"
+          context["title"] = self.title
           return context
 
 
@@ -526,7 +543,7 @@ class UserProfileStaffInterestView(LoginRequiredMixin,StaffRequiredMixin,ListVie
     model = Interest
     login_url = '/user/login/'
     required_url = '/user/profile/'
-
+    title = "Profile - Interests By Students"
     paginate_by = '10'
 
     def get_queryset(self,**kwargs):
@@ -536,13 +553,14 @@ class UserProfileStaffInterestView(LoginRequiredMixin,StaffRequiredMixin,ListVie
     def get_context_data(self, **kwargs):
           context = super(UserProfileStaffInterestView, self).get_context_data(**kwargs)
           context["page_name"] = "staff_interest"
+          context["title"] = self.title
           return context
 
 class UserProjectListView(ListView):
     template_name = "user/project-list.html"
     model = Project
     paginate_by = '10'
-
+    title = "Profile - Projects"
     def get_queryset(self,**kwargs):
         projects = Project.objects.filter(created_by=self.kwargs['pk']).order_by("-timestamp")
         return projects
@@ -553,6 +571,7 @@ class UserProjectListView(ListView):
             context["first_name"] = user.first_name
             context["last_name"] = user.last_name
             context["filterForm"] = ProjectDetailFilterForm
+            context["title"] = self.title
             return context
 
 class UserStudentDetailView(LoginRequiredMixin,StaffRequiredMixin,DetailView):

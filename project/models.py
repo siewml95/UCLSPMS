@@ -5,12 +5,13 @@ from django.db.models.signals import pre_save
 from django.utils import timezone
 from .utils import unique_slug_generator
 from cuser.models import CUser as User
-
+import datetime
 # Create your models here.
 
 class ProjectQuerySet(models.QuerySet):
     def published(self):
-        return self.filter(draft=False)
+        #return self.filter(status=2,deadline__lte=datetime.datetime.now())
+        return  self.filter(status=2,deadline__gte=datetime.datetime.now())
 
 class ProjectManager(models.Manager):
     def get_queryset(self):
@@ -21,23 +22,23 @@ class ProjectManager(models.Manager):
 
 
 class KeywordQuerySet(models.QuerySet):
-    def common(self):
-        return self.filter(status=False,type=1)
+    def active(self):
+        return self.filter(status=True)
 
-    def requirement(self):
-        return self.filter(status=False,type=2)
+    def inactive(self):
+        return self.filter(status=False)
 
 
 class KeywordManager(models.Manager):
     def get_queryset(self):
         return KeywordQuerySet(self.model,using=self._db)
 
-    def common(self):
-        return self.get_queryset().common()
+    def active(self):
+        return self.get_queryset().active()
 
-    def requirement(self):
+    def inactive(self):
         print("keyword requirement manager")
-        return self.get_queryset().requirement()
+        return self.get_queryset().inactive()
 
 class Keyword(models.Model):
      title = models.CharField(max_length = 120,unique=True)
@@ -49,12 +50,18 @@ class Keyword(models.Model):
          return self.title
 
 class Project(models.Model):
+    STATUS_CHOICES = (
+            (1, 'Draft'),
+            (2, 'Active'),
+            (3, 'Taken'),
+            (4, 'Completed'),
+    )
     #user = models.ForeignKey(settings.AUTH_USER_MODEL,default=1)
     title = models.CharField(max_length=250,blank=False)
     slug = models.SlugField(unique=True,blank=False)
     summary = models.TextField(blank=False)
     company = models.CharField(max_length=250,blank=False)
-    draft = models.BooleanField(default=False)
+    status = models.IntegerField(choices=STATUS_CHOICES,default=1)
     image = models.FileField(blank=True,null=True)
     #publish = models.DateField(auto_now=False,auto_now_add=False)
     updated = models.DateTimeField(auto_now=True,auto_now_add=False)
@@ -71,6 +78,9 @@ class Project(models.Model):
     def get_absolute_url(self):
         #return reverse("project:detail",kwargs={"slug":self.slug})
         return "/project"
+
+    def status_verbose(self):
+        return dict(Project.STATUS_CHOICES)[self.status]
 
 def pre_save_post_receiver(sender,instance,*args,**kwargs):
     if not instance.slug:

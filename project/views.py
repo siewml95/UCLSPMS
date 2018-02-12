@@ -5,7 +5,7 @@ from django.views.generic.edit import CreateView,UpdateView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .filters import ProjectFilter
-from .forms import ProjectModelForm, ProjectFilterForm,ProjectDetailFilterForm
+from .forms import ProjectModelForm, ProjectFilterForm,ProjectDetailFilterForm,ProjectModelUpdateForm
 from .models import Project,Keyword
 from user.models import Interest
 from user.forms import InterestForm
@@ -14,20 +14,20 @@ from rake_nltk import Rake
 from django.shortcuts import get_object_or_404
 from django.db.models import Q,Count
 from  functools import reduce
-import operator,numbers
+import operator,numbers,datetime
 from django.contrib import messages
 from user.views import StudentRequiredMixin,StaffRequiredMixin,StaffVerifiedRequiredMixin
 
 
 def AjaxGetKeywords(request):
-    keywords = list(Keyword.objects.order_by('title').values_list('title', flat=True).filter(type=1))
+    keywords = list(Keyword.objects.order_by('title').values_list('title', flat=True).filter(type=1,status=True))
     return JsonResponse({"keywords" : keywords })
 
 def AjaxGetDetailRecommendations(request):
         project = Project.objects.get(pk=request.GET["id"])
-        q_expressions = [Q(keywords=keyword.id) for keyword in project.keywords.all()]
+        q_expressions = [Q(keywords=keyword.id) for keyword in project.keywords.active()]
         if q_expressions != [] :
-         q = Project.objects.filter(reduce(operator.or_, q_expressions)).exclude(pk=project.pk)
+         q = Project.objects.published().filter(reduce(operator.or_, q_expressions)).exclude(pk=project.pk)
          k =  q.values("pk","slug","title").annotate(keyword_count=Count("keywords")).order_by('-keyword_count')[0:5]
          return JsonResponse({"keywords" : list(k)},status=200)
         else :
@@ -35,7 +35,7 @@ def AjaxGetDetailRecommendations(request):
 
 
 def ProjectGetKeywords(request):
-    keyword = Keyword.objects.order_by('title').values_list('title', flat=True).filter(type=1)
+    keyword = Keyword.objects.active().order_by('title').values_list('title', flat=True).filter(type=1)
     keyword = list(keyword)
     keyword2 = []
     for item in keyword:
@@ -44,7 +44,7 @@ def ProjectGetKeywords(request):
 
 
 def ProjectGetRequirements(request):
-    keyword = Keyword.objects.order_by('title').values_list('title', flat=True).filter(type=2)
+    keyword = Keyword.objects.active().order_by('title').values_list('title', flat=True).filter(type=2)
     keyword = list(keyword)
     keyword2 = []
     for item in keyword:
@@ -57,13 +57,27 @@ def CheckKeywordExists(request):
     except Keyword.DoesNotExist:
         return JsonResponse({'exists' : False})
     print(keyword.__dict__)
-    return JsonResponse({'exists' : True, 'id' : keyword.id, 'type' :keyword.type})
+    if keyword.status == True:
+       return JsonResponse({'exists' : True, "active" : True,'id' : keyword.id, 'type' :keyword.type})
+    else:
+       return JsonResponse({'exists' : True, "active": False,'id' : keyword.id, 'type' :keyword.type})
 
 
 class ProjectDetailView(DetailView):
     model = Project
     template_name="project/detail.html"
     form_class = ProjectDetailFilterForm
+
+
+    def get(self, request, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+        except:
+            return HttpResponseRedirect("/")
+        context = self.get_context_data(object=self.object)
+        if context["object"].status == 1:
+            return HttpResponseRedirect("/")
+        return self.render_to_response(context)
 
     def get_context_data(self,**kwargs):
        context = super(ProjectDetailView, self).get_context_data(**kwargs)
@@ -73,7 +87,10 @@ class ProjectDetailView(DetailView):
        context["form"] = ProjectDetailFilterForm()
        context["strict_id_summary"] = True
        context["strict_id_keywords"] = True
+       context["deadline_not_passed"] = context["object"].deadline >= datetime.date.today()
+       context["title"] = context["object"].title
        return context
+
 
 class ProjectListView(ListView):
     model = Project
@@ -84,6 +101,13 @@ class ProjectListView(ListView):
 
     def get_queryset(self, **kwargs):
             qs = super(ProjectListView, self).get_queryset()
+            print(self.request.GET)
+            print(self.request.GET.getlist("status"))
+            if self.request.GET.getlist("status") == []:
+                print("qs")
+                print(qs)
+                qs = qs.published()
+                print(qs)
             self.filter = self.filter_class(self.request.GET, queryset=qs)
             self.filter.form.helper = self.formhelper_class()
             print(self.filter.qs)
@@ -108,6 +132,7 @@ class ProjectListView(ListView):
                 del queries_without_page['page']
             context['queries'] = queries_without_page
             print(self.request.user.is_authenticated())
+            context["title"] = "Home"
             return context
 
 class ProjectCreateView(LoginRequiredMixin,StaffVerifiedRequiredMixin,CreateView):
@@ -117,11 +142,19 @@ class ProjectCreateView(LoginRequiredMixin,StaffVerifiedRequiredMixin,CreateView
     login_url = '/user/login/'
     success_url="/project/"
     required_url = "/user/profile/"
+    title = "Create Project"
+
+    def get_context_data(self, **kwargs):
+        context = super(ProjectCreateView, self).get_context_data(**kwargs)
+        context["title"] = self.title
+        return context
 
     def form_invalid(self, form):
         response = super(ProjectCreateView, self).form_invalid(form)
         print("bad")
         return response
+
+
     def form_valid(self,form):
          print("good")
          if self.request.user.is_authenticated():
@@ -135,9 +168,11 @@ class ProjectCreateView(LoginRequiredMixin,StaffVerifiedRequiredMixin,CreateView
                  if item.isdigit():
                    array.append(item)
                  else :
-                   print("creating")
-                   keyword = Keyword.objects.create(title=item,type=2)
-                   array.append(keyword.pk)
+                   try:
+                     keyword = Keyword.objects.get(title=item)
+                   except Keyword.DoesNotExist:
+                     keyword = Keyword.objects.create(title=item,type=2,status=True)
+                     array.append(keyword.pk)
              if isinstance(array, list):
                  project.keywords.add(*array)
              project.save()
@@ -150,14 +185,19 @@ class ProjectCreateView(LoginRequiredMixin,StaffVerifiedRequiredMixin,CreateView
 
 class ProjectUpdateView(LoginRequiredMixin,StaffVerifiedRequiredMixin,UpdateView):
     template_name="project/create.html"
-    form_class = ProjectModelForm
+    form_class = ProjectModelUpdateForm
     model = Project
     login_url = '/user/login/'
     success_url = "/user/profile/projects"
     required_url = "/user/profile/"
     #def get(self, request, *args, **kwargs):
     #    return super(ProjectUpdateView, self).get(request, *args, **kwargs)
+    title = "Update Project"
 
+    def get_context_data(self, **kwargs):
+        context = super(ProjectUpdateView, self).get_context_data(**kwargs)
+        context["title"] = self.title
+        return context
 
     def form_valid(self,form):
          print("update form valid")
@@ -174,8 +214,11 @@ class ProjectUpdateView(LoginRequiredMixin,StaffVerifiedRequiredMixin,UpdateView
                  if item.isdigit():
                    array.append(item)
                  else :
-                   keyword = Keyword.objects.create(title=item,type=2)
-                   array.append(keyword.pk)
+                   try:
+                     keyword = Keyword.objects.get(title=item)
+                   except Keyword.DoesNotExist:
+                     keyword = Keyword.objects.create(title=item,type=2,status=True)
+                     array.append(keyword.pk)
              project.keywords.clear()
              if isinstance(array, list):
                   project.keywords.add(*array)

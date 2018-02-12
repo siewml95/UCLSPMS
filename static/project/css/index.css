@@ -257,3 +257,10 @@ table {
 .help-block {
   text-align:left;
 }
+.fb-share-button.fb_iframe_widget {
+  top:-5px;
+}
+
+#id_project_form #id_status {
+  max-width: 100px !important;
+}

@@ -1,5 +1,4 @@
-import django_filters
-import ast
+import django_filters,ast,datetime
 from .models import Project,Keyword
 from .forms import ProjectFilterForm
 from itertools import chain
@@ -132,6 +131,12 @@ class ProjectFilter(django_filters.FilterSet):
         model = Project
         fields = ['deadline']
 
+    STATUS_CHOICES = (
+        (2, 'Active'),
+        (3, 'Taken'),
+        (4, 'Completed'),
+        (5, 'Deadline Passed')
+    )
 
     title = django_filters.CharFilter(method="title_contains")
     company = django_filters.CharFilter(method="title_contains")
@@ -148,6 +153,8 @@ class ProjectFilter(django_filters.FilterSet):
         widget=forms.TextInput(
             attrs={'type': 'date'}
     ),method="deadline_filter")
+
+    status = django_filters.MultipleChoiceFilter(method="status_filter",choices=STATUS_CHOICES,widget=forms.CheckboxSelectMultiple)
 
 
     def title_contains(self,queryset,name,value):
@@ -179,6 +186,18 @@ class ProjectFilter(django_filters.FilterSet):
 
     def deadline_filter(self,queryset,name,value):
         return queryset.filter(deadline__lte=value)
+
+    def status_filter(self,queryset,name,value):
+        print("status_filter")
+        for index,x in enumerate(value):
+            if x == '1' or x == 1:
+                del value[index]
+            elif x == '5' or x == 5:
+                del value[index]
+                print("x == 5")
+                queryset = queryset.filter(deadline__lte=datetime.datetime.now())
+        return queryset.filter(status__in=value)
+
 
     def keywords_filter(self, queryset, name, value):
         print("keywords_filter")

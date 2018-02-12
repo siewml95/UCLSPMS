@@ -1,116 +1,11 @@
 from django.test import TestCase, RequestFactory
 import json
-
 # Create your tests here.
-from .forms import ProjectModelForm,ProjectFilterForm
-from .views import ProjectUpdateView,ProjectCreateView
+from ..views import ProjectUpdateView,ProjectCreateView
 import datetime
-from .models import Keyword,Project
+from ..models import Keyword,Project
 from user.models import Interest
 from cuser.models import CUser as User
-
-class KeywordModelTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        Keyword.objects.create(title="Test Keyword",type=1,status=True)
-
-    def test_title_label(self):
-        keyword = Keyword.objects.get(id=1)
-        field_label = keyword._meta.get_field('title').verbose_name
-        self.assertEquals(field_label,'title')
-
-    def test_type_label(self):
-        keyword = Keyword.objects.get(id=1)
-        field_label = keyword._meta.get_field('type').verbose_name
-        self.assertEquals(field_label,'type')
-
-    def test_status_label(self):
-        keyword = Keyword.objects.get(id=1)
-        field_label = keyword._meta.get_field('status').verbose_name
-        self.assertEquals(field_label,'status')
-
-
-class ProjectModelTest(TestCase):
-
-    @classmethod
-    def setUpTestData(cls):
-        user = User.objects.create_user(email="siewml9512223@gmail.")
-        Project.objects.create(title="Test Project",summary="testing project",slug="test-project",company="UCL",created_by=user,deadline=datetime.datetime.now())
-
-    def test_title_label(self):
-        project = Project.objects.get(id=1)
-        field_label = project._meta.get_field('title').verbose_name
-        self.assertEquals(field_label,'title')
-
-    def test_summary_label(self):
-        project = Project.objects.get(id=1)
-        field_label = project._meta.get_field('title').verbose_name
-        self.assertEquals(field_label,'title')
-
-    def test_slug_label(self):
-        project = Project.objects.get(id=1)
-        field_label = project._meta.get_field('slug').verbose_name
-        self.assertEquals(field_label,'slug')
-
-
-    def test_company_label(self):
-        project = Project.objects.get(id=1)
-        field_label = project._meta.get_field('company').verbose_name
-        self.assertEquals(field_label,'company')
-
-    def test_created_by_label(self):
-        project = Project.objects.get(id=1)
-        field_label = project._meta.get_field('created_by').verbose_name
-        self.assertEquals(field_label,'created by')
-
-    def test_updated_label(self):
-        project = Project.objects.get(id=1)
-        field_label = project._meta.get_field('updated').verbose_name
-        self.assertEquals(field_label,'updated')
-
-    def test_timestamp_label(self):
-        project = Project.objects.get(id=1)
-        field_label = project._meta.get_field('deadline').verbose_name
-        self.assertEquals(field_label,'deadline')
-
-    def test_keywords_label(self):
-        project = Project.objects.get(id=1)
-        field_label = project._meta.get_field('keywords').verbose_name
-        self.assertEquals(field_label,'keywords')
-
-    def test_title_max_length(self):
-        project = Project.objects.get(id=1)
-        max_length = project._meta.get_field('title').max_length
-        self.assertEquals(max_length,250)
-
-
-
-class ProjectModelFormTest(TestCase):
-
-
-    @classmethod
-    def setUpTestData(cls):
-        user = User.objects.create_user(email="siewml9512223@gmail.")
-    def test_title_required(self):
-        user = User.objects.get(id=1)
-
-        form = ProjectModelForm(data={'summary':"test summary","slug":"test-summary","company":"UCL","created_by":user,"deadline":datetime.datetime.now()})
-        self.assertEquals(form.is_valid(),False)
-
-    def test_summary_required(self):
-        user = User.objects.get(id=1)
-        form = ProjectModelForm(data={'title':'test',"slug":"test-summary","company":"UCL","created_by":user,"deadline":datetime.datetime.now()})
-        self.assertEquals(form.is_valid(),False)
-
-    def test_company_required(self):
-        user = User.objects.get(id=1)
-        form = ProjectModelForm(data={'title':'test','summary':"test summary","slug":"test-summary","created_by":user,"deadline":datetime.datetime.now()})
-        self.assertEquals(form.is_valid(),False)
-
-    def test_deadline_required(self):
-        user = User.objects.get(id=1)
-        form = ProjectModelForm(data={'title':'test','summary':"test summary","slug":"test-summary","created_by":user,"company":"UCL"})
-        self.assertEquals(form.is_valid(),False)
 
 
 

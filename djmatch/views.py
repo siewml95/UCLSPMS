@@ -2,14 +2,15 @@ from django_select2.views import AutoResponseView
 from django.http import JsonResponse
 import boto3
 from django.conf import settings
+from django.views.generic import TemplateView
 
 class NewView(AutoResponseView):
     def get(self, request, *args, **kwargs):
         self.widget = self.get_widget_or_404()
         self.term = kwargs.get('term', request.GET.get('term', ''))
-        self.object_list = self.get_queryset()
+        self.object_list = self.get_queryset().active()
         context = self.get_context_data()
-        return JsonResponse({
+        x = {
             'results': [
                 {
                     'text': self.widget.label_from_instance(obj),
@@ -19,7 +20,9 @@ class NewView(AutoResponseView):
                 for obj in context['object_list']
                 ],
             'more': context['page_obj'].has_next()
-        })
+        }
+        print(x)
+        return JsonResponse(x)
 
 
 def sign_s3(request):

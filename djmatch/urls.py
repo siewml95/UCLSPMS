@@ -24,6 +24,8 @@ from django.conf import settings
 
 from .views import NewView,sign_s3
 from project.views import ProjectListView
+
+from django_nose_qunit.views import test_index,run_qunit_tests
 urlpatterns = [
     url(r'^$', ProjectListView.as_view(),name="index"),
     url(r'^admin/', admin.site.urls),
@@ -33,5 +35,7 @@ urlpatterns = [
     url(r'^uclapi/', include('uclapi.urls',namespace="uclapi")),
     url(r"^select2/fields/auto.json$",
         NewView.as_view(), name="django_select2-json"),
+    url(r'^qunit/$', test_index,name= 'django-nose-qunit-list'),
+    url(r'^qunit/test/$', run_qunit_tests, name='django-nose-qunit-test')
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

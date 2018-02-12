@@ -7,21 +7,26 @@
   <div class="container">
     <div class="col-md-8 pj-detail">
       <h1 class="col-md-12 pj-detail-h1">{{ object.title }}</h1>
-
+      {% if object.status == 2 and  deadline_not_passed %}
       <button type="button" style="z-index:1;position:absolute;right:0;top:20px;" id="modalBtn" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Send Interest {{count}}</button>
+      {% endif %}
 
       <div class="col-md-4">
       {% if object.image %}
         <a href="{{object.image.url}}" target="_blank">
-          <img src="{{object.image.url}}" height="250" width="200"/>
-
+          <img src="{{object.image.url}}"  height="250" width="200"/>
         </a>
       {% else %}
       <img src="/image/ff.jpg" height="250" width="200"/>
       {% endif %}
-
+      <h4 class="pj-detail-h4">Status</h4>
+      {% if not deadline_not_passed and object.status == 2%}
+      <p>Deadline Passed</p>
+      {% else %}
+      <p>{{object.status_verbose}}</p>
+      {% endif %}
       <h4 class="pj-detail-h4">Keywords</h4>
-      {% for keyword in object.keywords.all%} {{keyword.title}} {% endfor %}
+      {% for keyword in object.keywords.active%} {{keyword.title}} {% endfor %}
       <h4 class="pj-detail-h4">Publisher</h4>
       <a href="{% url 'user:single' object.created_by.id %}">{{object.created_by.first_name}} {{object.created_by.first_name}}</a>
 
@@ -29,14 +34,15 @@
       <p>{{object.deadline}}</p>
       <h4 class="pj-detail-h4">Company</h4>
       <p>{{object.company}}</p>
-      <h4 class="pj-detail-h4">Social Meida</h4>
-      {% social_widget_render "facebook/share_button.html" href="" %}
-      {% social_widget_render "twitter/share_button.html" href=""  %}
-      {% social_widget_render "google/plus_share_button.html" href="" %}
+
 
       <div id="project-recommendations" class="project-recommendations">
         <h4 class="pj-detail-h4">Recommendations</h4>
       </div>
+      <h4 class="pj-detail-h4">Share this project</h4>
+      {% social_widget_render "facebook/share_button.html" href="" %}
+      {% social_widget_render "twitter/share_button.html" href=""  %}
+      {% social_widget_render "google/plus_share_button.html" href="" %}
     </div>
     <div class="col-md-8">
 

@@ -51,7 +51,9 @@ INSTALLED_APPS = [
     'django_select2',
     'storages',
     'pipeline',
-    'social_widgets'
+    'social_widgets',
+    'django_nose_qunit',
+    'django_cron'
 
 ]
 
@@ -96,6 +98,20 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+'''
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'djmatch',
+        'USER': 'djmatch',
+        'PASSWORD': 'Qazwsx12@',
+        'HOST': '127.0.0.1',
+    }
+}
+'''
+
 SELECT2_CSS = 'project/css/select2.css'
 SELECT2_JS = 'project/js/select2ff.js'
 
@@ -154,7 +170,14 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+NOSE_PLUGINS = [
+    'django_nose_qunit.QUnitPlugin'
+]
+NOSE_ARGS = [
+    '--with-django-qunit',
+    '--nologcapture'
+]
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
@@ -238,3 +261,8 @@ STATICFILES_FINDERS = (
     'pipeline.finders.PipelineFinder',
 )
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/build')
+
+CRON_CLASSES = [
+    "djmatch.cron.MyCronJob",
+    # ...
+]

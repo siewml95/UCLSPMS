@@ -1,6 +1,8 @@
-    <table class="table table-bordered table-sm table-striped">
+    <table id="table" class="table table-bordered table-sm table-striped">
                   <thead style="color:white" class="table-color thead-inverse">
                     <tr>
+                      <th class="col-md-1">Status</th>
+
                       <th class="col-md-6">Name</th>
                       <th class="col-md-2">Posted At</th>
                     </tr>
@@ -10,7 +12,12 @@
 
                     {% for article in object_list %}
                     <tr>
-                      <td class="col-md-6"><a href="{% url 'project:update' article.id %}">{{article.title}}</a></td>
+                      {% if article.status == 2 and article.deadline < today %}
+                      <td class="col-md-2">Deadline Passed</td>
+                      {% else %}
+                      <td class="col-md-2">{{article.status_verbose}}</td>
+                      {% endif %}
+                      <td class="col-md-5"><a href="{% url 'project:update' article.id %}">{{article.title}}</a></td>
                       <td class="time col-md-3" data-datetime="{{article.timestamp}}">{{article.timestamp}}</td>
                     </tr>
                     {% empty %}

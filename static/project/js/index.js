@@ -17,9 +17,7 @@ function insertKeyword(text) {
 function common(text) {
    var str = []
    for(var i = 0;i<keywords.length;i++) {
-     console.log(i)
      for(var j = 0;j<text.length;j++) {
-       console.log(j)
        const temp = keywords[i]
        console.log(text[j] + " " + temp)
        if(text[j].indexOf(temp) > -1) {
@@ -28,23 +26,10 @@ function common(text) {
        }
      }
    }
-
-
-   console.log(str)
-
    return str
-
 }
+
 function extract(text) {
-  /*
-  const opts = {stopwords: stopword};
-  console.log(opts)
-  var str = rake.generate(text,opts)
-  recommended = str
-  console.log(str)
-
-  return str */
-
 
   var str = []
   var temp = []
@@ -233,8 +218,11 @@ function select3(text) {
     method : 'GET',
     data : {keyword : text},
     success : function(data)  {
-       console.log(data)
-       select(text,data)
+       if(data.exists && !data.active){
+
+       }else {
+         select(text,data)
+       }
     },
     error : function() {
 

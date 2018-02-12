@@ -136,10 +136,13 @@ class MyField(forms.CharField):
 
 
 class ProjectModelForm(forms.ModelForm):
-
+    STATUS_CHOICES = (
+                (1, 'Draft'),
+                (2, 'Active'),
+    )
     class Meta:
         model = Project
-        fields = ['title','company','summary','keywords','deadline','image']
+        fields = ['title','company','summary','keywords','deadline','image','status']
     #keywords = MyField(widget=forms.TextInput,required=False)
     #keywords = MyField(required=False)
     #keywords =  forms.ChoiceField(widget=HeavySelect2Widget(data_url="/project/ajax"))
@@ -154,6 +157,7 @@ class ProjectModelForm(forms.ModelForm):
             attrs={'type': 'date'}
         )
     )
+    status = forms.ChoiceField(choices=STATUS_CHOICES)
     #keywords = forms.CharField(required=False)
     checkbox = forms.BooleanField(required=False)
 
@@ -173,7 +177,7 @@ class ProjectModelForm(forms.ModelForm):
     def __init__(self,*args,**kwargs):
         super(ProjectModelForm,self).__init__(*args,**kwargs)
         self.helper = FormHelper(self)
-        self.helper.form_id = "id-personal"
+        self.helper.form_id = "id_project_form"
         self.helper.form_method = "POST"
         self.helper.form_action = '.'
         self.helper.add_input(Submit('submit','Submit',data_style="expand-right",css_class="ladda-button btn-primary"))
@@ -190,9 +194,19 @@ class ProjectModelForm(forms.ModelForm):
 
              HTML("<div class='form-group'><div class=' control-label col-sm-2'><p>Recommended:</p></div><div class='recommended </div>'><span></span></div></div>"),
              Field('company',css_class="form-control col-sm-10",label_class = 'hello'),
-             Field('deadline')
+             Field('deadline'),
+             Field('status')
         )
         #print(self.helper)
+
+class ProjectModelUpdateForm(ProjectModelForm):
+    STATUS_CHOICES = (
+                (1, 'Draft'),
+                (2, 'Active'),
+                (3, 'Taken'),
+                (4, 'Completed'),
+    )
+    status = forms.ChoiceField(choices=STATUS_CHOICES)
 
 class Select2TagWidgetCustom(Select2TagWidget):
             def value_from_datadict(self, data, files, name):
@@ -223,6 +237,15 @@ class ProjectDetailFilterForm(forms.Form):
                     attrs={'type': 'date'}
                 )
             )
+        STATUS_CHOICES = (
+            (2, 'Active'),
+            (3, 'Taken'),
+            (4, 'Completed'),
+            (5, 'Deadline Passed')
+        )
+
+        status = forms.MultipleChoiceField(choices=STATUS_CHOICES, widget=forms.CheckboxSelectMultiple)
+
         def __init__(self,*args,**kwargs):
             super(ProjectDetailFilterForm,self).__init__(*args,**kwargs)
             self.helper = FormHelper(self)
@@ -265,16 +288,29 @@ class ProjectDetailFilterForm(forms.Form):
                      css_id="5",
                      css_class="Deadline"
                    ),
+                   Div(
+                     Field('status'),
+                     template = 'project/panel-content.html',
+                     css_id="5",
+                     css_class="Status"
+                   ),
                     template = 'project/panel.html'
-
-
                  ),
 
                 Submit('submit', 'Submit'),
                 Button('reset', 'Reset'),
 
             )
+
+
 class ProjectFilterForm(FormHelper):
+
+        STATUS_CHOICES = (
+                (2, 'Active'),
+                (3, 'Taken'),
+                (4, 'Completed'),
+                (5, 'Deadline Passed')
+            )
 
         form_id = "id-personal"
         form_method = "GET"
@@ -315,6 +351,12 @@ class ProjectFilterForm(FormHelper):
                  css_id="5",
                  css_class="Deadline"
                ),
+               Div(
+                     Field('status'),
+                     template = 'project/panel-content.html',
+                     css_id="6",
+                     css_class="Status"
+                   ),
                 template = 'project/panel.html'
 
 

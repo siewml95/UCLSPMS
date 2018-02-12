@@ -1,6 +1,8 @@
 from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.contrib.auth import login as auth_login
+from django.http import HttpResponseRedirect, HttpResponse,JsonResponse
 from cuser.forms import AuthenticationForm
 
 from .forms import PasswordResetForm,SetPasswordForm,AuthenticationForm
@@ -21,9 +23,19 @@ from .views import (
                     UserStudentDetailView,
                     UserResendActivationView,
                    )
+
+class CustomLoginView(auth_views.LoginView):
+     def form_valid(self, form):
+        """Security check complete. Log the user in."""
+        print("CustomLoginView xxxxxxxxxxxxxxxxxxxxxxxx form_valid")
+        auth_login(self.request, form.get_user())
+        return HttpResponseRedirect(self.get_success_url())
+     def form_invalid(self,form):
+        print("CustomLoginView xxxxxxxxxxxxxxxxxxxxxxxx form_invalid")
+        return super(CustomLoginView, self).form_invalid(form)
 urlpatterns = [
    url(r'^register/$', UserRegisterView.as_view()),
-   url(r'^login/$', auth_views.LoginView.as_view(authentication_form=AuthenticationForm, template_name='user/login.html'),name='login'),
+   url(r'^login/$', CustomLoginView.as_view(authentication_form=AuthenticationForm, template_name='user/login.html'),name='login'),
    url(r'^logout/$', auth_views.logout, {'next_page': '/project'}, name='logout'),
    url(r'^password_reset/$',auth_views.PasswordResetView.as_view(form_class=PasswordResetForm,success_url = "/user/password_reset/done/"), name='password_reset'),
    url(r'^password_reset/done/$', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),

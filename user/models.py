@@ -61,7 +61,7 @@ class Profile(models.Model):
     type = models.IntegerField(default=1)
     birth_date = models.DateField(null=True, blank=True)
     preferences = models.ManyToManyField(Keyword)
-    avatar = models.FileField()
+    avatar = models.FileField(blank=True, null=True)
     resume = models.FileField(blank=True,null=True)
     linkedin = models.URLField(blank=True)
     activation_key = models.CharField(max_length=40,blank=True)
@@ -69,6 +69,9 @@ class Profile(models.Model):
     is_verified = models.BooleanField(default=False)
     objects = models.Manager()
 
+class Subscription(models.Model):
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
+    is_active = models.BooleanField(default=False)
 
 
 @receiver(post_save,sender=Invitation)
