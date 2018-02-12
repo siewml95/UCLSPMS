@@ -16,7 +16,6 @@ django-filter==1.0.4
 django-nose==1.4.5
 django-nose-qunit==1.6.1
 django-pipeline==1.6.13
-django-pyodbc-azure==1.11.0.0
 django-redis==4.8.0
 django-registration-redux==1.4
 Django-Select2==5.11.1
