@@ -16,6 +16,7 @@ import itertools , operator, datetime,random,string
 from  functools import reduce
 from django.contrib import messages
 from cuser.models import CUser as User
+from django.contrib.auth import login, authenticate,get_user,update_session_auth_hash
 
 class UserResendActivationView(LoginRequiredMixin,FormView):
     template_name = "user/profile/tab.html"
