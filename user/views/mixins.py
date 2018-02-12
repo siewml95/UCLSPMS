@@ -1,16 +1,6 @@
 from django.contrib.auth.mixins import  UserPassesTestMixin
 from django.core.exceptions import ImproperlyConfigured, PermissionDenied
-from django.core.mail import send_mail
-from .models import  Interest, Profile,Invitation
-from project.models import Project,Keyword
-from project.forms import ProjectDetailFilterForm
-from .forms import AuthenticationForm,PasswordResetForm,SetPasswordForm,UserResendActivationForm,CustomUserCreationForm, UserProfileForm ,UserProfilePasswordForm,InterestForm,UserProfilePreferenceForm, CustomUserStaffCreationForm, BugForm
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.db.models import Q,Count
-import itertools , operator, datetime,random,string
-from  functools import reduce
-from django.contrib import messages
-from cuser.models import CUser as User
+
 class UserPassesTestMixinCustom(UserPassesTestMixin):
 
     required_url = None
