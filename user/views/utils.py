@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse,JsonResponse
 from django.core.mail import send_mail
-from .models import  Interest, Profile,Invitation
+from ..models import  Interest, Profile,Invitation
 from project.models import Project,Keyword
 from django.db.models import Q,Count
 import itertools , operator
