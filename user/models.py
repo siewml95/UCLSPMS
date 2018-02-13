@@ -5,10 +5,11 @@ from project.models import Project,Keyword
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 import uuid
-from django.core.mail import send_mail
+from django.core.mail import send_mail,EmailMultiAlternatives
 from django.utils.translation import ugettext_lazy as _
 from cuser.models import CUser as User
-
+from django.conf import settings
+from django.template import loader
 
 class InterestQuerySet(models.QuerySet):
     def active(self):
@@ -77,12 +78,23 @@ class Subscription(models.Model):
 @receiver(post_save,sender=Invitation)
 def create_invitation(sender,instance,created,**kwargs):
   if created:
-    subject = "You have received a notificaion from {}.".format("Notice Project")
-    message = "Dear Sir/Madam\n This is the link to create a staff account\n\n Link: localhost:8000/user/invitation/{}\n".format(instance.id)
-    from_email = 'contact.dataspartan@gmail.com'
-    to_email = [instance.email]
-    send_mail(subject,message,from_email,to_email,fail_silently=False)
+        html_message = loader.render_to_string(
+            'user/activation_email.html',
+            {
+                'message': 'Dear Sir/Madam\n This is the link to create a staff account',
+                'link' : "{}/user/invitation/{}".format(settings.SITE_URL,instance.id),
+            }
+        )
+        text_content = 'Text'
 
+
+        subject = "You have received a notificaion from {}.".format("Notice Project")
+        from_email = 'contact.dataspartan@gmail.com'
+        to_email = [instance.email]
+        #send_mail(subject,'message',from_email,to_email,fail_silently=False)
+        msg = EmailMultiAlternatives(subject, text_content, from_email, to_email)
+        msg.attach_alternative(html_message, "text/html")
+        msg.send()
 
 
 @receiver(post_save,sender=User)

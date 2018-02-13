@@ -1,6 +1,9 @@
 from django.contrib.auth.mixins import  UserPassesTestMixin
 from django.core.exceptions import ImproperlyConfigured, PermissionDenied
-
+from django.contrib import messages
+from django.contrib.auth.views import redirect_to_login
+from django.contrib.auth import views as auth_views
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 class UserPassesTestMixinCustom(UserPassesTestMixin):
 
     required_url = None

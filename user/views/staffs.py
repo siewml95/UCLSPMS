@@ -16,6 +16,8 @@ import itertools , operator, datetime,random,string
 from  functools import reduce
 from django.contrib import messages
 from cuser.models import CUser as User
+from django.contrib.auth import login, authenticate,get_user,update_session_auth_hash
+from django.contrib import messages
 
 class UserStaffRegisterView(CreateView):
     template_name = "user/register.html"

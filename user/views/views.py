@@ -1,4 +1,5 @@
 from .mixins import *
+from .utils import sendActivationEmail
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse,JsonResponse
 from django.views.generic.list import ListView
@@ -34,6 +35,7 @@ class UserResendActivationView(LoginRequiredMixin,FormView):
              profile.key_expires = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=24)
              profile.save()
              messages.add_message(self.request, messages.SUCCESS, 'Resend Activation Email')
+             activation_key = self.request.get_host() + "/user/activation/" + activation_key
              sendActivationEmail(activation_key,email_target)
              return HttpResponseRedirect(".")
         else:
@@ -92,7 +94,8 @@ class UserRegisterView(CreateView):
         print(user.__dict__)
         login(self.request, user)
         print(self.request.user.is_authenticated())
-        sendActivationEmail(obj.profile.activation_key,obj.email)
+        activation_key = self.request.get_host() + "/user/activation/" + obj.profile.activation_key
+        sendActivationEmail(activation_key,obj.email)
         messages.add_message(self.request, messages.SUCCESS, 'Account Created!. Please verify email')
         return HttpResponseRedirect("/user/profile")
 

@@ -20,6 +20,8 @@ load_dotenv(dotenv_path)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+
+SITE_URL = "djmatch.herokuapp.com"
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
@@ -91,16 +93,15 @@ WSGI_APPLICATION = 'djmatch.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-}
+}'''
 
 '''
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -111,7 +112,18 @@ DATABASES = {
     }
 }
 '''
-
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'heroku_89c0b34174e3d16',
+        'USER': 'b78e5634f17644',
+        'PASSWORD': '7a57fde5',
+        'HOST': 'us-cdbr-iron-east-05.cleardb.net',
+        'OPTIONS': {
+            'sql_mode': 'traditional',
+        }
+    }
+}
 SELECT2_CSS = 'project/css/select2.css'
 SELECT2_JS = 'project/js/select2ff.js'
 

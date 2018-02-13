@@ -1,12 +1,12 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse,JsonResponse
-from django.core.mail import send_mail
+from django.core.mail import send_mail,EmailMultiAlternatives
 from ..models import  Interest, Profile,Invitation
 from project.models import Project,Keyword
 from django.db.models import Q,Count
 import itertools , operator
 from  functools import reduce
-
+from django.template import loader
 
 def sendInterest(request):
     if request.user.is_authenticated and request.GET["id"]:
@@ -151,8 +151,20 @@ def getIndexRecommendations(request):
       return JsonResponse({"recommendations": []})
 
 def sendActivationEmail(activation_key,email_target):
+        html_message = loader.render_to_string(
+            'user/activation_email.html',
+            {
+                'message': 'Dear Sir/Madam\nPlease click the link below to verify your account',
+                'link' : activation_key,
+            }
+        )
+        text_content = 'Text'
+
+
         subject = "You have received a notificaion from {}.".format("Notice Project")
-        message = "Dear Sir/Madam\n Please click on the link below \n localhost:8000/user/activation/{}".format(activation_key)
         from_email = 'contact.dataspartan@gmail.com'
         to_email = [email_target]
-        send_mail(subject,message,from_email,to_email,fail_silently=False)
+        #send_mail(subject,'message',from_email,to_email,fail_silently=False)
+        msg = EmailMultiAlternatives(subject, text_content, from_email, to_email)
+        msg.attach_alternative(html_message, "text/html")
+        msg.send()
