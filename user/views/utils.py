@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse,JsonResponse
-from django.core.mail import send_mail,EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives
+from djmatch.views import send_mail
 from ..models import  Interest, Profile,Invitation
 from project.models import Project,Keyword
 from django.db.models import Q,Count
@@ -74,8 +75,9 @@ def sendBug(request):
             subject = "Contact : {}.".format(email)
             message = "Dear Sir/Madam\nemail: {}\ncontent : \n{}\n".format(email,content)
             from_email = 'contact.dataspartan@gmail.com'
-            to_email = ['contact.dataspartan@gmail.com']
-            send_mail(subject,message,from_email,to_email,fail_silently=False)
+            to_email = 'contact.dataspartan@gmail.com'
+            send_mail(from_email,to_email,subject,message)
+            #send_mail(subject,message,from_email,to_email,fail_silently=False)
             return JsonResponse({})
         else:
               response = JsonResponse({"error" : "Some Error Occured"})

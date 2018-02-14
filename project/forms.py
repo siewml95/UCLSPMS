@@ -10,7 +10,7 @@ from django.forms.models import ModelChoiceIterator
 from django.db.models import Q,Count
 from django.forms.renderers import get_default_renderer
 from django.utils.safestring import mark_safe
-
+import datetime
 from .models import Project,Keyword
 class ModelSelect2TagWidgetCustom(ModelSelect2TagWidget):
 
@@ -174,6 +174,11 @@ class ProjectModelForm(forms.ModelForm):
         print(project.image)
         return project
 
+    def clean_deadline(self):
+        date = self.cleaned_data['deadline']
+        if date < datetime.date.today():
+            raise forms.ValidationError("The date cannot be in the past!")
+        return date
     def __init__(self,*args,**kwargs):
         super(ProjectModelForm,self).__init__(*args,**kwargs)
         self.helper = FormHelper(self)

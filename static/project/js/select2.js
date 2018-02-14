@@ -837,7 +837,7 @@ S2.define('select2/results',[
 
   Results.prototype.append = function (data) {
     this.hideLoading();
-
+    console.log("Results")
     var $options = [];
 
     if (data.results == null || data.results.length === 0) {
@@ -1036,6 +1036,8 @@ S2.define('select2/results',[
 
     container.on('results:all', function (params) {
       self.clear();
+      console.log("Results bind")
+      console.log(params.data)
       self.append(params.data);
 
       if (container.isOpen()) {
@@ -1053,6 +1055,7 @@ S2.define('select2/results',[
     });
 
     container.on('query', function (params) {
+      params.term = $.trim(params.term)
       self.hideMessages();
       self.showLoading(params);
     });
@@ -1904,6 +1907,7 @@ S2.define('select2/selection/search',[
   };
 
   Search.prototype.bind = function (decorated, container, $container) {
+    console.log('bind')
     var self = this;
 
     decorated.call(this, container, $container);
@@ -4055,6 +4059,7 @@ S2.define('select2/dropdown/search',[
     });
 
     container.on('results:all', function (params) {
+      console.log('results:all')
       if (params.query.term == null || params.query.term === '') {
         var showSearch = self.showSearch(params);
 
@@ -4925,6 +4930,7 @@ S2.define('select2/defaults',[
     }
 
     function matcher (params, data) {
+      console.log('matcher')
       // Always return the object if there is nothing to compare
       if ($.trim(params.term) === '') {
         return data;

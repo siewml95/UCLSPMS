@@ -218,8 +218,11 @@ function select3(text) {
     method : 'GET',
     data : {keyword : text},
     success : function(data)  {
-       console.log(data)
-       select(text,data)
+       if(data.exists && !data.active){
+
+       }else {
+         select(text,data)
+       }
     },
     error : function() {
 
@@ -234,6 +237,17 @@ function select3(text) {
     var temp;
     var keyword = $('#id_keywords')
 
+    $.ajax({
+      url : '/project/ajax/getKeywords',
+      method : 'GET',
+      success : function(data)  {
+         console.log(data.keywords)
+         keywords = data.keywords
+      },
+      error : function() {
+
+      }
+    })
 
 
    Ladda.bind( 'input[type=submit]' );
@@ -246,7 +260,7 @@ function select3(text) {
             root.empty()
             for(var i = 0;i<recommended.length;i++) {
 
-              var temp = '<a onClick=select3(\'' + encodeURIComponent(recommended[i]) + '\')>'+ recommended[i] + '</a>'
+              var temp = '<a onClick=select3(\'' + encodeURIComponent(recommended[i].toLowerCase()) + '\')>'+ recommended[i] + '</a>'
               console.log(temp)
               root.append(temp)
             }

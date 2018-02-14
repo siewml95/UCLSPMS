@@ -837,7 +837,7 @@ S2.define('select2/results',[
 
   Results.prototype.append = function (data) {
     this.hideLoading();
-    console.log("Results")
+
     var $options = [];
 
     if (data.results == null || data.results.length === 0) {

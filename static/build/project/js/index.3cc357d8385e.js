@@ -238,9 +238,10 @@ function select3(text) {
     var keyword = $('#id_keywords')
 
     $.ajax({
-      url : '/project/ajax/getKeywords',
+      url : '/project/getKeywords',
       method : 'GET',
       success : function(data)  {
+         console.log('data')
          console.log(data.keywords)
          keywords = data.keywords
       },
@@ -260,7 +261,7 @@ function select3(text) {
             root.empty()
             for(var i = 0;i<recommended.length;i++) {
 
-              var temp = '<a onClick=select3(\'' + encodeURIComponent(recommended[i].toLowerCase()) + '\')>'+ recommended[i] + '</a>'
+              var temp = '<a onClick=select3(\'' + encodeURIComponent(recommended[i]) + '\')>'+ recommended[i] + '</a>'
               console.log(temp)
               root.append(temp)
             }

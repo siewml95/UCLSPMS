@@ -6,6 +6,7 @@
   var initHeavy = function ($element, options) {
     var settings = $.extend({
       ajax: {
+        delay : 500,
         data: function (params) {
           var result = {
             term: params.term,
@@ -55,17 +56,17 @@
   var formatSelectionCssClass = function(tag, container) {
      console.log('hello')
      console.log(tag)
-
+     var text = $.trim(tag.text.toLowerCase())
     if(tag.type == 1) {
-      return tag.text
+      return text
     }else {
 
       if(tag.color) {
-        return container.css("background-color","#007bff").css("color","white").append(tag.text)
+        return container.css("background-color","#007bff").css("color","white").append(text)
       }else if($(tag.element).attr("color")){
-        return container.css("background-color","#007bff").css("color","white").append(tag.text)
+        return container.css("background-color","#007bff").css("color","white").append(text)
       }else {
-        return container.css("background-color","green").css("color","white").append(tag.text)
+        return container.css("background-color","green").css("color","white").append(text)
       }
     }
 
@@ -80,8 +81,8 @@
        console.log(params)
 
         return {
-          id: params.term,
-          text: params.term,
+          id: params.term.toLowerCase().trim(),
+          text: params.term.toLowerCase().trim(),
           color : "red"
         }
       },

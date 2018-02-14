@@ -301,3 +301,63 @@ Traceback (most recent call last):
     return redirect_to_login(self.request.get_full_path(), self.get_required_url(),"")
 NameError: name 'redirect_to_login' is not defined
 "GET /project/create/ HTTP/1.1" 500 91268
+Internal Server Error: /project/create/
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/views/generic/base.py", line 68, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/contrib/auth/mixins.py", line 56, in dispatch
+    return super(LoginRequiredMixin, self).dispatch(request, *args, **kwargs)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/contrib/auth/mixins.py", line 116, in dispatch
+    return super(UserPassesTestMixin, self).dispatch(request, *args, **kwargs)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/views/generic/base.py", line 88, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/views/generic/edit.py", line 217, in post
+    return super(BaseCreateView, self).post(request, *args, **kwargs)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/views/generic/edit.py", line 182, in post
+    if form.is_valid():
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/forms/forms.py", line 183, in is_valid
+    return self.is_bound and not self.errors
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/forms/forms.py", line 175, in errors
+    self.full_clean()
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/forms/forms.py", line 384, in full_clean
+    self._clean_fields()
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/forms/forms.py", line 405, in _clean_fields
+    value = getattr(self, 'clean_%s' % name)()
+  File "/home/siew/djmatch/src/project/forms.py", line 179, in clean_deadline
+    if date < datetime.date.today():
+NameError: name 'datetime' is not defined
+"POST /project/create/ HTTP/1.1" 500 121629
+Internal Server Error: /user/ajax/sendBug/
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/siew/djmatch/src/user/views/utils.py", line 79, in sendBug
+    send_mail(from_email,to_email,subject,message)
+  File "/home/siew/djmatch/src/djmatch/views.py", line 159, in send_mail
+    message = create_message(sender,to,Subject,message_text)
+NameError: name 'Subject' is not defined
+"GET /user/ajax/sendBug/?content=manga%0A HTTP/1.1" 500 20012
+Internal Server Error: /user/ajax/sendBug/
+Traceback (most recent call last):
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/siew/venvs/lib/python3.5/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/siew/djmatch/src/user/views/utils.py", line 79, in sendBug
+    send_mail(from_email,to_email,subject,message)
+  File "/home/siew/djmatch/src/djmatch/views.py", line 159, in send_mail
+    message = create_message(sender,to,Subject,message_text)
+NameError: name 'Subject' is not defined
+"GET /user/ajax/sendBug/?content=manga%0A HTTP/1.1" 500 83904
