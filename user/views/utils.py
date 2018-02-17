@@ -59,8 +59,8 @@ def send_notification(request):
             subject = "You have received a notificaion from {}.".format("Notice Project")
             message = "Dear Sir/Madam\n I am writing this email to inform you that I am interested in this project\n\n Project Name : {} \n Email: {}\n".format(project.title,project.created_by.email)
             from_email = 'contact.dataspartan@gmail.com'
-            to_email = [project.created_by.email]
-            send_mail(subject,message,from_email,to_email,fail_silently=False)
+            to_email = project.created_by.email
+            send_mail(subject,message,from_email,to_email)
         else:
             return None
     else:
@@ -73,10 +73,10 @@ def sendBug(request):
         content = request.GET["content"]
         if email:
             subject = "Contact : {}.".format(email)
-            message = "Dear Sir/Madam\nemail: {}\ncontent : \n{}\n".format(email,content)
+            message = "Dear Sir/Madam\nemail: {}\ncontent : \n{}\n ".format(email,content)
             from_email = 'siewml95@gmail.com'
             to_email = 'contact.dataspartan@gmail.com'
-            send_mail(from_email,to_email,subject,message)
+            send_mail(subject,message,from_email,to_email)
             #send_mail(subject,message,from_email,to_email,fail_silently=False)
             return JsonResponse({})
         else:
@@ -90,8 +90,8 @@ def sendBug(request):
             subject = "Contact : {}.".format(email)
             message = "Dear Sir/Madam\n Email: {}\n content : \n {}\n".format(email,content)
             from_email = 'contact.dataspartan@gmail.com'
-            to_email = [user.email]
-            send_mail(subject,message,from_email,to_email,fail_silently=False)
+            to_email = email
+            send_mail(subject,message,from_email,to_email)
             return JsonResponse({})
         else:
             response = JsonResponse({"error" : "Some Error Occured"})
@@ -165,8 +165,8 @@ def sendActivationEmail(activation_key,email_target):
 
         subject = "You have received a notificaion from {}.".format("Notice Project")
         from_email = 'contact.dataspartan@gmail.com'
-        to_email = [email_target]
-        #send_mail(subject,'message',from_email,to_email,fail_silently=False)
-        msg = EmailMultiAlternatives(subject, text_content, from_email, to_email)
+        to_email = email_target
+        send_mail(subject,html_message,from_email,to_email,html=True)
+        '''msg = EmailMultiAlternatives(subject, text_content, from_email, to_email)
         msg.attach_alternative(html_message, "text/html")
-        msg.send()
+        msg.send()'''

@@ -112,7 +112,7 @@ def get_credentials():
     return credentials
 
 
-def create_message(sender, to, subject, message_text):
+def create_message(sender, to, subject, message_text,html=False):
   """Create a message for an email.
 
   Args:
@@ -124,7 +124,10 @@ def create_message(sender, to, subject, message_text):
   Returns:
     An object containing a base64url encoded email object.
   """
-  message = MIMEText(message_text)
+  if html is True:
+    message = MIMEText(message_text,'html')
+  else:
+    message = MIMEText(message_text)
   message['to'] = to
   message['from'] = sender
   message['subject'] = subject
@@ -152,9 +155,9 @@ def send_message(service, user_id, message):
   except errors.HttpError as error:
     print('An error occurred: %s' % error)
 
-def send_mail(sender, to, subject, message_text):
+def send_mail(subject, message_text,sender, to,html=False):
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     service = discovery.build('gmail', 'v1', http=http)
-    message = create_message(sender,to,subject,message_text)
-    send_message(service,"contact.dataspartan@gmail.com",message)
+    message = create_message(sender,to,subject,message_text,html)
+    send_message(service,"me",message)
