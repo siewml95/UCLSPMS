@@ -15,15 +15,12 @@
     <!-- Bootstrap core CSS-->
     {% stylesheet 'my_app' %}
 
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
 
-    <link href="{% static 'project/css/bootstrap-tagsinput.css' %}" rel="stylesheet" />
+    <!--
     <link href="{% static 'project/css/index.css' %}" rel="stylesheet" />
     <link href="{% static 'project/css/ladda-themeless.min.css' %}" rel="stylesheet" />
     <link href="{% static 'project/css/panel.css' %}" rel="stylesheet" />
-
+    -->
     <script src="{% static 'project/js/jquery.min.js' %}"></script>
 
   </head>
@@ -67,7 +64,8 @@
 
 
   {% javascript 'layout' %}
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <!--
   <script src="{% static 'project/js/toastr.min.js' %}"></script>
   <script src="{% static 'project/js/jquery.validation.js' %}"></script>
   <script src="{% static 'project/js/spin.min.js' %}"></script>
@@ -75,7 +73,7 @@
   <script src="{% static 'project/js/layout.js' %}"></script>
   <script src="{% static 'project/js/file.js' %}"></script>
 
-
+  -->
   {% if messages %}
 
           <script type="text/javascript">

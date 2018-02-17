@@ -29,8 +29,7 @@ SITE_URL = "djmatch.herokuapp.com"
 SECRET_KEY = 'k5@(so71g$m^1bdq8sx55tm74q30d9rpojdoyx^qov1h#^iq2l'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+DEBUG = False
 ALLOWED_HOSTS = ["*"]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
@@ -245,21 +244,60 @@ PIPELINE = {
     'STYLESHEETS': {
             'my_app': {
                 'source_filenames': (
-                    'project/css/*',
+                    'project/css/bootstrap.min.css',
+                    'project/css/font-awesome.min.css',
+                    'project/css/ladda-themeless.min.css',
+                    'project/css/panel.css',
+                    'project/toastr.min.css',
+                    'project/css/select2.css',
+                    'project/css/index.css'
                 ),
-                'output_filename': 'project/css/final.min.css',
+                'output_filename': 'compress/css/final.min.css',
             },
     },
     'JAVASCRIPT': {
         'layout': {
             'source_filenames': (
+                'project/js/bootstrap.min.js',
                 'project/js/toastr.min.js',
                 'project/js/jquery.validation.js',
                 'project/js/spin.min.js',
                 'project/js/ladda.min.js',
-                'project/js/layout.js'
+                'project/js/layout.js',
+                'project/js/file.js'
+
             ),
-            'output_filename': 'project/js/final.min.js',
+            'output_filename': 'compress/js/layout.min.js',
+        },
+        'create' : {
+            'source_filenames' : (
+                'project/js/jquery.min.js',
+                'project/js/bootstrap.min.js',
+                'project/js/compress.min.js',
+                'project/js/select2.js',
+                'project/js/django_select2.js',
+                'project/js/index.js'
+            ),
+            'output_filename' : 'compress/js/create.min.js'
+        },
+        'detail' : {
+             'source_filenames' : (
+                 'project/js/select2.js',
+                 'project/js/filter_django_select2.js',
+                 'project/js/recommendations.js',
+                 'project/js/panel.js',
+                 'project/js/detail.js',
+             ),
+             'output_filename' : 'compress/js/detail.min.js'
+        },
+        'index' : {
+             'source_filenames' : (
+                 'project/js/select2.js',
+                 'project/js/recommendations.js',
+                 'project/js/filter_django_select2.js',
+                 'project/js/panel.js',
+             ),
+             'output_filename' : 'compress/js/index.min.js'
         }
     }
 }

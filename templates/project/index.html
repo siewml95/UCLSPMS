@@ -1,6 +1,7 @@
 {% extends "../layout.html" %}
 {% load crispy_forms_tags %}
 {% load static %}
+{% load pipeline %}
 
 {% block content %}
     <div class="container">
@@ -36,10 +37,12 @@
       </div>
     </div>
 
+    {% javascript 'index' %}
 
+    <!--
     <script src="{% static 'project/js/select2.js'%}"></script>
     <script src="{% static 'project/js/recommendations.js'%}"></script>
     <script src="{% static 'project/js/filter_django_select2.js'%}"></script>
     <script src="{% static 'project/js/panel.js' %}"></script>
-
+  -->
 {% endblock %}

@@ -1,6 +1,7 @@
 {% extends "../layout.html" %}
 {% load crispy_forms_tags %}
 {% load static %}
+{% load pipeline %}
 
 {% block content %}
 <div class="container">
@@ -21,6 +22,8 @@
 
   </div>
 </div>
+  {% javascript 'create' %}
+  <!--
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="https://unpkg.com/compromise@latest/builds/compromise.min.js"></script>
@@ -28,4 +31,6 @@
 
   <script src="{% static 'project/js/django_select2.js'%}"></script>
   <script src="{% static 'project/js/index.js'%}"></script>
+
+-->
 {% endblock %}
