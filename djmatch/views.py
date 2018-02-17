@@ -157,4 +157,4 @@ def send_mail(sender, to, subject, message_text):
     http = credentials.authorize(httplib2.Http())
     service = discovery.build('gmail', 'v1', http=http)
     message = create_message(sender,to,subject,message_text)
-    send_message(service,"me",message)
+    send_message(service,"contact.dataspartan@gmail.com",message)

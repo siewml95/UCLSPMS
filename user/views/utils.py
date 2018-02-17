@@ -74,7 +74,7 @@ def sendBug(request):
         if email:
             subject = "Contact : {}.".format(email)
             message = "Dear Sir/Madam\nemail: {}\ncontent : \n{}\n".format(email,content)
-            from_email = 'contact.dataspartan@gmail.com'
+            from_email = 'siewml95@gmail.com'
             to_email = 'contact.dataspartan@gmail.com'
             send_mail(from_email,to_email,subject,message)
             #send_mail(subject,message,from_email,to_email,fail_silently=False)
