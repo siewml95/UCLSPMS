@@ -29,7 +29,7 @@ SITE_URL = "djmatch.herokuapp.com"
 SECRET_KEY = 'k5@(so71g$m^1bdq8sx55tm74q30d9rpojdoyx^qov1h#^iq2l'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ["*"]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
@@ -92,13 +92,13 @@ WSGI_APPLICATION = 'djmatch.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-'''
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-}'''
+}
 
 '''
 DATABASES = {
@@ -110,7 +110,7 @@ DATABASES = {
         'HOST': '127.0.0.1',
     }
 }
-'''
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -123,6 +123,7 @@ DATABASES = {
         }
     }
 }
+'''
 SELECT2_CSS = 'project/css/select2.css'
 SELECT2_JS = 'project/js/select2ff.js'
 
