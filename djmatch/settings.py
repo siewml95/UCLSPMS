@@ -30,7 +30,7 @@ SECRET_KEY = 'k5@(so71g$m^1bdq8sx55tm74q30d9rpojdoyx^qov1h#^iq2l'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["localhost"]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
@@ -238,7 +238,7 @@ DEFAULT_FILE_STORAGE = 'djmatch.storage_backends.MediaStorage'
 
 
 PIPELINE = {
-    'PIPELINE_ENABLED' : True,
+    'PIPELINE_ENABLED' : False,
     'CSS_COMPRESSOR':'pipeline.compressors.cssmin.CSSMinCompressor',
     'CSSMIN_BINARY': 'cssmin',
     'JS_COMPRESSOR' : 'pipeline.compressors.jsmin.JSMinCompressor',
