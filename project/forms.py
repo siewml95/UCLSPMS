@@ -13,7 +13,7 @@ from django.utils.safestring import mark_safe
 import datetime
 from .models import Project,Keyword
 class ModelSelect2TagWidgetCustom(ModelSelect2TagWidget):
-    
+
     def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
         print("create_option")
         index = str(index) if subindex is None else "%s_%s" % (index, subindex)
@@ -134,7 +134,6 @@ class MyField(forms.CharField):
                return value
 
 
-
 class ProjectModelForm(forms.ModelForm):
     STATUS_CHOICES = (
                 (1, 'Draft'),
@@ -143,15 +142,16 @@ class ProjectModelForm(forms.ModelForm):
     class Meta:
         model = Project
         fields = ['title','company','summary','keywords','deadline','image','status']
+
         #fields = ['title','company','summary','deadline','image','status']
     #keywords = MyField(widget=forms.TextInput,required=False)
     #keywords = MyField(required=False)
     #keywords =  forms.ChoiceField(widget=HeavySelect2Widget(data_url="/project/ajax"))
     keywords = forms.ModelMultipleChoiceField(widget=ModelSelect2TagWidgetCustom(
-        queryset=Keyword.objects.all(),
+        queryset=Keyword.objects.active(),
         search_fields=['title__icontains'],
-    ), queryset=Keyword.objects.active(), required=False)
-
+     ), queryset=Keyword.objects.none(), required=False)
+    #print(keywords.__dict__)
     #$requirements = MyField(widget=forms.TextInput,required=False).set_attributes_from_name("keywords")
     deadline =  forms.DateField(
         widget=forms.TextInput(
@@ -233,9 +233,9 @@ class ProjectDetailFilterForm(forms.Form):
         summary = forms.ChoiceField(widget=Select2TagWidgetCustom,required=False)
         keywords = forms.ModelMultipleChoiceField(widget=ModelSelect2TagWidgetCustom(
                 placeholder="Search for Keywords",
-                queryset=Keyword.objects.all(),
+                queryset=Keyword.objects.active(),
                 search_fields=['title__icontains'],
-            ), queryset=Keyword.objects.all(), required=False)
+            ), queryset=Keyword.objects.active(), required=False)
 
             #$requirements = MyField(widget=forms.TextInput,required=False).set_attributes_from_name("keywords")
         deadline =  forms.DateField(required=False,

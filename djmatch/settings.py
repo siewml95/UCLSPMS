@@ -29,7 +29,7 @@ SITE_URL = "djmatch.herokuapp.com"
 SECRET_KEY = 'k5@(so71g$m^1bdq8sx55tm74q30d9rpojdoyx^qov1h#^iq2l'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ["*"]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
@@ -124,18 +124,18 @@ DATABASES = {
     }
 }
 '''
-SELECT2_CSS = 'project/css/select2.css'
-SELECT2_JS = 'project/js/select2ff.js'
+SELECT2_CSS = ''
+SELECT2_JS = ''
 
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
         'LOCATION': 'my_cache_table',
         "TIMEOUT" : 300000,
+    },
 
-    }
 }
-
+SELECT2_CACHE_BACKEND="default"
 AUTH_USER_MODEL = 'cuser.CUser'
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -197,6 +197,7 @@ EMAIL_HOST_USER = 'contact.dataspartan@gmail.com'
 EMAIL_HOST_PASSWORD = 'dataspartan123'
 EMAIL_PORT = 587
 LOGIN_REDIRECT_URL = '/project'
+
 LOGGING = {
  'version': 1,
  'disable_existing_loggers': False,
@@ -208,7 +209,7 @@ LOGGING = {
  'handlers': {
  'logfile': {
  'class': 'logging.handlers.WatchedFileHandler',
- 'filename': 'D:\home\site\wwwroot\myapp.log'
+ 'filename': 'D:\home\site\wwwroot\myapp2.log'
  }
  },
  'loggers': {
@@ -219,7 +220,6 @@ LOGGING = {
  }
  }
  }
-
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 #STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 SESSION_ENGINE  = "django.contrib.sessions.backends.cached_db"
@@ -238,7 +238,7 @@ DEFAULT_FILE_STORAGE = 'djmatch.storage_backends.MediaStorage'
 
 
 PIPELINE = {
-    'PIPELINE_ENABLED' : False,
+    'PIPELINE_ENABLED' : True,
     'CSS_COMPRESSOR':'pipeline.compressors.cssmin.CSSMinCompressor',
     'CSSMIN_BINARY': 'cssmin',
     'JS_COMPRESSOR' : 'pipeline.compressors.jsmin.JSMinCompressor',

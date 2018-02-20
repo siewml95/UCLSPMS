@@ -11,11 +11,11 @@ $.validator.addMethod( "extension", function( value, element, param ) {
 $(".form-file").validate({
   rules: {
     image: {
-      extension: "jpeg,png",
+      extension: "jpeg,png,jpg",
       filesize: 1000000
     },
     avatar: {
-      extension: "jpeg,png",
+      extension: "jpeg,png,jpg",
       filesize: 1000000
     },
     resume: {
