@@ -5,37 +5,37 @@
 {% block content %}
     <div class="container">
       <div class="row">
-        <div class="card">
-      <ul class="nav nav-tabs" role="tablist">
+        <div class="card col-12">
+      <ul class="nav-tab nav nav-pills" role="tablist">
         {% if page_name == 'profile'%}
-          <li  class="active"><a href="#">Profile</a></li>
+          <li  class="nav-item"><a class="nav-link active" href="#">Profile</a></li>
         {% else %}
-          <li ><a href="{% url 'user:profile' %}">Profile</a></li>
+          <li  class="nav-item" ><a class="nav-link" href="{% url 'user:profile' %}">Profile</a></li>
         {% endif %}
           {% if user.is_authenticated %}
             {% if user.profile.type == 1 or user.profile.type == 3 %}
 
               {% if page_name == 'password'%}
 
-               <li class="active"><a href="#" >Password</a></li>
+               <li  class="nav-item"><a class="nav-link active" href="#" >Password</a></li>
                {% else %}
-               <li><a href="{% url 'user:password-change' %}">Password</a></li>
+               <li class="nav-item" ><a class="nav-link" href="{% url 'user:password-change' %}">Password</a></li>
               {% endif %}
 
           {% endif %}
         {% if user.profile.type == 1 or user.profile.type == 2 %}
 
          {% if page_name == 'preference' %}
-           <li class="active" ><a href="#" >Preferences</a></li>
-           <li role="presentation" ><a href="{% url 'user:project-interests' %}" >Projects Interested</a></li>
+           <li class="nav-item" ><a class="nav-link active" href="#" >Preferences</a></li>
+           <li role="presentation"  class="nav-item" ><a class="nav-link" href="{% url 'user:project-interests' %}" >Projects Interested</a></li>
 
          {% elif page_name == 'interest' %}
-           <li ><a href="{% url 'user:preferences' %}" >Preferences</a></li>
-           <li class="active" ><a href="#" >Projects Interested</a></li>
+           <li class="nav-item"><a class="nav-link" href="{% url 'user:preferences' %}" >Preferences</a></li>
+           <li class="nav-item" ><a class="nav-link active" href="#" >Projects Interested</a></li>
 
          {% else %}
-         <li ><a href="{% url 'user:preferences' %}" >Preferences</a></li>
-         <li ><a href="{% url 'user:project-interests' %}" >Projects Interested</a></li>
+         <li class="nav-item" ><a class="nav-link"href="{% url 'user:preferences' %}" >Preferences</a></li>
+         <li class="nav-item" ><a class="nav-link" href="{% url 'user:project-interests' %}" >Projects Interested</a></li>
          {% endif %}
         {% endif %}
         {% endif %}
@@ -43,24 +43,24 @@
 
         {% if user.is_authenticated and user.profile.type == 3 %}
            {% if page_name == 'project' %}
-             <li class="active"><a href="#" >Projects Created</a></li>
-             <li><a href="{% url 'user:interests' %}" >Student Interests</a></li>
+             <li class="nav-item"><a class="nav-link active" href="#" >Projects Created</a></li>
+             <li  class="nav-item" ><a class="nav-link" href="{% url 'user:interests' %}" >Student Interests</a></li>
 
            {% elif page_name == 'staff_interest' %}
-             <li><a href="{% url 'user:projects' %}" >Projects Created</a></li>
-             <li class="active"><a href="#" >Student Interests</a></li>
+             <li class="nav-item"><a class="nav-link" href="{% url 'user:projects' %}" >Projects Created</a></li>
+             <li class="nav-item"><a class="nav-link active" href="#" >Student Interests</a></li>
 
             {% else %}
-            <li><a href="{% url 'user:projects' %}" >Projects Created</a></li>
-            <li><a href="{% url 'user:interests' %}" >Student Interests</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'user:projects' %}" >Projects Created</a></li>
+            <li class="nav-item"><a  class="nav-link" href="{% url 'user:interests' %}" >Student Interests</a></li>
            {% endif %}
         {% endif %}
 
         {% if user.is_authenticated and user.profile.is_verified == False %}
          {% if page_name == 'resend'%}
-           <li class="active"><a href="#" >Resend Activation Email</a></li>
+           <li class="nav-item" ><a class="nav-link active" href="#" >Resend Activation Email</a></li>
           {% else %}
-           <li ><a href="{% url 'user:resend-activation' %}"   >Resend Activation Email</a></li>
+           <li class="nav-item"><a class="nav-link" href="{% url 'user:resend-activation' %}"   >Resend Activation Email</a></li>
          {% endif %}
         {% endif %}
       </ul>

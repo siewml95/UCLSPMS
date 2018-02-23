@@ -1,10 +1,10 @@
 {% load crispy_forms_field %}
 
 <div class="form-group ">
-  <label for="id_avatar" class="control-label col-sm-2">
+  <label for="id_avatar" class="control-label col-sm-3 text-sm-right">
                 {{field.label}}
             </label>
-        <div class="kv-avatar col-sm-10">
+        <div class="kv-avatar col-sm-8">
           {% if field.value  %}
 
                  <a target="_blank" href="{{ field.value.url }}">{{ field.value.url }}</a>

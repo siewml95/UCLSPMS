@@ -10,7 +10,7 @@ from django.core.mail import send_mail
 from ..models import  Interest, Profile,Invitation
 from project.models import Project,Keyword
 from project.forms import ProjectDetailFilterForm
-from ..forms import AuthenticationForm,PasswordResetForm,SetPasswordForm,UserResendActivationForm,CustomUserCreationForm, UserProfileForm ,UserProfilePasswordForm,InterestForm,UserProfilePreferenceForm, CustomUserStaffCreationForm, BugForm
+from ..forms import ApplyForm,AuthenticationForm,PasswordResetForm,SetPasswordForm,UserResendActivationForm,CustomUserCreationForm, UserProfileForm ,UserProfilePasswordForm,InterestForm,UserProfilePreferenceForm, CustomUserStaffCreationForm, BugForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q,Count
 import itertools , operator, datetime,random,string
@@ -252,3 +252,8 @@ class UserProjectListView(ListView):
             context["filterForm"] = ProjectDetailFilterForm
             context["title"] = self.title
             return context
+
+class UserStaffApplyView(TemplateView):
+    template="user/apply.html"
+    form_class = ApplyForm
+    

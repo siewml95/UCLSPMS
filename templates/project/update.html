@@ -6,12 +6,12 @@
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-md-8">
-  <div class="login-panel panel panel-default">
-                      <div class="panel-heading">
-                          <h3 class="panel-title">Update Project </h3>
+    <div class="col-md-12 col-lg-8 col-sm-12">
+  <div class="notice-card card">
+                      <div class="card-header">
+                          Update Project
                       </div>
-                      <div class="panel-body">
+                      <div class="card-block">
                               {% crispy form %}
                               {{ form.name.errors }}
 

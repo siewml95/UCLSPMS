@@ -1,17 +1,17 @@
-  <table id="table" class="table table-bordered table-sm table-striped">
-                  <thead style="color:white" class="table-color thead-inverse">
-                    <tr>
-                      <th class="col-md-6">Name</th>
-                      <th class="col-md-2">Sent At</th>
+  <table id="table" class="table table-bordered  table-striped">
+                  <thead style="color:white" class="table-color thead-inverse ">
+                    <tr >
+                      <th class="w-75">Name</th>
+                      <th class="w-25">Sent At</th>
                     </tr>
                   </thead>
 
                   <tbody>
 
                     {% for article in object_list %}
-                    <tr>
-                      <td class="col-md-6"><a href="{% url 'project:single' article.project.slug %}">{{article.project.title}}</a></td>
-                      <td class="time col-md-3" data-datetime="{{article.timestamp}}">{{article.timestamp}}</td>
+                    <tr >
+                      <td class="w-75"><a href="{% url 'project:single' article.project.slug %}">{{article.project.title}}</a></td>
+                      <td class="time w-25" data-datetime="{{article.timestamp}}">{{article.timestamp}}</td>
                     </tr>
                     {% empty %}
                       <tr>

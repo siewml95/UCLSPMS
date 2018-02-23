@@ -11,11 +11,11 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title> Notice-Board | {{title}} </title>
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+
     <link rel="icon" href="../../favicon.ico">
     <!-- Bootstrap core CSS-->
     {% stylesheet 'my_app' %}
-
-
     <!--
     <link href="{% static 'project/css/index.css' %}" rel="stylesheet" />
     <link href="{% static 'project/css/ladda-themeless.min.css' %}" rel="stylesheet" />
@@ -25,33 +25,40 @@
 
   </head>
   <body>
-    <!-- Fixed navbar-->
-    <nav style="z-index:100" class="navbar navbar-default">
-      <div class="container nav-container">
-        <div class="navbar-header">
-          <button type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" class="navbar-toggle collapsed"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-            <div class="ds-nav-button"></div>
-          </button><a href="{% url 'index' %}" class="navbar-brand"> Notice-Board</a>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top sticky-navigation">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="ion-grid icon-sm"></span>
+        </button>
+        <a class="navbar-brand hero-heading" href="/">
+          NoticeBoard
+        {% if user.is_authenticated %}
+         {% if user.profile.type == 2 %}
+           <span style="color:gba(255, 255, 255, 0.8)"> - Student</span>
+           {% else %}
+           <span style="color:rgba(255, 255, 255, 0.8)"> - Staff</span>
+         {% endif %}
+        {% endif %}
+        </a>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav ml-auto">
+              {% if user.is_authenticated and user.profile.type == 3%}
+              <li  class="nav-item mr-3"><a class="nav-link page-scroll" href="{% url 'project:create' %}">Post Project</a></li>
+              {% endif %}
+              <li  class="nav-item mr-3"><a class="nav-link page-scroll" href="/project">Find Project</a></li>
+              {% if user.is_authenticated%}
+              <li class="nav-item mr-3"><a class="nav-link page-scroll" href="#" data-toggle="modal" data-target="#bugModal" >Report Bug</a></li>
+              <li class="nav-item mr-3"><a class="nav-link page-scroll" href="/user/profile">Profile</a></li>
+              <li class="nav-item mr-3"><a class="nav-link page-scroll" href="/user/logout">Logout</a></li>
+              {% else %}
+              <li  class="nav-item mr-3"><a class="nav-link page-scroll" href="#" data-toggle="modal" data-target="#bugModal" >Report Bug</a></li>
+              <li  class="nav-item mr-3"><a class="nav-link page-scroll" href="/user/register">Register</a></li>
+              <li  class="nav-item mr-3"><a class="nav-link page-scroll" href="/user/login">Login</a></li>
+              {% endif %}
+            </ul>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            {% if user.is_authenticated and user.profile.type == 3%}
-            <li><a href="{% url 'project:create' %}">Create Project</a></li>
-            {% endif %}
-            {% if user.is_authenticated%}
-            <li><a href="#" data-toggle="modal" data-target="#bugModal" >Report Bug</a></li>
-            <li><a href="/user/profile">Profile</a></li>
-            <li><a href="/user/logout">Logout</a></li>
-            {% else %}
-            <li><a href="#" data-toggle="modal" data-target="#bugModal" >Report Bug</a></li>
-            <li><a href="/user/register">Register</a></li>
-            <li><a href="/user/login">Login</a></li>
-            {% endif %}
-          </ul>
-        </div>
-      </div>
     </nav>
-    <div style="padding-top:100px; padding-bottom : 20px">
+    <!-- Fixed navbar-->
+    <div class="notice-board" style="{% if title != 'Home' %} margin-top:100px;{% endif %}">
       {% block content %}{% endblock %}
     </div>
     {% if user.is_authenticated %}
@@ -65,15 +72,6 @@
 
   {% javascript 'layout' %}
 
-  <!--
-  <script src="{% static 'project/js/toastr.min.js' %}"></script>
-  <script src="{% static 'project/js/jquery.validation.js' %}"></script>
-  <script src="{% static 'project/js/spin.min.js' %}"></script>
-  <script src="{% static 'project/js/ladda.min.js' %}"></script>
-  <script src="{% static 'project/js/layout.js' %}"></script>
-  <script src="{% static 'project/js/file.js' %}"></script>
-
-  -->
   {% if messages %}
 
           <script type="text/javascript">

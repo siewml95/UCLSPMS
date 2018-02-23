@@ -161,3 +161,12 @@ def send_mail(subject, message_text,sender, to,html=False):
     service = discovery.build('gmail', 'v1', http=http)
     message = create_message(sender,to,subject,message_text,html)
     send_message(service,"me",message)
+
+class IndexView(TemplateView):
+    template_name="index.html"
+    title = "Home"
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        context["title"] = self.title
+        return context

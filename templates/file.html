@@ -1,10 +1,10 @@
 {% load crispy_forms_field %}
 
-<div class="form-group ">
-  <label for="id_{{field.label|lower}}" class="control-label col-sm-2">
+<div class="form-group row ">
+  <label for="id_{{field.label|lower}}" class="control-label text-sm-right col-sm-3">
                 {{field.label}}
             </label>
-        <div class="kv-avatar control-label col-sm-10">
+        <div class="kv-avatar control-label col-sm-8">
           {% if field.value  %}
 
              <div>

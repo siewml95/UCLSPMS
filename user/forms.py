@@ -18,6 +18,8 @@ from django.contrib.auth import (
     authenticate, get_user_model, password_validation,
 )
 from django.urls import reverse
+from crispy_forms.layout import Field
+Field.template = "field.html"
 
 class CustomUserStaffCreationForm(UserCreationForm):
     error_messages = {
@@ -93,10 +95,10 @@ class CustomUserStaffCreationForm(UserCreationForm):
         self.helper.form_id = "id-personal"
         self.helper.form_method = "POST"
         self.helper.form_action = '.'
-        self.helper.add_input(Submit('submit','Submit',data_style="expand-right",css_class="ladda-button btn-primary"))
+        self.helper.add_input(Submit('submit','Submit',data_style="expand-right",css_class="pull-right ladda-button btn-primary"))
         self.helper.form_class = 'form-horizontal container'
-        self.helper.label_class ="col-sm-2"
-        self.helper.field_class = "col-sm-10"
+        self.helper.label_class ="col-sm-3"
+        self.helper.field_class = "col-sm-9 "
         self.helper.layout = Layout(
              Field('email', rows="6", css_class='input-xlarge'),
              Field('password1', rows="6", css_class='input-xlarge'),
@@ -170,17 +172,18 @@ class CustomUserCreationForm(UserCreationForm):
         self.helper.form_id = "id-personal"
         self.helper.form_method = "POST"
         self.helper.form_action = '.'
-        self.helper.add_input(Submit('submit','Submit',data_style="expand-right",css_class="ladda-button btn-primary"))
         self.helper.form_class = 'form-horizontal container'
-        self.helper.label_class ="col-sm-2"
-        self.helper.field_class = "col-sm-10"
+        self.helper.label_class ="col-sm-3 text-sm-right"
+        self.helper.field_class = "col-sm-9 "
         self.helper.layout = Layout(
              Field('email', rows="6", css_class='input-xlarge'),
              Field('password1', rows="6", css_class='input-xlarge'),
              Field('password2', rows="6", css_class='input-xlarge'),
              Field('first_name'),
              Field('last_name'),
-             Field('subscribe',)
+             Field('subscribe',),
+             Submit('submit','Submit',data_style="expand-right",css_class="pull-right ladda-button btn-primary")
+
         )
 
 class UserForm(forms.ModelForm):
@@ -222,10 +225,9 @@ class UserProfileForm(forms.ModelForm):
         except Subscription.DoesNotExist:
             pass
         self.helper.form_action = '.'
-        self.helper.add_input(Submit('submit','Submit',data_style="expand-right",css_class="ladda-button btn-primary"))
         self.helper.form_class = 'form-horizontal container form-file'
-        self.helper.label_class ="col-sm-2"
-        self.helper.field_class = "col-sm-10"
+        self.helper.label_class ="col-sm-3 text-sm-right"
+        self.helper.field_class = "col-sm-9 "
         self.helper.layout = Layout(
              Field('first_name', rows="6", css_class='input-xlarge'),
              Field('last_name', rows="6", css_class='input-xlarge'),
@@ -233,7 +235,8 @@ class UserProfileForm(forms.ModelForm):
              Field('resume',template="user/profile/resume.html",rows="6", css_class='input-xlarge'),
              Field('checkbox',template="empty.html"),
              Field('resume_checkbox',template="empty.html"),
-             Field('subscribe')
+             Field('subscribe'),
+             Submit('submit','Submit',data_style="expand-right",css_class="ladda-button pull-right btn-primary")
         )
         # define fields order if needed
 
@@ -281,14 +284,13 @@ class UserProfilePreferenceForm(forms.ModelForm):
         self.helper.form_id = "id-personal"
         self.helper.form_method = "POST"
         self.helper.form_action = ''
-        self.helper.add_input(Submit('submit','Submit',data_style="expand-right",css_class="ladda-button btn-primary"))
         self.helper.form_class = 'form-horizontal container'
-        self.helper.label_class ="col-sm-2"
-        self.helper.field_class = "col-sm-10"
+        self.helper.label_class ="col-sm-3 text-sm-right"
+        self.helper.field_class = "col-sm-9 "
         self.helper.layout = Layout(
              Field('preferences',data_tags="true",data_token_separators="[',']",data_minimum_input_length="0",data_delay="300",multiple="multiple",ajax__cache="true"),
-             HTML('<div class="control-label col-sm-2"></div><span class="help-block" display:inline>Grey: approved keywords. Green : users created keywords. Blue : keywords not created yet</span>'),
-
+             HTML('<div class="form-group"><div class="control-label col-sm-3"></div><span class="form-text offset-sm-3" style="color:black; font-size:13px;padding-left:10px;" display:inline><span class="badge badge-grey">Grey</span> Approved keywords.<br/> <span class="badge badge-success">Green</span> Users-created keywords.<br/><span class="badge badge-primary">Blue</span> Keywords not created yet</span>'),
+             Submit('submit','Submit',data_style="expand-right",css_class="ladda-button btn-primary")
         )
 class UserProfilePasswordForm(forms.ModelForm):
 
@@ -347,15 +349,15 @@ class UserProfilePasswordForm(forms.ModelForm):
         self.helper.form_id = "id-personal"
         self.helper.form_method = "POST"
         self.helper.form_action = ''
-        self.helper.add_input(Submit('submit','Submit',data_style="expand-right",css_class="ladda-button btn-primary"))
         self.helper.form_class = 'form-horizontal container'
-        self.helper.label_class ="col-sm-2"
-        self.helper.field_class = "col-sm-10"
+        self.helper.label_class ="col-sm-3 text-sm-right"
+        self.helper.field_class = "col-sm-9 "
         self.helper.layout = Layout(
              Field('passwordcurrent', rows="6", css_class='input-xlarge'),
              Field('password1', rows="6", css_class='input-xlarge'),
              Field('password2', rows="6", css_class='input-xlarge'),
-             Field('last_login',template="empty.html")
+             Field('last_login',template="empty.html"),
+             Submit('submit','Submit',data_style="expand-right",css_class="ladda-button pull-right btn-primary")
         )
 
 class InterestForm(forms.Form):
@@ -388,12 +390,15 @@ class PasswordResetForm(authForms.PasswordResetForm):
             self.helper.form_id = "id-personal"
             self.helper.form_method = "POST"
             self.helper.form_action = ''
-            self.helper.add_input(Submit('submit','Submit',data_style="expand-right",css_class="ladda-button btn-primary"))
+            #self.helper.add_input(Submit('submit','Submit',data_style="expand-right",css_class="ladda-button pull-right btn-primary"))
             self.helper.form_class = 'form-horizontal container'
-            self.helper.label_class ="col-sm-2"
-            self.helper.field_class = "col-sm-10"
+            self.helper.label_class ="col-sm-3 text-right"
+            self.helper.field_class = "col-sm-9"
             self.helper.layout = Layout(
                  Field('email', rows="6", css_class='input-xlarge'),
+                 Div(
+                   Submit('submit','Submit',data_style="expand-right",css_class="ladda-button pull-right btn-primary")
+                 )
             )
 
 
@@ -407,8 +412,8 @@ class SetPasswordForm(authForms.SetPasswordForm):
             self.helper.form_action = ''
             self.helper.add_input(Submit('submit','Submit',data_style="expand-right",css_class="ladda-button btn-primary"))
             self.helper.form_class = 'form-horizontal container'
-            self.helper.label_class ="col-sm-2"
-            self.helper.field_class = "col-sm-10"
+            self.helper.label_class ="col-sm-3"
+            self.helper.field_class = "col-sm-9 "
             self.helper.layout = Layout(
                  Field('new_password1', rows="6", css_class='input-xlarge'),
                  Field('new_password2', rows="6", css_class='input-xlarge'),
@@ -428,11 +433,37 @@ class AuthenticationForm(CUserAuthenticationForm):
         self.helper.form_method = "POST"
         self.helper.form_action = ''
         self.helper.form_class = 'form-horizontal container'
-        self.helper.label_class ="col-sm-2"
-        self.helper.field_class = "col-sm-10"
+        self.helper.label_class ="col-sm-3"
+        self.helper.field_class = "col-sm-9 "
         self.helper.layout = Layout(
              Field('email', label="Email",rows="6", css_class='input-xlarge'),
              Field('password', rows="6", css_class='input-xlarge'),
-             HTML('<div class="col-md-offset-2 pull-left" style="padding-left:5px"><a  href="/user/password_reset">Forget Password?</a><br><a href="{}" >Have a ucl account? </a></div>'.format(reverse('uclapi:login'))),
+             HTML('<div class="col-md-offset-2 .visible-inline-block	" style="padding-left:5px ; display:inline-block"><a  href="/user/password_reset">Forget Password?</a><br><a href="{}" >Have a ucl account? </a></div>'.format(reverse('uclapi:login'))),
              Submit('submit','Submit',data_style="expand-right",css_class="pull-right ladda-button btn-primary")
+        )
+
+class ApplyForm(forms.Form):
+
+    first_name = forms.CharField(required=True,max_length=255)
+    last_name = forms.CharField(required=True,max_length=255)
+    email = forms.CharField(required=True)
+    university = forms.CharField(required=True)
+    proof = forms.FileField(required=True)
+
+    def __init__(self,*args,**kwargs):
+        super(ApplyForm,self).__init__(*args,**kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_id = "id-personal"
+        self.helper.form_method = "POST"
+        self.helper.form_action = ''
+        self.helper.form_class = 'form-horizontal container'
+        self.helper.label_class ="col-sm-3"
+        self.helper.field_class = "col-sm-9 "
+        self.helper.layout = Layout(
+           Field('first_name'),
+           Field('last_name'),
+           Field('email'),
+           Field('university'),
+           Field('proof'),
+           Submit('submit','Submit',data_style="expand-right",css_class="ladda-button btn-primary")
         )

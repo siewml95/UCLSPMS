@@ -32,7 +32,7 @@ SECRET_KEY = 'k5@(so71g$m^1bdq8sx55tm74q30d9rpojdoyx^qov1h#^iq2l'
 DEBUG = False
 ALLOWED_HOSTS = ["*"]
 
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Application definition
 
@@ -249,7 +249,7 @@ PIPELINE = {
                     'project/css/font-awesome.min.css',
                     'project/css/ladda-themeless.min.css',
                     'project/css/panel.css',
-                    'project/toastr.min.css',
+                    'project/css/toastr.min.css',
                     'project/css/select2.css',
                     'project/css/index.css'
                 ),
@@ -262,6 +262,9 @@ PIPELINE = {
                 'project/js/bootstrap.min.js',
                 'project/js/toastr.min.js',
                 'project/js/jquery.validation.js',
+                'project/js/popper.min.js',
+                'project/js/jquery.easing.min.js',
+                'project/js/wow.min.js',
                 'project/js/spin.min.js',
                 'project/js/ladda.min.js',
                 'project/js/layout.js',
@@ -273,7 +276,6 @@ PIPELINE = {
         'create' : {
             'source_filenames' : (
                 'project/js/jquery.min.js',
-                'project/js/bootstrap.min.js',
                 'project/js/compress.min.js',
                 'project/js/select2.js',
                 'project/js/django_select2.js',

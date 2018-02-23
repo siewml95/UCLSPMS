@@ -4,6 +4,7 @@
 {% load pipeline %}
 
 {% block content %}
+    <!--
     <div class="container">
       <div class="col-sm-9"><strong style="color:#00619D">Projects List</strong>
         <table id="table" class="table table-bordered table-sm table-striped">
@@ -27,15 +28,48 @@
             {% endfor %}
           </tbody>
 
-        </table>
-        {%  include '../pagination.html' %}
-      </div>
-      <div class="col-sm-3">
-        {% include "./recommendations.html" %}
-        {% crispy filter.form filter.form.helper %}
+        </table>\
+      -->
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-lg-9">
 
+    <section class="notice-section ">
+      {% for article in object_list %}
+
+    <article class="search-result" style="padding: 0px 10px 0px 25px;">
+      <div class="article-inner row" style="display:flex;width:100%;padding: 15px 0px;border-bottom: 1px solid #DEDEDE;">
+
+			<div class="col-xs-12 col-sm-9 col-md-9 excerpet">
+				<h3><a href="{% url 'project:single' article.slug %}" title="">{{article.title}}</a></h3>
+          <p>{{article.summary | slice:":255"}}</p>
+                <span class="plus"><a href="#" title="Lorem ipsum"><i class="glyphicon glyphicon-plus"></i></a></span>
+         {% for keyword in article.keywords.active%} <a href="#"> {{keyword.title}} </a> {% endfor %}
+      </div>
+
+      <div class="col-12  col-md-3" >
+          <span> <i class="ion-calendar pull-left"></i> <span style="padding-left:25px;">{{article.deadline}}</span></span>
+          <a class="btn btn-primary" href="{% url 'project:single' article.slug %}">Read More</a>
       </div>
     </div>
+		</article>
+    {% empty %}
+        <h3 class="no-data">No Projects yet.</h3>
+    {% endfor %}
+
+
+	</section>
+  {%  include '../pagination.html' %}
+
+</div>
+  <div class="col-12 col-lg-3 ">
+    {% include "./recommendations.html" %}
+    {% crispy filter.form filter.form.helper %}
+
+  </div>
+ </div>
+</div>
+
 
     {% javascript 'index' %}
 

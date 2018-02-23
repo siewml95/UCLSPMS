@@ -132,7 +132,6 @@ class ProjectListView(ListView):
                 del queries_without_page['page']
             context['queries'] = queries_without_page
             print(self.request.user.is_authenticated())
-            context["title"] = "Home"
             return context
 
 class ProjectCreateView(LoginRequiredMixin,StaffVerifiedRequiredMixin,CreateView):

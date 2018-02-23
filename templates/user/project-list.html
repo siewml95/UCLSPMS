@@ -4,15 +4,16 @@
 
 {% block content %}
     <div class="container">
-      <div class="tab-pane" id="profile">
-           <h2>{{first_name}} {{last_name}}</h2>
-             <div class="col-md-8 pj-detail">
+      <h2>{{first_name}} {{last_name}}</h2>
 
-                <table id="table" class="table table-bordered table-sm table-striped">
+      <div class="row" id="profile">
+             <div class="col-lg-8">
+
+                <table id="table" class="table table-bordered  table-striped">
                   <thead style="color:white" class="table-color thead-inverse">
                     <tr>
-                      <th class="col-md-6">Project Title</th>
-                      <th class="col-md-2">Posted At</th>
+                      <th class="w-75">Project Title</th>
+                      <th class="w-25">Posted At</th>
                     </tr>
                   </thead>
 
@@ -20,8 +21,8 @@
 
                     {% for article in object_list %}
                     <tr>
-                      <td class="col-md-6"><a href="{% url 'project:single' article.slug %}">{{article.title}}</a></td>
-                      <td class="time col-md-3" data-datetime="{{article.timestamp}}">{{article.timestamp|date:"d M Y"  }}</td>
+                      <td class="w-75"><a href="{% url 'project:single' article.slug %}">{{article.title}}</a></td>
+                      <td class="w-25" data-datetime="{{article.timestamp}}">{{article.timestamp|date:"d M Y"  }}</td>
                     </tr>
                     {% empty %}
                       <h3 class="no-data">No Projects yet.</h3>
@@ -30,7 +31,7 @@
 
                 </table>
               </div>
-              <div class="col-md-3 col-md-offset-1">
+              <div class="col-lg-3 offset-lg-1">
                 {% include "../project/recommendations.html" %}
                 {% crispy filterForm %}
               </div>

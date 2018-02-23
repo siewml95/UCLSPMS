@@ -12,6 +12,8 @@ from django.forms.renderers import get_default_renderer
 from django.utils.safestring import mark_safe
 import datetime
 from .models import Project,Keyword
+from crispy_forms.layout import Field
+Field.template = "field.html"
 class ModelSelect2TagWidgetCustom(ModelSelect2TagWidget):
 
     def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
@@ -186,22 +188,21 @@ class ProjectModelForm(forms.ModelForm):
         self.helper.form_id = "id_project_form"
         self.helper.form_method = "POST"
         self.helper.form_action = '.'
-        self.helper.add_input(Submit('submit','Submit',data_style="expand-right",css_class="ladda-button btn-primary"))
         self.helper.form_class = 'form-horizontal container form-file'
-        self.helper.label_class ="col-sm-2"
-        self.helper.field_class = "col-sm-10"
+        self.helper.label_class ="col-sm-3 text-sm-right"
+        self.helper.field_class = "col-sm-8"
         self.helper.layout = Layout(
-             Field('title',css_class="form-control col-sm-10",label_class = 'hello'),
+             Field('title',css_class="form-control col-sm-8",label_class = 'hello'),
              Field('image',template="file.html"),
              Field('checkbox',template="empty.html"),
              Field('summary',help_text="bitch",rows="6", css_class='input-xlarge'),
              Field('keywords',help_text="",data_tags="true",data_token_separators="[',']",data_minimum_input_length="0",data_delay="300",multiple="multiple",ajax__cache="true"),
-             HTML('<div class="form-group"><div class="control-label col-sm-2"></div><span class="help-block" style="color:black; padding-left:10px;" display:inline><p style="color:grey; display:inline;">Grey : </p> Approved keywords. <p style="color:green; display:inline;">Green : </p> Users-created keywords. <p style="color:blue; display:inline;">Blue : </p>Keywords not created yet</span>'),
-
-             HTML("<div class='form-group'><div class=' control-label col-sm-2'><p>Recommended:</p></div><div class='recommended </div>'><span></span></div></div>"),
-             Field('company',css_class="form-control col-sm-10",label_class = 'hello'),
+             HTML('<div class="form-group"><div class="control-label col-sm-3"></div><span class="form-text offset-sm-3" style="color:black; font-size:13px;padding-left:10px;" display:inline><span class="badge badge-grey">Grey</span> Approved keywords.<br/> <span class="badge badge-success">Green</span> Users-created keywords.<br/><span class="badge badge-primary">Blue</span> Keywords not created yet</span>'),
+             HTML("<div class='form-group'><div class=' control-label col-sm-3 text-sm-right' style='font-size:13px;'><p>Recommended:</p></div><div class='recommended </div>'><span></span></div></div>"),
+             Field('company',css_class="form-control col-sm-8",label_class = 'hello'),
              Field('deadline'),
-             Field('status')
+             Field('status'),
+             Submit('submit','Submit',data_style="expand-right",css_class="ladda-button pull-right btn-primary")
         )
         #print(self.helper)
 
@@ -257,8 +258,8 @@ class ProjectDetailFilterForm(forms.Form):
             self.helper = FormHelper(self)
             self.helper.form_id = "id-personal"
             self.helper.form_method = "GET"
-            self.helper.form_action = '/'
-            self.helper.form_class = 'form-horizontal'
+            self.helper.form_action = '/project'
+            self.helper.form_class = 'form-horizontal filter'
             self.helper.field_class = "col-sm-12"
             self.helper.layout = Layout(
                  Div(
@@ -282,8 +283,8 @@ class ProjectDetailFilterForm(forms.Form):
                      css_class="Summary"
                   ),
                    Div(
-                       Field('keywords',data_tags="false",template = 'project/filter-conditions.html',data_token_separators="[',']",data_minimum_results_for_search="-1",data_minimum_input_length="0",data_delay="300",multiple="multiple",ajax__cache="true"),
-                     HTML('<span class="help-block" style="color:black" display:inline><p style="color:grey; display:inline;">Grey : </p> Approved keywords. <br /><p style="color:green; display:inline;">Green : </p> Users-created keywords. <br /><p style="color:blue; display:inline;">Blue : </p>Keywords not created yet</span>'),
+                     Field('keywords',data_tags="false",template = 'project/filter-conditions.html',data_token_separators="[',']",data_minimum_results_for_search="-1",data_minimum_input_length="0",data_delay="300",multiple="multiple",ajax__cache="true"),
+                     HTML('<span class="help-block" style="color:black" display:inline><span class="badge badge-grey">Grey</span> Approved keywords. <br /><span class="badge badge-success">Green</span> Users-created keywords. <br /><span class="badge badge-primary">Green</span> Keywords not created yet</span>'),
                      template = 'project/panel-content.html',
                      css_id="4",
                      css_class="Keywords"
@@ -320,8 +321,8 @@ class ProjectFilterForm(FormHelper):
 
         form_id = "id-personal"
         form_method = "GET"
-        form_action = '/'
-        form_class = 'form-horizontal'
+        form_action = '/project'
+        form_class = 'form-horizontal filter'
         field_class = "col-sm-12"
         layout = Layout(
              Div(
@@ -346,7 +347,7 @@ class ProjectFilterForm(FormHelper):
               ),
                Div(
                  Field('keywords',placeholder="Search for keywords",data_tags="false",template = 'project/filter-conditions.html',data_token_separators="[',']",data_minimum_results_for_search="-1",data_minimum_input_length="0",data_delay="300",multiple="multiple",ajax__cache="true"),
-                     HTML('<span class="help-block" style="color:black" display:inline><p style="color:grey; display:inline;">Grey : </p> Approved keywords. <br /><p style="color:green; display:inline;">Green : </p> Users-created keywords. <br /><p style="color:blue; display:inline;">Blue : </p>Keywords not created yet</span>'),
+                     HTML('<span class="help-block" style="color:black" display:inline><span class="badge badge-grey">Grey</span> Approved keywords. <br /><span class="badge badge-success">Green</span> Users-created keywords. <br /><span class="badge badge-primary">Green</span> Keywords not created yet</span>'),
                  template = 'project/panel-content.html',
                  css_id="4",
                  css_class="Keywords"
