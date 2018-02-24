@@ -211,26 +211,29 @@ function select(text,selectData) {
 }
 
 
-function select3(text) {
-  text = decodeURIComponent(text)
-  $.ajax({
-    url : '/project/CheckKeywordExists',
-    method : 'GET',
-    data : {keyword : text},
-    success : function(data)  {
-       if(data.exists && !data.active){
 
-       }else {
-         select(text,data)
-       }
-    },
-    error : function() {
-
-    }
-  })
-}
 
   $(document).ready(function(){
+
+    function select3(text) {
+      text = decodeURIComponent(text)
+      $.ajax({
+        url : '/project/CheckKeywordExists',
+        method : 'GET',
+        data : {keyword : text},
+        success : function(data)  {
+           if(data.exists && !data.active){
+
+           }else {
+             select(text,data)
+           }
+        },
+        error : function() {
+
+        }
+      })
+    }
+
     var root = $('.recommended').find('span')
     var globalTimeout = null;
     var array = "["
@@ -260,9 +263,13 @@ function select3(text) {
             root.empty()
             for(var i = 0;i<recommended.length;i++) {
 
-              var temp = '<a onClick=select3(\'' + encodeURIComponent(recommended[i].toLowerCase()) + '\')>'+ recommended[i] + '</a>'
+              var temp = '<a>'+ recommended[i] + '</a>'
+              $temp = $(temp).on('click',function(e){
+                var text = $(this).text();
+                select3(encodeURIComponent(text.toLowerCase()))
+              })
               console.log(temp)
-              root.append(temp)
+              root.append($temp)
             }
             //extract($('#id_summary').val())
 

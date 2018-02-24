@@ -125,12 +125,11 @@ class CustomUserCreationForm(UserCreationForm):
 
     def clean_email(self):
         email = self.cleaned_data["email"]
-
         try:
             User._default_manager.get(email=email)
         except User.DoesNotExist:
             return email
-        raise forms.ValidationError(self.error_messages['duplicate_email'])
+        raise forms.ValidationError('Another Account used this email. Please use another email!')
     def clean_password1(self):
         password1 = self.cleaned_data.get('password1')
         password_validation.validate_password(password1)

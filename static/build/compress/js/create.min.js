@@ -498,16 +498,17 @@ $select.append("<option selected value='"+val[i]+"' data-select2-tag='true' colo
 $('select#id_keywords').val(val);console.log("$('select#id_keywords').val(val);")
 console.log($('select#id_keywords').val())
 $('select#id_keywords').trigger('change');});}
-function select3(text){text=decodeURIComponent(text)
+$(document).ready(function(){function select3(text){text=decodeURIComponent(text)
 $.ajax({url:'/project/CheckKeywordExists',method:'GET',data:{keyword:text},success:function(data){if(data.exists&&!data.active){}else{select(text,data)}},error:function(){}})}
-$(document).ready(function(){var root=$('.recommended').find('span')
+var root=$('.recommended').find('span')
 var globalTimeout=null;var array="["
 var temp;var keyword=$('#id_keywords')
 $.ajax({url:'/project/ajax/getKeywords',method:'GET',success:function(data){console.log(data.keywords)
 keywords=data.keywords},error:function(){}})
 Ladda.bind('input[type=submit]');$('textarea[name="summary"]').on('keyup',function(){if(globalTimeout!=null)clearTimeout(globalTimeout);globalTimeout=setTimeout(function(){extract($('#id_summary').val())
 root.empty()
-for(var i=0;i<recommended.length;i++){var temp='<a onClick=select3(\''+encodeURIComponent(recommended[i].toLowerCase())+'\')>'+recommended[i]+'</a>'
+for(var i=0;i<recommended.length;i++){var temp='<a>'+recommended[i]+'</a>'
+$temp=$(temp).on('click',function(e){var text=$(this).text();select3(encodeURIComponent(text.toLowerCase()))})
 console.log(temp)
-root.append(temp)}
+root.append($temp)}
 },500);})})}).call(this);
