@@ -51,7 +51,7 @@ class Invitation(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(blank=False)
     timestamp = models.DateTimeField(auto_now=False,auto_now_add=True)
-    status = models.IntegerField(choices=STATUS_CHOICES)
+    status = models.IntegerField(choices=STATUS_CHOICES,default=1)
     objects = InterestManager()
 
 

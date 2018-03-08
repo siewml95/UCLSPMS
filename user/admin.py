@@ -3,7 +3,8 @@ from .models import Invitation
 # Register your models here.
 
 class InvitationAdmin(admin.ModelAdmin):
-    pass
+    fields = ('email',)
+
 
 
 admin.site.register(Invitation,InvitationAdmin)
