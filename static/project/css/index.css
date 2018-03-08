@@ -664,3 +664,25 @@ input[type='file'] {
 table a:hover {
   color: #fc4349 !important;
 }
+
+.fuck {
+  display:none;
+}
+
+.table-bordered th{
+  border-bottom:0px !important;
+  border-top:0px !important;
+
+}
+
+.table-bordered {
+  border:0px !important;
+}
+.table-bordered td{
+  border-bottom:0px !important;
+  border:0px !important;
+}
+
+.hide {
+  display:none!important;
+}

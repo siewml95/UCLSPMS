@@ -20,7 +20,6 @@ load_dotenv(dotenv_path)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-
 SITE_URL = "djmatch.herokuapp.com"
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -29,7 +28,7 @@ SITE_URL = "djmatch.herokuapp.com"
 SECRET_KEY = 'k5@(so71g$m^1bdq8sx55tm74q30d9rpojdoyx^qov1h#^iq2l'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -42,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'djmatch.finders.MyStaticFilesConfig',
     'cuser',
     'project',
@@ -54,7 +54,9 @@ INSTALLED_APPS = [
     'pipeline',
     'social_widgets',
     'django_nose_qunit',
-    'django_cron'
+    'django_cron',
+    'django_tables2',
+    'datatableview'
 
 ]
 
@@ -188,7 +190,8 @@ NOSE_PLUGINS = [
 ]
 NOSE_ARGS = [
     '--with-django-qunit',
-    '--nologcapture'
+    '--nologcapture',
+    '--verbosity=0'
 ]
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
@@ -238,7 +241,9 @@ DEFAULT_FILE_STORAGE = 'djmatch.storage_backends.MediaStorage'
 
 
 PIPELINE = {
-    'PIPELINE_ENABLED' : True,
+    'PIPELINE_ENABLED' : False,
+    'PIPELINE_COLLECTOR_ENABLED': False,
+    'PIPELINE_VERSION_REMOVE_OLD': True,
     'CSS_COMPRESSOR':'pipeline.compressors.cssmin.CSSMinCompressor',
     'CSSMIN_BINARY': 'cssmin',
     'JS_COMPRESSOR' : 'pipeline.compressors.jsmin.JSMinCompressor',
@@ -251,6 +256,7 @@ PIPELINE = {
                     'project/css/panel.css',
                     'project/css/toastr.min.css',
                     'project/css/select2.css',
+                    'project/css/jquery.dataTables.min.css',
                     'project/css/index.css'
                 ),
                 'output_filename': 'compress/css/final.min.css',
@@ -279,6 +285,7 @@ PIPELINE = {
                 'project/js/compress.min.js',
                 'project/js/select2.js',
                 'project/js/django_select2.js',
+                'project/js/functions/index.js',
                 'project/js/index.js'
             ),
             'output_filename' : 'compress/js/create.min.js'
@@ -301,6 +308,12 @@ PIPELINE = {
                  'project/js/panel.js',
              ),
              'output_filename' : 'compress/js/index.min.js'
+        },
+        'table' : {
+             'source_filenames' : (
+                 'project/js/jquery.dataTables.min.js',
+             ),
+             'output_filename' : 'compress/js/table.min.js'
         }
     }
 }
@@ -319,3 +332,5 @@ CRON_CLASSES = [
     "djmatch.cron.MyCronJob",
     # ...
 ]
+
+SITE_ID = 1

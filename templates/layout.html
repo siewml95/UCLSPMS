@@ -32,10 +32,10 @@
         <a class="navbar-brand hero-heading" href="/">
           NoticeBoard
         {% if user.is_authenticated %}
-         {% if user.profile.type == 2 %}
-           <span style="color:gba(255, 255, 255, 0.8)"> - Student</span>
+         {% if user.profile.type == 3 %}
+           <span style="color:gba(255, 255, 255, 0.8)"> - Staff</span>
            {% else %}
-           <span style="color:rgba(255, 255, 255, 0.8)"> - Staff</span>
+           <span style="color:rgba(255, 255, 255, 0.8)"> - Student </span>
          {% endif %}
         {% endif %}
         </a>
@@ -50,7 +50,6 @@
               <li class="nav-item mr-3"><a class="nav-link page-scroll" href="/user/profile">Profile</a></li>
               <li class="nav-item mr-3"><a class="nav-link page-scroll" href="/user/logout">Logout</a></li>
               {% else %}
-              <li  class="nav-item mr-3"><a class="nav-link page-scroll" href="#" data-toggle="modal" data-target="#bugModal" >Report Bug</a></li>
               <li  class="nav-item mr-3"><a class="nav-link page-scroll" href="/user/register">Register</a></li>
               <li  class="nav-item mr-3"><a class="nav-link page-scroll" href="/user/login">Login</a></li>
               {% endif %}

@@ -22,7 +22,8 @@ from .views import (
                     UserStaffRegisterView,
                     UserStudentDetailView,
                     UserResendActivationView,
-                    UserStaffApplyView
+                    UserStaffApplyView,
+                    UserRequestStaffView
                    )
 
 class CustomLoginView(auth_views.LoginView):
@@ -35,7 +36,8 @@ class CustomLoginView(auth_views.LoginView):
         print("CustomLoginView xxxxxxxxxxxxxxxxxxxxxxxx form_invalid")
         return super(CustomLoginView, self).form_invalid(form)
 urlpatterns = [
-   url(r'^register/$', UserRegisterView.as_view()),
+   url(r'^register/$', UserRegisterView.as_view(),name="register"),
+   url(r'^staff_request/$',UserRequestStaffView.as_view(),name="request"),
    url(r'^login/$', CustomLoginView.as_view(authentication_form=AuthenticationForm, template_name='user/login.html'),name='login'),
    url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
    url(r'^password_reset/$',auth_views.PasswordResetView.as_view(form_class=PasswordResetForm,success_url = "/user/password_reset/done/"), name='password_reset'),
@@ -43,7 +45,6 @@ urlpatterns = [
    url(r'^reset/done/$', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         auth_views.PasswordResetConfirmView.as_view(form_class = SetPasswordForm,success_url = "/user/reset/done/"), name='password_reset_confirm'),
-   url(r'^apply/$',UserStaffApplyView.as_view()),
    url(r'^single/(?P<pk>[-\w]+)/$',UserProjectListView.as_view(),name="single"),
    url(r'^student/(?P<pk>[-\w]+)/$',UserStudentDetailView.as_view(),name="student"),
    url(r'^invitation/(?P<pk>\b[0-9A-Fa-f]{8}\b(-\b[0-9A-Fa-f]{4}\b){3}-\b[0-9A-Fa-f]{12}\b)/$',UserStaffRegisterView.as_view()),

@@ -197,7 +197,7 @@ class ProjectModelForm(forms.ModelForm):
              Field('checkbox',template="empty.html"),
              Field('summary',help_text="bitch",rows="6", css_class='input-xlarge'),
              Field('keywords',help_text="",data_tags="true",data_token_separators="[',']",data_minimum_input_length="0",data_delay="300",multiple="multiple",ajax__cache="true"),
-             HTML('<div class="form-group"><div class="control-label col-sm-3"></div><span class="form-text offset-sm-3" style="color:black; font-size:13px;padding-left:10px;" display:inline><span class="badge badge-grey">Grey</span> Approved keywords.<br/> <span class="badge badge-success">Green</span> Users-created keywords.<br/><span class="badge badge-primary">Blue</span> Keywords not created yet</span>'),
+             HTML('<div class="form-group"><div class="control-label col-sm-3"></div><span class="form-text offset-sm-3" style="color:black; font-size:13px;padding-left:10px;" display:inline><span class="badge badge-grey">Grey</span> Approved keywords.<br/> <span class="badge badge-success">Green</span> Users-created keywords.<br/><span class="badge badge-primary">Blue</span> New Keywords</span>'),
              HTML("<div class='form-group row' style='margin-top:10px;'><div class=' control-label col-sm-3 text-sm-right' style='font-size:13px;'><p>Recommended:</p></div><div class='recommended col-sm-9'><span></span></div></div></div>"),
              Field('company',css_class="form-control col-sm-8",label_class = 'hello'),
              Field('deadline'),

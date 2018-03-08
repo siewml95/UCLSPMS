@@ -18,15 +18,15 @@ class UserStaffRegisterViewTest(TestCase):
         self.assertTemplateUsed(resp, "user/register.html")
 
     def test_post(self):
-        '''obj = Invitation.objects.all()[0]
-        data = {"email":"trying@gmail.com","first_name":"First","last_name":"Last","password1":"1","password2":"1"}
+        obj = Invitation.objects.all()[0]
+        data = {"email":"trying@gmail.com","first_name":"First","last_name":"Last","password1":"qwerty12","password2":"qwerty12"}
         resp = self.client.post('/user/invitation/{}/'.format(obj.id),data)
         print(resp)
-        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 302)
         user = User.objects.get(id=1)
         print(user.id)
         self.assertTrue(user.id == 1)
-        self.assertTrue(user.profile.type == 3)'''
+        self.assertTrue(user.profile.type == 3)
 
 class UserRegisterViewTest(TestCase):
 
@@ -36,14 +36,14 @@ class UserRegisterViewTest(TestCase):
         self.assertTemplateUsed(resp, "user/register.html")
 
     def test_post(self):
-        '''data = {"email":"trying@gmail.com","first_name":"First","last_name":"Last","password1":"1","password2":"1"}
+        data = {"email":"trying@gmail.com","first_name":"First","last_name":"Last","password1":"qwerty12","password2":"qwerty12"}
         resp = self.client.post('/user/register/',data)
         print(resp)
-        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 302)
         user = User.objects.get(id=1)
         print(user.id)
         self.assertTrue(user.id == 1)
-        self.assertTrue(user.profile.type == 1)'''
+        self.assertTrue(user.profile.type == 1)
         pass
 
 
@@ -51,7 +51,7 @@ class UserRegisterViewTest(TestCase):
 class UserProfileViewTest(TestCase):
     @classmethod
     def setUp(self):
-        user = User.objects.create_user(email="testuser1",password="12345")
+        user = User.objects.create_user(email="testuser1",password="qwerty12")
         user.save()
 
     def test_redirect_if_not_logged_in(self):
@@ -60,7 +60,7 @@ class UserProfileViewTest(TestCase):
         self.assertRedirects(resp,'/user/login/?next=/user/profile/')
 
     def test_get(self):
-        login = self.client.login(email='testuser1', password='12345')
+        login = self.client.login(email='testuser1', password='qwerty12')
         print("test_get")
         print(login)
         resp = self.client.get('/user/profile/')
@@ -68,21 +68,21 @@ class UserProfileViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
 
     def test_post(self):
-        login = self.client.login(email='testuser1', password='12345')
+        login = self.client.login(email='testuser1', password='qwerty12')
         print(login)
         data = {"first_name":"First","last_name":"Last"}
         user = User.objects.get(id=1)
         resp = self.client.post('/user/profile/',data)
         print("test_post")
-        print(resp)
+        print(resp.__dict__)
         updated_user = User.objects.get(id=1)
-        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 302)
         #self.assertTrue(user.first_name != updated_user.first_name)
 
 class UserProfilePasswordViewTest(TestCase):
     @classmethod
     def setUp(self):
-        user = User.objects.create_user(email="testuser1",password="12345")
+        user = User.objects.create_user(email="testuser1",password="qwerty12")
         user.save()
 
     def test_redirect_if_not_logged_in(self):
@@ -91,7 +91,7 @@ class UserProfilePasswordViewTest(TestCase):
         self.assertRedirects(resp,'/user/login/?next=/user/profile/password-change/')
 
     def test_get(self):
-        login = self.client.login(email='testuser1', password='12345')
+        login = self.client.login(email='testuser1', password='qwerty12')
         print("test_get")
         print(login)
         resp = self.client.get('/user/profile/password-change/')
@@ -101,9 +101,9 @@ class UserProfilePasswordViewTest(TestCase):
     def test_post(self):
         print("UserProfilePasswordViewTest")
 
-        '''login = self.client.login(email='testuser1', password='12345')
+        login = self.client.login(email='testuser1', password='qwerty12')
         print(login)
-        data = {"passwordcurrent":"12345","password1":"1234","password2":"1234"}
+        data = {"passwordcurrent":"qwerty12","password1":"qwerty123","password2":"qwerty123"}
         user = User.objects.get(id=1)
         current = user.password
         resp = self.client.post('/user/profile/password-change/',data)
@@ -113,7 +113,7 @@ class UserProfilePasswordViewTest(TestCase):
         print(updated_user.password)
         print(current)
         self.assertEqual(resp.status_code, 302)
-        self.assertTrue(current != updated_user.password)'''
+        self.assertTrue(current != updated_user.password)
         pass
 
 class UserProfilePreferenceViewTest(TestCase):
@@ -394,48 +394,48 @@ class getIndexRecommendationsTest(TestCase):
         Keyword.objects.create(title="Test Keyword 6",type=1,status=True)
         Keyword.objects.create(title="Test Keyword 7",type=1,status=True)
         self.projects = []
-        project = Project.objects.create(title="Test Project",summary="testing project",slug="test-project",company="UCL",created_by=user,deadline=datetime.datetime.now())
+        project = Project.objects.create(title="Test Project",summary="testing project",slug="test-project",company="UCL",created_by=user,deadline=(datetime.datetime.now() + datetime.timedelta(days=1)),status=2)
         project.keywords = [1,2]
         print(project)
         project.save()
         self.projects.append(project)
-        project = Project.objects.create(title="Test Project2",summary="testing project",slug="test-project-2",company="UCL",created_by=user,deadline=datetime.datetime.now())
+        project = Project.objects.create(title="Test Project2",summary="testing project",slug="test-project-2",company="UCL",created_by=user,deadline=(datetime.datetime.now() + datetime.timedelta(days=1)),status=2)
         project.keywords = [1,2,3]
 
         project.save()
         self.projects.append(project)
 
         self.project = project
-        project = Project.objects.create(title="Test Project",summary="testing project",slug="test-project-3",company="UCL",created_by=user,deadline=datetime.datetime.now())
+        project = Project.objects.create(title="Test Project",summary="testing project",slug="test-project-3",company="UCL",created_by=user,deadline=(datetime.datetime.now() + datetime.timedelta(days=1)),status=2)
         project.keywords = [3,4]
 
         project.save()
         self.projects.append(project)
 
-        project_interested = Project.objects.create(title="Test Project",summary="testing project",slug="test-project-412",company="UCL",created_by=user,deadline=datetime.datetime.now())
+        project_interested = Project.objects.create(title="Test Project",summary="testing project",slug="test-project-412",company="UCL",created_by=user,deadline=(datetime.datetime.now() + datetime.timedelta(days=1)),status=2)
         project_interested.keywords = [1,2,3,5]
 
         project_interested.save()
         self.project_interested = project_interested
         self.projects.append(project_interested)
 
-        project =Project.objects.create(title="Test Project",summary="testing project",slug="test-project-4",company="UCL",created_by=user,deadline=datetime.datetime.now())
+        project =Project.objects.create(title="Test Project",summary="testing project",slug="test-project-4",company="UCL",created_by=user,deadline=(datetime.datetime.now() + datetime.timedelta(days=1)),status=2)
         project.keywords = [1,2,5]
         project.save()
         self.projects.append(project)
 
-        project =Project.objects.create(title="Test Project",summary="testing project",slug="test-project-5",company="UCL",created_by=user,deadline=datetime.datetime.now())
+        project =Project.objects.create(title="Test Project",summary="testing project",slug="test-project-5",company="UCL",created_by=user,deadline=(datetime.datetime.now() + datetime.timedelta(days=1)),status=2)
         project.keywords = [2,3,5]
         project.save()
         self.projects.append(project)
 
-        project =Project.objects.create(title="Test Project",summary="testing project",slug="test-project-6",company="UCL",created_by=user,deadline=datetime.datetime.now())
+        project =Project.objects.create(title="Test Project",summary="testing project",slug="test-project-6",company="UCL",created_by=user,deadline=(datetime.datetime.now() + datetime.timedelta(days=1)),status=2)
         project.keywords = [2,3,4]
 
         project.save()
         self.projects.append(project)
 
-        project = Project.objects.create(title="Test Project",summary="testing project",slug="test-project-7",company="UCL",created_by=user,deadline=datetime.datetime.now())
+        project = Project.objects.create(title="Test Project",summary="testing project",slug="test-project-7",company="UCL",created_by=user,deadline=(datetime.datetime.now() + datetime.timedelta(days=1)),status=2)
         project.keywords = [2,3,5]
         project.save()
         self.projects.append(project)

@@ -20,6 +20,7 @@ class ClientProjectTest(LiveServerTestCase):
      @classmethod
      def setUp(cls):
          user = User.objects.create_user(email="siewml95@gmail.com",password="qwerty12")
+         user.save()
          user.profile.type = 3
          user.profile.is_verified = True
          user.profile.save()
@@ -28,7 +29,7 @@ class ClientProjectTest(LiveServerTestCase):
          cls.projects = []
          for x in range(1,12):
             print(x)
-            project = Project.objects.create(title="Test Project {}".format(x),summary="testing project",slug="test-project-{}".format(x),company="UCL",created_by=user,deadline=datetime.datetime.now())
+            project = Project.objects.create(title="Test Project {}".format(x),summary="testing project",slug="test-project-{}".format(x),company="UCL",created_by=user,status=2,deadline=(datetime.datetime.now() + datetime.timedelta(days=1)))
             cls.projects.append(project)
 
          cls.selenium = webdriver.Chrome()
@@ -42,45 +43,33 @@ class ClientProjectTest(LiveServerTestCase):
      def test_pagination(self):
          self.selenium.get('%s%s' % (self.live_server_url, '/project/?page=2'))
          #login(self,'/user/profile/projects/?page=2','siewml95@gmail.com', 'qwerty12')
-         table = self.selenium.find_element_by_id("table")
-         tbody = table.find_element(By.TAG_NAME,"tbody")
+         table = self.selenium.find_element(By.TAG_NAME,"section")
 
-         rows = tbody.find_elements(By.TAG_NAME, "tr")
+         rows = table.find_elements(By.TAG_NAME, "article")
          for index,row in enumerate(rows):
-             print(row)
-             cols = row.find_elements(By.TAG_NAME, "td")  # note: index start from 0, 1 is col 2
-             href = cols[0].find_element(By.TAG_NAME,"a")
-             if len(cols) >= 2 :
-                   self.assertEquals(cols[0].text,self.projects[0].title)
-                   #self.assertEquals(href.get_attribute("href"),'%s%s' % (self.live_server_url, '/project/{}/update/'.format(project.id)))
+            title = row.find_element(By.CLASS_NAME,"title")
+            self.assertEquals(title.text,self.projects[0].title)
 
-             else :
-                  self.assertEquals(True,False)
          self.selenium.close()
 
      def test_get(self):
          self.selenium.get('%s%s' % (self.live_server_url, '/project/'))
 
          #self.selenium.get('%s%s' % (self.live_server_url, '/project/create/'))
-         table = self.selenium.find_element_by_id("table")
-         tbody = table.find_element(By.TAG_NAME,"tbody")
+         table = self.selenium.find_element(By.TAG_NAME,"section")
 
-         rows = tbody.find_elements(By.TAG_NAME, "tr")
+         rows = table.find_elements(By.TAG_NAME, "article")
          for index,row in enumerate(rows):
-             cols = row.find_elements(By.TAG_NAME, "td")  # note: index start from 0, 1 is col 2
-             href = cols[0].find_element(By.TAG_NAME,"a")
-             if len(cols) >= 2 :
-                  self.assertEquals(cols[0].text,self.projects[10-index].title)
-                  #self.assertEquals(href.get_attribute("href"),'%s%s' % (self.live_server_url, '/project/{}/update/'.format(project.id)))
+             title = row.find_element(By.CLASS_NAME,"title")
+             self.assertEquals(title.text,self.projects[10-index].title)
 
-             else :
-                  self.assertEquals(True,False)
          self.selenium.close()
 
 class ClientCreateProjectTest(LiveServerTestCase):
     @classmethod
     def setUp(cls):
         user = User.objects.create_user(email="siewml95@gmail.com",password="qwerty12")
+        user.save()
         user.profile.type = 3
         user.profile.is_verified = True
         user.profile.save()
@@ -96,11 +85,11 @@ class ClientCreateProjectTest(LiveServerTestCase):
 
     def test_create_project(self):
 
-        expected_url = self.live_server_url + "/projects/"
+        expected_url = self.live_server_url + "/project/"
         login(self,'/project/create/','siewml95@gmail.com', 'qwerty12')
         #self.selenium.get('%s%s' % (self.live_server_url, '/project/create/'))
 
-        '''
+
         title_input = self.selenium.find_element_by_name("title")
         title_input.send_keys('Project 1')
         summary_input = self.selenium.find_element_by_name("summary")
@@ -108,8 +97,15 @@ class ClientCreateProjectTest(LiveServerTestCase):
         company_input = self.selenium.find_element_by_name("company")
         company_input.send_keys('Company')
         deadline_input = self.selenium.find_element_by_name('deadline')
-        deadline_input.send_keys(datetime.datetime.now())
-        resp = self.selenium.find_element_by_xpath('//input[@value="Submit"]').submit() '''
+        #deadline_input.send_keys(datetime.datetime.now())
+        deadline_input.send_keys("01012020")
+        status_input = self.selenium.find_element_by_name('status')
+        for option in status_input.find_elements_by_tag_name('option'):
+          if option.text == "Active":
+            option.click()
+        resp = self.selenium.find_element_by_xpath('//input[@value="Submit"]').submit()
+        self.selenium.implicitly_wait(1000000)
+
         self.assertEquals(self.selenium.current_url,expected_url)
 
 
@@ -117,11 +113,12 @@ class ClientUpdateProjectTest(LiveServerTestCase):
     @classmethod
     def setUp(cls):
         user = User.objects.create_user(email="siewml95@gmail.com",password="qwerty12")
+        user.save()
         user.profile.type = 3
         user.profile.is_verified = True
         user.profile.save()
-        project = Project.objects.create(title="Test Project",summary="testing project",slug="test-project",company="UCL",created_by=user,deadline=datetime.datetime.now())
-
+        project = Project.objects.create(id=100,title="Test Project",summary="testing project",slug="test-project",company="UCL",created_by=user,deadline=datetime.datetime.now())
+        project.save()
         #super().setUpClass()
         cls.selenium = webdriver.Chrome()
         cls.selenium.implicitly_wait(10)
@@ -133,11 +130,9 @@ class ClientUpdateProjectTest(LiveServerTestCase):
 
     def test_create_project(self):
 
-        expected_url = self.live_server_url + "/projects/"
-        login(self,'/project/1/update/','siewml95@gmail.com', 'qwerty12')
+        expected_url = self.live_server_url + "/user/profile/projects/"
+        login(self,'/project/100/update/','siewml95@gmail.com', 'qwerty12')
         #self.selenium.get('%s%s' % (self.live_server_url, '/project/create/'))
-
-        '''
         title_input = self.selenium.find_element_by_name("title")
         title_input.send_keys('Project 1')
         summary_input = self.selenium.find_element_by_name("summary")
@@ -145,6 +140,11 @@ class ClientUpdateProjectTest(LiveServerTestCase):
         company_input = self.selenium.find_element_by_name("company")
         company_input.send_keys('Company')
         deadline_input = self.selenium.find_element_by_name('deadline')
-        deadline_input.send_keys(datetime.datetime.now())
-        resp = self.selenium.find_element_by_xpath('//input[@value="Submit"]').submit() '''
+        deadline_input.send_keys("01012020")
+        status_input = self.selenium.find_element_by_name('status')
+
+        for option in status_input.find_elements_by_tag_name('option'):
+                  if option.text == "Draft":
+                    option.click()
+        resp = self.selenium.find_element_by_xpath('//input[@value="Submit"]').submit()
         self.assertEquals(self.selenium.current_url,expected_url)

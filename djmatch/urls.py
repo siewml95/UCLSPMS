@@ -22,15 +22,17 @@ from django.conf.urls.static import static
 from django.conf.urls import url
 from django.conf import settings
 
-from .views import NewView,sign_s3,IndexView
+from .views import NewView,sign_s3,IndexView,ContactView
 from project.views import ProjectListView
 
 from django_nose_qunit.views import test_index,run_qunit_tests
+
 urlpatterns = [
     url(r'^$', IndexView.as_view(),name="index"),
     url(r'^admin/', admin.site.urls),
     url(r'^sign_s3/',sign_s3),
     url(r'^project/', include('project.urls',namespace="project")),
+    url(r'^contact/',ContactView.as_view(),name="contact"),
     url(r'^user/', include('user.urls',namespace="user")),
     url(r'^uclapi/', include('uclapi.urls',namespace="uclapi")),
     url(r"^select2/fields/auto.json$",

@@ -13,8 +13,8 @@
                             This website provide academic staffs and students with a platform to post and find university projects that they are interested in.
                         </p>
                         <p class="mt-5">
-                            <a href="{% url 'project:create' %}" class="btn btn-white mb-2 page-scroll">Post Project</a>
-                            <a href="{% url 'project:list' %}" class="btn btn-white mb-2 page-scroll">Find Project</a>
+                            <a href="{% url 'user:request' %}" class="btn btn-white mb-2 page-scroll">Post Project</a>
+                            <a href="{% url 'user:register' %}" class="btn btn-white mb-2 page-scroll">Find Project</a>
                         </p>
                     </div>
                 </div>
@@ -131,7 +131,7 @@
                             <li>User Interface is easy to use</li>
                             <li>Students can login using their university account</li>
                         </ul>
-                        <a href="#purchase" class="btn btn-primary mr-2 page-scroll">Contact Us</a>
+                        <a href="{% url 'contact' %}" class="btn btn-primary mr-2 page-scroll">Contact Us</a>
                     </div>
                 </div>
             </div>

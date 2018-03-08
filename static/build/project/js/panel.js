@@ -10,8 +10,7 @@ $(document).ready(function() {
         $this.find('select.select.sf').val("0")
 
         $this.find('input').val("")
+        $this.find('input').prop( "checked", false );
       })
-      $('[id^=detail-]').hide();
-
     })
 });

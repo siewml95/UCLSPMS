@@ -6,11 +6,12 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView,UpdateView,FormView
 from django.views.generic.detail import DetailView
 from django.views.generic.base import TemplateView
-from django.core.mail import send_mail
 from ..models import  Interest, Profile,Invitation
 from project.models import Project,Keyword
 from project.forms import ProjectDetailFilterForm
-from ..forms import ApplyForm,AuthenticationForm,PasswordResetForm,SetPasswordForm,UserResendActivationForm,CustomUserCreationForm, UserProfileForm ,UserProfilePasswordForm,InterestForm,UserProfilePreferenceForm, CustomUserStaffCreationForm, BugForm
+from ..forms import UserRequestStaffForm,ApplyForm,AuthenticationForm,PasswordResetForm,SetPasswordForm,UserResendActivationForm,CustomUserCreationForm, UserProfileForm ,UserProfilePasswordForm,InterestForm,UserProfilePreferenceForm, CustomUserStaffCreationForm, BugForm,UserProfileInterestForm
+from ..filters import UserProfileInterestFilter
+from ..tables import UserProfileInterestTable
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q,Count
 import itertools , operator, datetime,random,string
@@ -18,6 +19,9 @@ from  functools import reduce
 from django.contrib import messages
 from cuser.models import CUser as User
 from django.contrib.auth import login, authenticate,get_user,update_session_auth_hash
+from django.conf import settings
+from django.template import loader
+from djmatch.utils import send_mail
 
 class UserResendActivationView(LoginRequiredMixin,FormView):
     template_name = "user/profile/tab.html"
@@ -76,12 +80,14 @@ class UserActivationView(TemplateView):
           return context
 
 
-class UserRegisterView(CreateView):
+class UserRegisterView(StudentNotRequiredMixin,CreateView):
     template_name="user/register.html"
     form_class = CustomUserCreationForm
     model = User
-    success_url="/user/register"
+    success_url="/user/register/"
     title = "Register Student Account"
+    required_url = "/project/"
+    login_url = "/project/"
 
     def form_valid(self,form):
         print("form-valid")
@@ -144,10 +150,7 @@ class UserProfilePasswordView(LoginRequiredMixin,UpdateView):
     def get_object(self):
       return self.request.user
 
-    def form_invalid(self,form):
-        print("invalid")
-        print(self.__dict__)
-        print(form.__dict__)
+
     def form_valid(self,form):
      print("form_valid")
      try:
@@ -214,13 +217,17 @@ class UserProfilePreferenceView(LoginRequiredMixin,StudentRequiredMixin,UpdateVi
          return HttpResponseRedirect("/user/profile/preferences/")
 
 
-class UserProfileInterestView(LoginRequiredMixin,StudentRequiredMixin,ListView):
+class UserProfileInterestView(LoginRequiredMixin,StudentRequiredMixin,PagedFilteredTableView):
     template_name="user/profile/tab.html"
     model = Interest
     login_url = '/user/login/'
     required_url = '/user/profile/'
     title = "Profile - Interests"
     paginate_by = '10'
+    table_class = UserProfileInterestTable
+    ordering = ['-timestamp']
+    filter_class = UserProfileInterestFilter
+    formhelper_class = UserProfileInterestForm
 
     def get_queryset(self,**kwargs):
         qs = super(UserProfileInterestView,self).get_queryset()
@@ -229,6 +236,9 @@ class UserProfileInterestView(LoginRequiredMixin,StudentRequiredMixin,ListView):
 
     def get_context_data(self, **kwargs):
           context = super(UserProfileInterestView, self).get_context_data(**kwargs)
+          search_query = self.get_queryset()
+          table = self.table_class(search_query)
+          RequestConfig(self.request,paginate={'per_page': self.paginate_by}).configure(table)
           context["page_name"] = "interest"
           context["title"] = self.title
           return context
@@ -256,4 +266,32 @@ class UserProjectListView(ListView):
 class UserStaffApplyView(TemplateView):
     template="user/apply.html"
     form_class = ApplyForm
-    
+
+class UserRequestStaffView(StaffNotRequiredMixin,FormView):
+    template_name ="user/staff_request.html"
+    form_class = UserRequestStaffForm
+    required_url = "/user/profile/"
+    login_url = '/user/profile/'
+
+    def form_valid(self,form):
+        html_message = loader.render_to_string(
+            'user/request_email.html',
+            {
+                'message': 'Dear Sir/Madam\n I would like to apply for a staff account\n',
+                'first_name' : form.cleaned_data.get('first_name'),
+                'last_name': form.cleaned_data.get('last_name'),
+                'email' : form.cleaned_data.get('email'),
+                'university' : form.cleaned_data.get('university')
+            }
+        )
+
+        subject = "Request for a Staff Account"
+        from_email = settings.EMAIL_HOST_USER
+        to_email = settings.EMAIL_HOST_USER
+        try :
+          send_mail(subject,html_message,from_email,to_email,html=True)
+          messages.add_message(self.request, messages.SUCCESS, 'Request Sent!.')
+        except Exception as e:
+           print(e)
+           messages.add_message(self.request, messages.ERROR, 'Something went wrong! Please try again!')
+        return HttpResponseRedirect('.')

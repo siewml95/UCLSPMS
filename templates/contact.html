@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container">
+
+
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+<div class="notice-card card">
+                    <div class="card-header">
+                        Contact Form
+                    </div>
+                    <div class="card-block" style="padding:10px;0px;">
+                           {% crispy form %}
+
+                    </div>
+                </div>
+</div>
+</div>
+
+{% endblock %}

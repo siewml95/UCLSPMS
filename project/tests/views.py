@@ -15,7 +15,7 @@ class ProjectListViewTest(TestCase):
         user = User.objects.create_user(email="siewml9512223@gmail.")
         number_of_projects = 13
         for project_num in range(number_of_projects):
-            Project.objects.create(title="Test Project {}".format(project_num),summary="testing project",slug="test-project-{}".format(project_num),company="UCL",created_by=user,deadline=datetime.datetime.now())
+            Project.objects.create(title="Test Project {}".format(project_num),summary="testing project",slug="test-project-{}".format(project_num),company="UCL",created_by=user,status=2,deadline=(datetime.date.today() + datetime.timedelta(days=1)))
 
     def test_view_url_exists_at_desired_location(self):
         resp = self.client.get('/project/')
@@ -36,6 +36,7 @@ class ProjectListViewTest(TestCase):
 
     def test_list_all_projects(self):
         resp = self.client.get('/project/?page=2',{})
+        print(resp)
         self.assertEqual(resp.status_code,200)
         self.assertTrue('is_paginated' in resp.context)
         self.assertTrue(resp.context['is_paginated'] == True)
@@ -46,9 +47,6 @@ class ProjectCreateViewTest(TestCase):
     def setUp(self):
         test_user1 = User.objects.create_user(email='testuser1',password='12345')
         test_user2 = User.objects.create_user(email='testuser2',password='12345')
-
-
-
         test_user1.save()
         test_user2.save()
         test_user1.profile.type = 1
@@ -87,12 +85,12 @@ class ProjectCreateViewTest(TestCase):
            "slug":"test-project",
            "company":"UCL",
            "deadline":datetime.date(year=2100, month=1,day=1),
+           "status" : 2
         }
         response = self.client.post("/project/create/", data)
         print("")
         print("")
         print("response")
-        print(response.__dict__)
         self.assertEqual(response.status_code, 302)
         project = Project.objects.get(id=1)
         self.assertEqual(project.id,1)
@@ -101,8 +99,9 @@ class ProjectCreateViewTest(TestCase):
 class ProjectDetailViewTest(TestCase):
     def setUp(self):
         user = User.objects.create_user(email='testuser1')
-        Project.objects.create(title="Test Project",summary="testing project",slug="test-project",company="UCL",created_by=user,deadline=datetime.datetime.now())
-
+        user.save()
+        project = Project.objects.create(title="Test Project",status=2,summary="testing project",slug="test-project",company="UCL",created_by=user,deadline=datetime.datetime.now())
+        project.save()
     def test_get(self):
         resp = self.client.get('/project/single/test-project/')
         created_project = Project.objects.get(id=1)
@@ -122,10 +121,13 @@ class ProjectUpdateViewTest(TestCase):
             test_user1.save()
             test_user2.save()
             test_user1.profile.type = 3
+            test_user1.profile.is_verified = True
             test_user1.profile.save()
             test_user2.profile.type = 3
+            test_user2.profile.is_verified = True
             test_user2.profile.save()
-            Project.objects.create(title="Test Project",summary="testing project",slug="test-project",company="UCL",created_by=test_user2,deadline=datetime.datetime.now())
+
+            Project.objects.create(title="Test Project",summary="testing project",slug="test-project",company="UCL",created_by=test_user2,status=2,deadline=datetime.datetime.now() )
 
     def test_redirect_if_not_logged_in(self):
         resp = self.client.get('/project/1/update/')
@@ -152,12 +154,14 @@ class ProjectUpdateViewTest(TestCase):
     def test_post(self):
         login = self.client.login(email='testuser2', password='12345')
         user = User.objects.get(id=2)
+        print(user.profile.__dict__)
         current_project = Project.objects.get(id=1)
         data = {
                    'title' : 'Project',
                    "summary":"testing project",
                    "company":"UCL",
                    "deadline":datetime.date(year=2100, month=1,day=1),
+                   "status" : 2,
                    "keywords" : [1]
                 }
         response = self.client.post("/project/1/update/", data)
@@ -179,46 +183,46 @@ class ProjectDetailAjaxRecommendation(TestCase):
         Keyword.objects.create(title="Test Keyword 6",type=1,status=True)
         Keyword.objects.create(title="Test Keyword 7",type=1,status=True)
         self.projects = []
-        project = Project.objects.create(title="Test Project",summary="testing project",slug="test-project",company="UCL",created_by=user,deadline=datetime.datetime.now())
+        project = Project.objects.create(status=2,title="Test Project",summary="testing project",slug="test-project",company="UCL",created_by=user,deadline=(datetime.datetime.now() + datetime.timedelta(days=1)))
         project.keywords = [1,2]
         project.save()
         self.projects.append(project)
-        project = Project.objects.create(title="Test Project2",summary="testing project",slug="test-project-2",company="UCL",created_by=user,deadline=datetime.datetime.now())
+        project = Project.objects.create(status=2,title="Test Project2",summary="testing project",slug="test-project-2",company="UCL",created_by=user,deadline=(datetime.datetime.now() + datetime.timedelta(days=1)))
         project.keywords = [1,2,3]
 
         project.save()
         self.projects.append(project)
 
         self.project = project
-        project = Project.objects.create(title="Test Project",summary="testing project",slug="test-project-3",company="UCL",created_by=user,deadline=datetime.datetime.now())
+        project = Project.objects.create(status=2,title="Test Project",summary="testing project",slug="test-project-3",company="UCL",created_by=user,deadline=(datetime.datetime.now() + datetime.timedelta(days=1)))
         project.keywords = [3,4]
 
         project.save()
         self.projects.append(project)
 
-        project =project_interested = Project.objects.create(title="Test Project",summary="testing project",slug="test-project-412",company="UCL",created_by=user,deadline=datetime.datetime.now())
+        project =project_interested = Project.objects.create(status=2,title="Test Project",summary="testing project",slug="test-project-412",company="UCL",created_by=user,deadline=(datetime.datetime.now() + datetime.timedelta(days=1)))
         project.keywords = [1,2,3,5]
 
         project.save()
         self.projects.append(project)
 
-        project =Project.objects.create(title="Test Project",summary="testing project",slug="test-project-4",company="UCL",created_by=user,deadline=datetime.datetime.now())
+        project =Project.objects.create(status=2,title="Test Project",summary="testing project",slug="test-project-4",company="UCL",created_by=user,deadline=(datetime.datetime.now() + datetime.timedelta(days=1)))
         project.keywords = [1,2,5]
         project.save()
         self.projects.append(project)
 
-        project =Project.objects.create(title="Test Project",summary="testing project",slug="test-project-5",company="UCL",created_by=user,deadline=datetime.datetime.now())
+        project =Project.objects.create(status=2,title="Test Project",summary="testing project",slug="test-project-5",company="UCL",created_by=user,deadline=(datetime.datetime.now() + datetime.timedelta(days=1)))
         project.keywords = [2,3,5]
         project.save()
         self.projects.append(project)
 
-        project =Project.objects.create(title="Test Project",summary="testing project",slug="test-project-6",company="UCL",created_by=user,deadline=datetime.datetime.now())
+        project =Project.objects.create(status=2,title="Test Project",summary="testing project",slug="test-project-6",company="UCL",created_by=user,deadline=(datetime.datetime.now() + datetime.timedelta(days=1)))
         project.keywords = [2,3,4]
 
         project.save()
         self.projects.append(project)
 
-        project = Project.objects.create(title="Test Project",summary="testing project",slug="test-project-7",company="UCL",created_by=user,deadline=datetime.datetime.now())
+        project = Project.objects.create(status=2,title="Test Project",summary="testing project",slug="test-project-7",company="UCL",created_by=user,deadline=(datetime.datetime.now() + datetime.timedelta(days=1)))
         project.keywords = [2,3,5]
         project.save()
         self.projects.append(project)

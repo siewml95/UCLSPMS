@@ -6,7 +6,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 import uuid
 from django.core.mail import EmailMultiAlternatives
-from djmatch.views import send_mail
+from djmatch.utils import send_mail
 from django.utils.translation import ugettext_lazy as _
 from cuser.models import CUser as User
 from django.conf import settings
@@ -87,10 +87,8 @@ def create_invitation(sender,instance,created,**kwargs):
             }
         )
         text_content = 'Text'
-
-
         subject = "You have received a notificaion from {}.".format("Notice Project")
-        from_email = 'contact.dataspartan@gmail.com'
+        from_email = settings.EMAIL_HOST_USER
         to_email = instance.email
         send_mail(subject,html_message,from_email,to_email,html=True)
         '''msg = EmailMultiAlternatives(subject, text_content, from_email, to_email)

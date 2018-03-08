@@ -85,6 +85,7 @@
       "summary" : "Project 1",
       "created_by" : 1,
       "keywords" : [1,2],
+      "status" : 1,
       "deadline" : "2020-09-01",
       "updated" : "2020-09-01",
       "timestamp" : "2020-09-01"
@@ -97,6 +98,7 @@
       "summary" : "Project 2",
       "created_by" : 1,
       "keywords" : [1,2,3],
+      "status" : 1,
       "deadline" : "2020-09-01",
       "updated" : "2020-09-01",
       "timestamp" : "2020-09-01"
@@ -111,6 +113,7 @@
       "summary" : "Project 3",
       "created_by" : 1,
       "keywords" : [2,3],
+      "status" : 1,
       "deadline" : "2020-09-01",
       "updated" : "2020-09-01",
       "timestamp" : "2020-09-01"

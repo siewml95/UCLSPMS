@@ -139,7 +139,7 @@ class ProjectFilter(django_filters.FilterSet):
     )
 
     title = django_filters.CharFilter(method="title_contains")
-    company = django_filters.CharFilter(method="title_contains")
+    company = django_filters.CharFilter(method="company_contains")
     strict = django_filters.BooleanFilter(label="Strict",method="nothing")
     summary = ChoiceFilterCustom(widget=Select2TagWidgetCustom,method="summary_filter")
     #keywords = django_filters.CharFilter(method="keywords_filter")
@@ -159,6 +159,9 @@ class ProjectFilter(django_filters.FilterSet):
 
     def title_contains(self,queryset,name,value):
         return queryset.filter(title__icontains=value)
+
+    def company_contains(self,queryset,name,value):
+        return queryset.filter(company__icontains=value)
     def nothing(self, queryset, name, value):
         return queryset
     def filter_contains(self, queryset, name, value):
@@ -190,12 +193,14 @@ class ProjectFilter(django_filters.FilterSet):
     def status_filter(self,queryset,name,value):
         print("status_filter")
         for index,x in enumerate(value):
-            if x == '1' or x == 1:
-                del value[index]
-            elif x == '5' or x == 5:
+            '''if x == '1' or x == 1:
+                del value[index]'''
+            if x == '5' or x == 5:
                 del value[index]
                 print("x == 5")
                 queryset = queryset.filter(deadline__lte=datetime.datetime.now())
+        if value == [] :
+            return queryset
         return queryset.filter(status__in=value)
 
 

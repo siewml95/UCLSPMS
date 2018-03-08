@@ -5,7 +5,7 @@ from project.models import Keyword
 from project.forms import ModelSelect2TagWidgetCustom
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from crispy_forms.helper import FormHelper
-from crispy_forms.bootstrap import Field, InlineRadios, TabHolder, Tab
+from crispy_forms.bootstrap import Field, InlineRadios, TabHolder, Tab,FieldWithButtons,StrictButton
 from crispy_forms.layout import  Submit, Layout, Div, Fieldset,HTML,MultiField
 from django_select2.forms import HeavySelect2Widget,ModelSelect2TagWidget
 import string,random,datetime
@@ -17,8 +17,11 @@ from cuser.models import CUser as User
 from django.contrib.auth import (
     authenticate, get_user_model, password_validation,
 )
+from djmatch.utils import send_mail
 from django.urls import reverse
 from crispy_forms.layout import Field
+from django.template import loader
+from django.conf import settings
 Field.template = "field.html"
 
 class CustomUserStaffCreationForm(UserCreationForm):
@@ -30,7 +33,6 @@ class CustomUserStaffCreationForm(UserCreationForm):
         help_text=password_validation.password_validators_help_text_html())
     password2 = forms.CharField(label='Password Confirmation', widget=forms.PasswordInput)
     email = forms.CharField(max_length=75, required=True)
-    subscribe = forms.BooleanField(label="Subscribe to receive emails about projects",required=False)
 
     def clean_password1(self):
      password1 = self.cleaned_data.get('password1')
@@ -105,7 +107,6 @@ class CustomUserStaffCreationForm(UserCreationForm):
              Field('password2', rows="6", css_class='input-xlarge'),
              Field('first_name'),
              Field('last_name'),
-             Field('subscribe',)
 
         )
 
@@ -269,6 +270,41 @@ class UserProfileForm(forms.ModelForm):
     resume_checkbox = forms.BooleanField(required=False)
     subscribe = forms.BooleanField(required=False)
 
+
+class UserProfileProjectForm(FormHelper):
+    form_id = "id-personal"
+    form_method = "GET"
+    form_action = '/user/profile/projects/'
+    form_class = 'form-horizontal filter'
+    field_class = "col-sm-5 pull-right"
+    label_class = "col-sm-12 hide"
+    layout = Layout(
+        FieldWithButtons('title',Submit('submit',"Search")),
+    )
+
+class UserProfileStaffInterestForm(FormHelper):
+    form_id = "id-personal"
+    form_method = "GET"
+    form_action = '/user/profile/interests/'
+    form_class = 'form-horizontal filter'
+    field_class = "col-sm-5 pull-right"
+    label_class = "col-sm-12 hide"
+    layout = Layout(
+        FieldWithButtons('project',Submit('submit',"Search")),
+    )
+
+class UserProfileInterestForm(FormHelper):
+    form_id = "id-personal"
+    form_method = "GET"
+    form_action = '/user/profile/project-interests/'
+    form_class = 'form-horizontal filter'
+    field_class = "col-sm-5 pull-right"
+    label_class = "col-sm-12 hide"
+    layout = Layout(
+        FieldWithButtons('project',Submit('submit',"Search")),
+    )
+
+
 class UserProfilePreferenceForm(forms.ModelForm):
     class Meta:
         model = Profile
@@ -313,8 +349,7 @@ class UserProfilePasswordForm(forms.ModelForm):
         old_password = self.cleaned_data["passwordcurrent"]
         if not self.user.check_password(old_password):
             raise forms.ValidationError(
-                self.error_messages['password_incorrect'],
-                code='password_incorrect',
+                "Hello World"
             )
         return old_password
     def clean_password1(self):
@@ -338,6 +373,17 @@ class UserProfilePasswordForm(forms.ModelForm):
         user.set_password(self.cleaned_data["password1"])
         if commit:
             user.save()
+        html_message = loader.render_to_string(
+                    'user/activation_email.html',
+                    {
+                        'message': 'Dear Sir/Madam <br /> You successfully change your password',
+                        'link' : ""
+                    }
+        )
+        subject = "You have received a notificaion from {}.".format("Notice Project")
+        from_email = settings.EMAIL_HOST_USER
+        to_email = user.email
+        send_mail(subject,html_message,from_email,to_email,html=True)
         return user
 
     def __init__(self,*args,**kwargs):
@@ -437,15 +483,39 @@ class AuthenticationForm(CUserAuthenticationForm):
         self.helper.layout = Layout(
              Field('email', label="Email",rows="6", css_class='input-xlarge'),
              Field('password', rows="6", css_class='input-xlarge'),
-             HTML('<div class="col-md-offset-2 .visible-inline-block	" style="padding-left:5px ; display:inline-block"><a  href="/user/password_reset">Forget Password?</a><br><a href="{}" >Have a ucl account? </a></div>'.format(reverse('uclapi:login'))),
+             HTML('<div class="col-md-offset-2 .visible-inline-block	" style="padding-left:5px ; display:inline-block"><div style="display:inline-flex"><a style="border-right: 1px solid grey; padding-right: 15px; height: 25px;" href="/user/register">Register as Student </a><pre>  </pre> <a href="{}" >Have a ucl account? </a></div><br /><a  href="/user/password_reset">Forgot Password?</a></div>'.format(reverse('uclapi:login'))),
              Submit('submit','Submit',data_style="expand-right",css_class="pull-right ladda-button btn-primary")
+        )
+
+class UserRequestStaffForm(forms.Form):
+    first_name = forms.CharField(required=True,max_length=255)
+    last_name = forms.CharField(required=True,max_length=255)
+    email = forms.EmailField(required=True)
+    university = forms.CharField(required=True)
+
+
+    def __init__(self,*args,**kwargs):
+        super(UserRequestStaffForm,self).__init__(*args,**kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_id = "id-personal"
+        self.helper.form_method = "POST"
+        self.helper.form_action = ''
+        self.helper.form_class = 'form-horizontal container'
+        self.helper.label_class ="col-sm-3"
+        self.helper.field_class = "col-sm-9 "
+        self.helper.layout = Layout(
+           Field('first_name'),
+           Field('last_name'),
+           Field('email'),
+           Field('university'),
+           Submit('submit','Submit',data_style="expand-right",css_class="ladda-button btn-primary")
         )
 
 class ApplyForm(forms.Form):
 
     first_name = forms.CharField(required=True,max_length=255)
     last_name = forms.CharField(required=True,max_length=255)
-    email = forms.CharField(required=True)
+    email = forms.EmailField(required=True)
     university = forms.CharField(required=True)
     proof = forms.FileField(required=True)
 

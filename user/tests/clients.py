@@ -90,6 +90,7 @@ class ClientUserProfilePasswordTest(LiveServerTestCase):
     @classmethod
     def setUp(cls):
         user = User.objects.create_user(email="siewml951@gmail.com",password="qwerty12")
+        user.save()
         user.profile.type = 1
         user.profile.is_verified = True
         user.profile.save()
@@ -116,7 +117,7 @@ class ClientUserProfilePasswordTest(LiveServerTestCase):
         password2_input.send_keys('Qazwsx12')
 
         resp = self.selenium.find_element_by_xpath('//input[@value="Submit"]').click()
-        updated_user = User.objects.get(id=1)
+        updated_user = User.objects.get(email="siewml951@gmail.com")
         self.assertEquals(updated_user.check_password('Qazwsx12'),True)
 
 
@@ -359,9 +360,9 @@ class ClientUserProfileProjectTest(LiveServerTestCase):
             print(row)
             cols = row.find_elements(By.TAG_NAME, "td")  # note: index start from 0, 1 is col 2
             project = self.projects[0]
-            href = cols[0].find_element(By.TAG_NAME,"a")
+            href = cols[1].find_element(By.TAG_NAME,"a")
             if len(cols) >= 2 :
-                  self.assertEquals(cols[0].text,project.title)
+                  self.assertEquals(cols[1].text,project.title)
                   self.assertEquals(href.get_attribute("href"),'%s%s' % (self.live_server_url, '/project/{}/update/'.format(project.id)))
             else :
                  self.assertEquals(True,False)
@@ -379,10 +380,10 @@ class ClientUserProfileProjectTest(LiveServerTestCase):
         for index,row in enumerate(rows):
             cols = row.find_elements(By.TAG_NAME, "td")  # note: index start from 0, 1 is col 2
             project = self.projects[10-index]
-            href = cols[0].find_element(By.TAG_NAME,"a")
+            href = cols[1].find_element(By.TAG_NAME,"a")
             print(href.get_attribute("href"))
             if len(cols) >= 2 :
-                  self.assertEquals(cols[0].text,project.title)
+                  self.assertEquals(cols[1].text,project.title)
                   self.assertEquals(href.get_attribute("href"),'%s%s' % (self.live_server_url, '/project/{}/update/'.format(project.id)))
             else :
                  self.assertEquals(True,False)

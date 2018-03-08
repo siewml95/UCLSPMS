@@ -1,6 +1,7 @@
 {% extends "../../layout.html" %}
 {% load crispy_forms_tags %}
 {% load static %}
+{% load pipeline %}
 
 {% block content %}
     <div class="container">
@@ -68,17 +69,55 @@
         {% if page_name == 'profile' or page_name == 'password' or page_name == 'resend'%}
            {% crispy form %}
         {% elif page_name == 'staff_interest' %}
-           {% include './interests.html' %}
+          {% include './table.html' %}
+          {% javascript 'table' %}
+          <script>
+            $(document).ready(function() {
+                $('.table').DataTable( {
+                    "bPaginate": false,
+                     searching: false,
+                     "bLengthChange": false,
+                     'bInfo':false,
+                    "order": [[ 1, "desc" ]]
+                } );
+            } );
+            </script>
+
         {% elif page_name == 'preference' %}
            {% crispy form %}
 
           <script src="{% static 'project/js/select2.js'%}"></script>
           <script src="{% static 'project/js/django_select2.js'%}"></script>
         {% elif page_name == 'interest' %}
-        {% include './project_interests.html' %}
+        {% include './table.html' %}
+        {% javascript 'table' %}
+        <script>
+          $(document).ready(function() {
+              $('.table').DataTable( {
+                  "bPaginate": false,
+                   searching: false,
+                   "bLengthChange": false,
+                   'bInfo':false,
+                  "order": [[ 1, "desc" ]]
+              } );
+          } );
+        </script>
 
         {% elif page_name == 'project' %}
-          {% include './projects.html' %}
+          {% include './table.html' %}
+          {% javascript 'table' %}
+          <script>
+            $(document).ready(function() {
+                $('.table').DataTable( {
+                    "bPaginate": false,
+                     searching: false,
+                     "bLengthChange": false,
+                     'bInfo':false,
+                    "order": [[ 1, "desc" ]]
+                } );
+            } );
+          </script>
+
         {% endif %}
 
       </div>

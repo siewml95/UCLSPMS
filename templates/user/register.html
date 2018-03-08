@@ -8,7 +8,7 @@
     <div class="col-md-8">
   <div class="card notice-card">
                       <div class="card-header">
-                          Register
+                          {%if title %} {{title}} {% else %}Register{% endif %}
                       </div>
                       <div class="card-block">
                               {% crispy form %}

@@ -17,6 +17,13 @@ def qualified_class_name(cls):
     else:
         return cls.__name__
 class QUnitTestCase(QUnitTestCaseOriginal):
+    def _load_case(self):
+       self.sel.get(self._case_url())
+       msg = """There was a problem rendering the page; check the log for more information (make sure that at least one handler is logging "django.request" messages to file or another persistent source)"""
+       try :
+         self.wait_for_condition('return QUnit.Django.ready', msg)
+       except:
+         pass
 
     def generator(self):
 
@@ -29,30 +36,40 @@ class QUnitTestCase(QUnitTestCaseOriginal):
         self.__class__.setUpClass()
         # Start the webdriver also
         super(QUnitTestCase, self).setUp()
+        failedmodules = []
+        print("checking")
+
         try:
             self.__class__.generating = True
             self._load_case()
             script = 'return JSON.stringify(QUnit.Django.modules)'
             modules = json.loads(self.sel.execute_script(script))
+
             #failedmodules = json.loads(self.sel.execute_script("return QUnit.Django.results.modules"))
-            failedmodules = self.sel.execute_script("return QUnit.Django.customFailedAssertions")
+            print("checking")
+            #failedmodules = self.sel.execute_script("return QUnit.Django.customFailedAssertions")
+            numfailed = self.sel.execute_script("return QUnit.Django.results.failed")
+
+            msg = '\nQUnit Assertion Errors : \n'
+            '''
+            for item in failedmodules:
+                if item["failedAssertions"] != []:
+                    for itemy in item["failedAssertions"]:
+                       msg += "Test Name {} : {}\n".format(item["name"],itemy)
+            if msg != '\nQUnit Assertion Errors : \n':
+                raise self.failureException(msg) '''
+            if numfailed > 0 :
+                raise self.failureException("QUnit Assertion Errors : {} ".format(numfailed))
+
+            for module_name in modules:
+                        for test_name in modules[module_name]:
+                            yield self.qunit_case, module_name, test_name
+
 
         finally:
             del self.__class__.generating
             self.sel.quit()
             self.__class__.tearDownClass()
-        msg = '\nQUnit Assertion Errors : \n'
-
-        for item in failedmodules:
-            if item["failedAssertions"] != []:
-                for itemy in item["failedAssertions"]:
-                   msg += "Test Name {} : {}\n".format(item["name"],itemy)
-        if msg != '\nQUnit Assertion Errors : \n':
-            raise self.failureException(msg)
-            
-        for module_name in modules:
-                    for test_name in modules[module_name]:
-                        yield self.qunit_case, module_name, test_name
 
     def serve_page(self):
         """
@@ -75,3 +92,9 @@ class QUnitTestCase(QUnitTestCaseOriginal):
                                context)
 class TestingQunit(QUnitTestCase):
    test_file = 'qunit/test.js'
+   raw_script_urls = (
+                      '/static/build/project/js/jquery.min.js',
+                      '/static/build/project/js/compress.min.js',
+
+                      '/static/build/project/js/functions/index.js',
+                      )

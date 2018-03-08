@@ -4,6 +4,11 @@ from django.contrib import messages
 from django.contrib.auth.views import redirect_to_login
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+
+
+from django_tables2 import SingleTableView
+from django_tables2.config import RequestConfig
+
 class UserPassesTestMixinCustom(UserPassesTestMixin):
 
     required_url = None
@@ -95,7 +100,6 @@ class StaffRequiredMixin(UserPassesTestMixinCustom):
       def test_func(self):
             try:
               user_type = self.request.user.profile.type
-              print("staff required")
               print(user_type)
               if user_type == 3 or user_type == 4:
                  return True
@@ -103,3 +107,50 @@ class StaffRequiredMixin(UserPassesTestMixinCustom):
                  return False
             except:
              return False
+
+class StaffNotRequiredMixin(UserPassesTestMixinCustom):
+      error_message = "You Already Have a Staff Account!"
+
+      def test_func(self):
+            try:
+              if self.request.user.is_authenticated :
+                    user_type = self.request.user.profile.type
+                    if user_type == 3:
+                      return False
+                    else:
+                      return True
+              else:
+                 return True
+            except:
+             return False
+
+class StudentNotRequiredMixin(UserPassesTestMixin):
+      def test_func(self):
+            try:
+              if self.request.user.is_authenticated :
+                    user_type = self.request.user.profile.type
+                    if user_type == 1 or user_type == 2:
+                      return False
+                    else:
+                      return True
+              else:
+                 return True
+            except:
+             return False
+
+
+class PagedFilteredTableView(SingleTableView):
+   filter_class = None
+   formhelper_class = None
+   context_filter_name = 'filter'
+
+   def get_queryset(self,**kwargs):
+       qs = super(PagedFilteredTableView,self).get_queryset(**kwargs)
+       self.filter = self.filter_class(self.request.GET,queryset=qs)
+       self.filter.form.helper = self.formhelper_class()
+       return self.filter.qs
+
+   def get_context_data(self,**kwargs):
+       context = super(PagedFilteredTableView,self).get_context_data(**kwargs)
+       context[self.context_filter_name] = self.filter
+       return context

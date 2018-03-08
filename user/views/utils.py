@@ -1,14 +1,14 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse,JsonResponse
 from django.core.mail import EmailMultiAlternatives
-from djmatch.views import send_mail
+from djmatch.utils import send_mail
 from ..models import  Interest, Profile,Invitation
 from project.models import Project,Keyword
 from django.db.models import Q,Count
 import itertools , operator
 from  functools import reduce
 from django.template import loader
-
+from django.conf import settings
 def sendInterest(request):
     if request.user.is_authenticated and request.GET["id"]:
        if request.user.profile.is_verified == False:
@@ -57,8 +57,8 @@ def send_notification(request):
         project = Project.objects.all().get(pk=project_id)
         if project_id:
             subject = "You have received a notificaion from {}.".format("Notice Project")
-            message = "Dear Sir/Madam\n I am writing this email to inform you that I am interested in this project\n\n Project Name : {} \n Email: {}\n".format(project.title,project.created_by.email)
-            from_email = 'contact.dataspartan@gmail.com'
+            message = "Dear Sir/Madam\n I am writing this email to inform you that I am interested in this project\n\n Project Name : {} \n Email: {}\n".format(project.title,user.email)
+            from_email = settings.EMAIL_HOST_USER
             to_email = project.created_by.email
             send_mail(subject,message,from_email,to_email)
         else:
@@ -74,8 +74,8 @@ def sendBug(request):
         if email:
             subject = "Contact : {}.".format(email)
             message = "Dear Sir/Madam\nemail: {}\ncontent : \n{}\n ".format(email,content)
-            from_email = 'siewml95@gmail.com'
-            to_email = 'contact.dataspartan@gmail.com'
+            from_email = settings.EMAIL_HOST_USER
+            to_email = settings.EMAIL_HOST_USER
             send_mail(subject,message,from_email,to_email)
             #send_mail(subject,message,from_email,to_email,fail_silently=False)
             return JsonResponse({})
@@ -89,7 +89,7 @@ def sendBug(request):
         if email:
             subject = "Contact : {}.".format(email)
             message = "Dear Sir/Madam\n Email: {}\n content : \n {}\n".format(email,content)
-            from_email = 'contact.dataspartan@gmail.com'
+            from_email = settings.EMAIL_HOST_USER
             to_email = email
             send_mail(subject,message,from_email,to_email)
             return JsonResponse({})
@@ -164,9 +164,6 @@ def sendActivationEmail(activation_key,email_target):
 
 
         subject = "You have received a notificaion from {}.".format("Notice Project")
-        from_email = 'contact.dataspartan@gmail.com'
+        from_email = settings.EMAIL_HOST_USER
         to_email = email_target
         send_mail(subject,html_message,from_email,to_email,html=True)
-        '''msg = EmailMultiAlternatives(subject, text_content, from_email, to_email)
-        msg.attach_alternative(html_message, "text/html")
-        msg.send()'''
