@@ -92,8 +92,7 @@
     )
 
     var x = $('#id_summary').djangoSelect2({ width: '100%' })
-    var x = $('#id_organization').djangoSelect2({ width: '100%', allowClear: true,placeholder:"Enter Company Name" })
-    var x = $('#id_posted_by').djangoSelect2({ width: '100%', allowClear: true,placeholder:"Posted By ..." })
+    var x = $('#id_company').djangoSelect2({ width: '100%' })
 
   })
 }(this.jQuery))

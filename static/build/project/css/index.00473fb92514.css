@@ -690,7 +690,3 @@ table a:hover {
 .description {
   white-space: pre-line;
 }
-
-.open ul {
-  display:block !important;
-}

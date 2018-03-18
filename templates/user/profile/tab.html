@@ -66,7 +66,11 @@
         {% endif %}
       </ul>
       <div class="tab-pane" id="profile" style="padding:15px">
-        {% if page_name == 'profile' or page_name == 'password' or page_name == 'resend'%}
+        {% if page_name == 'profile' and user.profile.type == 3 %}
+          {% crispy form %}
+          <script src="{% static 'project/js/select2.js'%}"></script>
+          <script src="{% static 'project/js/django_select2.js'%}"></script>
+        {% elif page_name == 'profile' or page_name == 'password' or page_name == 'resend'%}
            {% crispy form %}
         {% elif page_name == 'staff_interest' %}
           {% include './table.html' %}

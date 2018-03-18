@@ -5,6 +5,12 @@
 {% block content %}
     <div class="container">
       <h2>{{first_name}} {{last_name}}</h2>
+      <br />
+      {% if avatar %}
+
+      <img src="{{avatar.url}}" height="250" width="200" style="margin-bottom:25px;"/>
+      {% endif %}
+      <br />
 
       <div class="row" id="profile">
              <div class="col-lg-8">

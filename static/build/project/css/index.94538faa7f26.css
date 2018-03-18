@@ -686,11 +686,3 @@ table a:hover {
 .hide {
   display:none!important;
 }
-
-.description {
-  white-space: pre-line;
-}
-
-.open ul {
-  display:block !important;
-}

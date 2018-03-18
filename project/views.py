@@ -6,7 +6,7 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .filters import ProjectFilter
 from .forms import ProjectModelForm, ProjectFilterForm,ProjectDetailFilterForm,ProjectModelUpdateForm
-from .models import Project,Keyword
+from .models import Project,Keyword,Organization
 from user.models import Interest
 from user.forms import InterestForm
 from rake_nltk import Rake
@@ -151,16 +151,26 @@ class ProjectCreateView(LoginRequiredMixin,StaffVerifiedRequiredMixin,CreateView
     def form_invalid(self, form):
         response = super(ProjectCreateView, self).form_invalid(form)
         print("bad")
+        print(form.__dict__)
         return response
 
 
     def form_valid(self,form):
          print("good")
          if self.request.user.is_authenticated():
-             project = form.save(created_by=self.request.user)
-             keywords = self.request.POST.getlist("keywords")
 
-             # project = Project.objects.create(title=title,summary=summary,deadline=deadline,created_by=self.request.user,company=company)
+             project = form.save(created_by=self.request.user)
+             print("hello")
+             organization = self.request.POST["organization"]
+             if organization.isdigit():
+                 old_organization = Organization.objects.get(pk=organization)
+                 project.organization = old_organization
+             else:
+                new_organization = Organization.objects.create(title=organization,type=2,status=True)
+                project.organization = new_organization
+
+
+             keywords = self.request.POST.getlist("keywords")
              array = []
              for item in keywords:
                  print(item)

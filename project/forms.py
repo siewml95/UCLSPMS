@@ -11,7 +11,7 @@ from django.db.models import Q,Count
 from django.forms.renderers import get_default_renderer
 from django.utils.safestring import mark_safe
 import datetime
-from .models import Project,Keyword
+from .models import Project,Keyword,Organization
 from crispy_forms.layout import Field
 Field.template = "field.html"
 class ModelSelect2TagWidgetCustom(ModelSelect2TagWidget):
@@ -143,16 +143,24 @@ class ProjectModelForm(forms.ModelForm):
     )
     class Meta:
         model = Project
-        fields = ['title','company','summary','keywords','deadline','image','status']
+        fields = ['title','summary','organization','keywords','deadline','image','status','url']
+        labels = {
+            'url': 'Website Url',
+        }
+
 
         #fields = ['title','company','summary','deadline','image','status']
     #keywords = MyField(widget=forms.TextInput,required=False)
     #keywords = MyField(required=False)
     #keywords =  forms.ChoiceField(widget=HeavySelect2Widget(data_url="/project/ajax"))
+    organization = forms.ModelChoiceField(widget=ModelSelect2TagWidgetCustom(
+        queryset=Organization.objects.active(),
+        search_fields=['title__icontains'],
+     ), queryset=Organization.objects.active(), required=False,label="Organization*")
     keywords = forms.ModelMultipleChoiceField(widget=ModelSelect2TagWidgetCustom(
         queryset=Keyword.objects.active(),
         search_fields=['title__icontains'],
-     ), queryset=Keyword.objects.none(), required=False)
+     ), queryset=Keyword.objects.active(), required=False)
     #print(keywords.__dict__)
     #$requirements = MyField(widget=forms.TextInput,required=False).set_attributes_from_name("keywords")
     deadline =  forms.DateField(
@@ -177,6 +185,12 @@ class ProjectModelForm(forms.ModelForm):
         print(project.image)
         return project
 
+
+
+    def clean_keywords(self):
+      keywords = self.cleaned_data['keywords']
+      return keywords
+
     def clean_deadline(self):
         date = self.cleaned_data['deadline']
         if date < datetime.date.today():
@@ -199,7 +213,9 @@ class ProjectModelForm(forms.ModelForm):
              Field('keywords',help_text="",data_tags="true",data_token_separators="[',']",data_minimum_input_length="0",data_delay="300",multiple="multiple",ajax__cache="true"),
              HTML('<div class="form-group"><div class="control-label col-sm-3"></div><span class="form-text offset-sm-3" style="color:black; font-size:13px;padding-left:10px;" display:inline><span class="badge badge-grey">Grey</span> Approved keywords.<br/> <span class="badge badge-success">Green</span> Users-created keywords.<br/><span class="badge badge-primary">Blue</span> New Keywords</span>'),
              HTML("<div class='form-group row' style='margin-top:10px;'><div class=' control-label col-sm-3 text-sm-right' style='font-size:13px;'><p>Recommended:</p></div><div class='recommended col-sm-9'><span></span></div></div></div>"),
-             Field('company',css_class="form-control col-sm-8",label_class = 'hello'),
+             Field('organization',label="Organization * ",data_tags="true",data_maximum_selection_length=1,data_minimum_input_length="3",data_delay="300",ajax__cache="true"),
+             HTML('<div class="form-group"><div class="control-label col-sm-3"></div><span class="form-text offset-sm-3" style="color:black; font-size:13px;padding-left:10px;" display:inline><span class="badge badge-grey">Grey</span> Approved Company.<br/> <span class="badge badge-success">Green</span> Users-created company.<br/><span class="badge badge-primary">Blue</span> New Company</span><br />'),
+             Field('url',label="Company URL"),
              Field('deadline'),
              Field('status'),
              Submit('submit','Submit',data_style="expand-right",css_class="ladda-button pull-right btn-primary")
@@ -230,7 +246,6 @@ class Select2TagWidgetCustom(Select2TagWidget):
 class ProjectDetailFilterForm(forms.Form):
 
         title = forms.CharField(required=False)
-        company = forms.CharField(required=False)
         summary = forms.ChoiceField(widget=Select2TagWidgetCustom,required=False)
         keywords = forms.ModelMultipleChoiceField(widget=ModelSelect2TagWidgetCustom(
                 placeholder="Search for Keywords",
@@ -270,11 +285,11 @@ class ProjectDetailFilterForm(forms.Form):
                       css_class="Title"
                    ),
                    Div(
-                      Field('company',placeholder="Type in Company..."),
+                      Field('organization',placeholder="Type in Company..."),
                       template = 'project/panel-content.html',
-                      title="Company",
+                      title="Organization",
                       css_id="2",
-                      css_class="Company"
+                      css_class="Organization"
                    ),
                    Div(
                      Field('summary',template = 'project/filter-conditions.html',data_token_separators="[',']",data_minimum_results_for_search="-1",data_minimum_input_length="0",data_delay="300",multiple="multiple",ajax__cache="true"),
@@ -333,11 +348,18 @@ class ProjectFilterForm(FormHelper):
                   css_class="Title",
                ),
                Div(
-                  Field('company',placeholder="Type in Company..."),
+                  Field('organization',placeholder="Search for keywords",data_minimum_results_for_search="-1",data_minimum_input_length="3",data_delay="300",ajax__cache="true"),
                   template = 'project/panel-content.html',
-                  title="Company",
+                  title="Organization",
                   css_id="2",
-                  css_class="Company"
+                  css_class="Organization"
+               ),
+               Div(
+                  Field('posted_by',data_placeholder="Search for keywords",data_minimum_results_for_search="-1",data_minimum_input_length="3",data_delay="300",ajax__cache="true"),
+                  template = 'project/panel-content.html',
+                  title="Posted By",
+                  css_id="2",
+                  css_class="Posted By"
                ),
                Div(
                  Field('summary',template = 'project/filter-conditions.html',data_token_separators="[',']",data_minimum_results_for_search="-1",data_minimum_input_length="0",data_delay="300",multiple="multiple",ajax__cache="true"),
@@ -369,7 +391,7 @@ class ProjectFilterForm(FormHelper):
 
              ),
 
-            Submit('submit', 'Submit'),
+            Submit('submit', 'Search'),
             Button('reset', 'Reset'),
 
         )

@@ -1,5 +1,6 @@
 import django_filters,ast,datetime
-from .models import Project,Keyword
+from .models import Project,Keyword, Organization
+from cuser.models import CUser as User
 from .forms import ProjectFilterForm
 from itertools import chain
 from collections import Counter
@@ -126,6 +127,10 @@ class Select2TagWidgetCustom(Select2TagWidget):
                 return [(None, subgroup, 0)]
 
 
+def get_name(self):
+        return self.first_name + " " + self.last_name
+User.add_to_class("__str__", get_name)
+
 class ProjectFilter(django_filters.FilterSet):
     class Meta:
         model = Project
@@ -139,16 +144,17 @@ class ProjectFilter(django_filters.FilterSet):
     )
 
     title = django_filters.CharFilter(method="title_contains")
-    company = django_filters.CharFilter(method="company_contains")
+    organization = django_filters.ModelChoiceFilter(queryset=Organization.objects.active(), error_messages={'invalid_pk_value':'hello'},required=False,method="organization_filter")
     strict = django_filters.BooleanFilter(label="Strict",method="nothing")
     summary = ChoiceFilterCustom(widget=Select2TagWidgetCustom,method="summary_filter")
+    posted_by = django_filters.ModelChoiceFilter(queryset=User.objects.all(), error_messages={'invalid_pk_value':'hello'},required=False,method="posted_by_filter")
     #keywords = django_filters.CharFilter(method="keywords_filter")
     #keywords = django_filters.CharFilter()
     #selectKeywords = django_filters.ChoiceFilter(method="keywords_filter")
     keywords = django_filters.ModelMultipleChoiceFilter(widget=ModelSelect2TagWidgetCustom(
-            queryset=Keyword.objects.all(),
+            queryset=Keyword.objects.active(),
             search_fields=['title__icontains'],
-        ), queryset=Keyword.objects.all(), error_messages={'invalid_pk_value':'hello'},required=False,method="keywords_filter")
+        ), queryset=Keyword.objects.active(), error_messages={'invalid_pk_value':'hello'},required=False,method="keywords_filter")
     deadline = django_filters.DateFilter(label="Deadline Before",
         widget=forms.TextInput(
             attrs={'type': 'date'}
@@ -160,8 +166,13 @@ class ProjectFilter(django_filters.FilterSet):
     def title_contains(self,queryset,name,value):
         return queryset.filter(title__icontains=value)
 
-    def company_contains(self,queryset,name,value):
-        return queryset.filter(company__icontains=value)
+    def organization_filter(self,queryset,name,value):
+        return queryset.filter(organization__title__icontains=value)
+
+    def posted_by_filter(self,queryset,name,value):
+        print("posted_by_filter")
+        print(value)
+        return queryset.filter(posted_by__icontains=value)
     def nothing(self, queryset, name, value):
         return queryset
     def filter_contains(self, queryset, name, value):
@@ -169,6 +180,9 @@ class ProjectFilter(django_filters.FilterSet):
         lookup = '__'.join([name, 'icontains'])
         print(value)
         return queryset.filter(**{lookup: value})
+
+    def posted_by_filter(self,queryset,name,value):
+        return queryset.filter(created_by__first_name__icontains=value)
 
 
     def summary_filter(self,queryset,name,value):

@@ -9,7 +9,7 @@ from django.views.generic.base import TemplateView
 from ..models import  Interest, Profile,Invitation
 from project.models import Project,Keyword
 from project.forms import ProjectDetailFilterForm
-from ..forms import UserRequestStaffForm,ApplyForm,AuthenticationForm,PasswordResetForm,SetPasswordForm,UserResendActivationForm,CustomUserCreationForm, UserProfileForm ,UserProfilePasswordForm,InterestForm,UserProfilePreferenceForm, CustomUserStaffCreationForm, BugForm,UserProfileInterestForm
+from ..forms import UserStaffProfileForm,UserRequestStaffForm,ApplyForm,AuthenticationForm,PasswordResetForm,SetPasswordForm,UserResendActivationForm,CustomUserCreationForm, UserProfileForm ,UserProfilePasswordForm,InterestForm,UserProfilePreferenceForm, CustomUserStaffCreationForm, BugForm,UserProfileInterestForm
 from ..filters import UserProfileInterestFilter
 from ..tables import UserProfileInterestTable
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -120,6 +120,8 @@ class UserProfileView(LoginRequiredMixin,UpdateView):
     def get_object(self):
       return self.request.user.profile
     def get_context_data(self, *args,**kwargs):
+          if self.request.user.profile.type == 3 :
+              self.form_class = UserStaffProfileForm
           context = super(UserProfileView, self).get_context_data(**kwargs)
           context["title"] = self.title
           print(self.request.user.profile.__dict__)
@@ -128,7 +130,6 @@ class UserProfileView(LoginRequiredMixin,UpdateView):
           return context
 
     def form_valid(self,form):
-        print("form_valid")
         obj = super(UserProfileView,self).form_valid(form)
         print(form.__dict__)
         messages.add_message(self.request, messages.SUCCESS, 'Profile Saved!.')
@@ -259,6 +260,7 @@ class UserProjectListView(ListView):
             user = get_object_or_404(User,pk=self.kwargs['pk'])
             context["first_name"] = user.first_name
             context["last_name"] = user.last_name
+            context["avatar"] = user.profile.avatar
             context["filterForm"] = ProjectDetailFilterForm
             context["title"] = self.title
             return context

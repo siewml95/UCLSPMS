@@ -27,6 +27,16 @@ function common(text) {
    return str
 }
 
+function unique(arr) {
+    var unique_array = []
+    for(var i = 0;i < arr.length; i++){
+        if(unique_array.indexOf(arr[i]) == -1){
+            unique_array.push(arr[i])
+        }
+    }
+    return unique_array
+}
+
 function extract(text) {
 
   var str = []
@@ -36,6 +46,7 @@ function extract(text) {
   console.log(str)
   temp = common(str)
   console.log(temp)
+  temp = unique(temp)
   if(temp.length > 20) {
     recommended = temp
   }else {

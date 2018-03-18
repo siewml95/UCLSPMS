@@ -75,7 +75,6 @@ class CustomUserStaffCreationForm(UserCreationForm):
     def save(self, commit=True):
         #Save the provided password in hashed format
         user = super(CustomUserStaffCreationForm, self).save(commit=False)
-        subscribe = self.cleaned_data["subscribe"]
         user.type = 3
         print(user.type)
         if commit:
@@ -84,9 +83,6 @@ class CustomUserStaffCreationForm(UserCreationForm):
         user.profile.activation_key = activation_key
         user.profile.key_expires = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=24)
         user.profile.save()
-        if subscribe:
-            subscription = Subscription.objects.create(user=user)
-            subscription.save()
         return user
 
 
@@ -199,6 +195,63 @@ class UserProfileAvatarForm(forms.ModelForm):
         model = Profile
         fields = ['avatar','resume']
 
+class UserStaffProfileForm(forms.ModelForm):
+    preferences = forms.ModelMultipleChoiceField(widget=ModelSelect2TagWidgetCustom(
+            queryset=Keyword.objects.active(),
+            search_fields=['title__icontains'],
+        ), queryset=Keyword.objects.active(), required=False)
+    def __init__(self, *args, **kwargs):
+        # magic
+        print("UserProfileForm")
+        print(kwargs['instance'])
+        self.user = kwargs['instance'].user
+        user_kwargs = kwargs.copy()
+        user_kwargs['instance'] = self.user
+        self.uf = UserForm(*args, **user_kwargs)
+        # magic end
+
+        super(UserStaffProfileForm, self).__init__(*args, **kwargs)
+
+        self.fields.update(self.uf.fields)
+        self.initial.update(self.uf.initial)
+
+
+        self.helper = FormHelper(self)
+        self.helper.form_id = "id-personal"
+        self.helper.form_method = "POST"
+
+        self.helper.form_action = '.'
+        self.helper.form_class = 'form-horizontal container form-file'
+        self.helper.label_class ="col-sm-3 text-sm-right"
+        self.helper.field_class = "col-sm-9 "
+        self.helper.layout = Layout(
+             Field('first_name', rows="6", css_class='input-xlarge'),
+             Field('last_name', rows="6", css_class='input-xlarge'),
+             Field('preferences',data_tags="true",data_token_separators="[',']",data_minimum_input_length="0",data_delay="300",multiple="multiple",ajax__cache="true"),
+             HTML('<div class="form-group"><div class="control-label col-sm-3"></div><span class="form-text offset-sm-3" style="color:black; font-size:13px;padding-left:10px;" display:inline><span class="badge badge-grey">Grey</span> Approved keywords.<br/> <span class="badge badge-success">Green</span> Users-created keywords.<br/><span class="badge badge-primary">Blue</span> Keywords not created yet</span>'),
+             Field('avatar',template="user/profile/avatar.html",rows="6", css_class='input-xlarge'),
+             Field('resume',template="user/profile/resume.html",rows="6", css_class='input-xlarge'),
+             Field('checkbox',template="empty.html"),
+             Submit('submit','Submit',data_style="expand-right",css_class="ladda-button pull-right btn-primary")
+        )
+        # define fields order if needed
+
+
+    def save(self,*args, **kwargs):
+        # save both forms
+        user = self.uf.save(*args, **kwargs)
+        profile = super(UserStaffProfileForm, self).save(*args, **kwargs)
+        print(profile)
+        if self.cleaned_data.get("checkbox"):
+         profile.avatar = ""
+         profile.save()
+        return profile
+
+    class Meta:
+        model = Profile
+        fields = ('avatar','preferences')
+    checkbox = forms.BooleanField(required=False)
+
 class UserProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         # magic
@@ -310,9 +363,9 @@ class UserProfilePreferenceForm(forms.ModelForm):
         model = Profile
         fields = ('preferences',)
     preferences = forms.ModelMultipleChoiceField(widget=ModelSelect2TagWidgetCustom(
-        queryset=Keyword.objects.all(),
+        queryset=Keyword.objects.active(),
         search_fields=['title__icontains'],
-    ), queryset=Keyword.objects.all(), required=False)
+    ), queryset=Keyword.objects.active(), required=False)
     def __init__(self,*args,**kwargs):
         super(UserProfilePreferenceForm,self).__init__(*args,**kwargs)
         self.helper = FormHelper(self)

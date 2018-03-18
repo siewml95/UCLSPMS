@@ -8,6 +8,22 @@ from cuser.models import CUser as User
 import datetime
 # Create your models here.
 
+class OrganizationQuerySet(models.QuerySet):
+    def active(self):
+        return self.filter(status=True)
+    def inactive(self):
+        return self.filter(status=False)
+
+
+class OrganizationManager(models.Manager):
+    def get_queryset(self):
+        return OrganizationQuerySet(self.model,using=self._db)
+
+    def active(self):
+        return self.get_queryset().active()
+
+    def inactive(self):
+        return self.get_queryset().inactive()
 class ProjectQuerySet(models.QuerySet):
     def published(self):
         #return self.filter(status=2,deadline__lte=datetime.datetime.now())
@@ -40,6 +56,16 @@ class KeywordManager(models.Manager):
         print("keyword requirement manager")
         return self.get_queryset().inactive()
 
+
+class Organization(models.Model):
+     title = models.CharField(max_length=120,unique=True)
+     type = models.IntegerField(default=1)
+     status = models.BooleanField(default=False)
+     objects = OrganizationManager()
+
+     def __str__(self):
+         return self.title
+
 class Keyword(models.Model):
      title = models.CharField(max_length = 120,unique=True)
      type = models.IntegerField(default=1)
@@ -60,7 +86,7 @@ class Project(models.Model):
     title = models.CharField(max_length=250,blank=False)
     slug = models.SlugField(unique=True,blank=False)
     summary = models.TextField(blank=False)
-    company = models.CharField(max_length=250,blank=False)
+    organization = models.ForeignKey(Organization,default=None,null=True)
     status = models.IntegerField(choices=STATUS_CHOICES,default=1)
     image = models.FileField(blank=True,null=True)
     #publish = models.DateField(auto_now=False,auto_now_add=False)
@@ -68,6 +94,7 @@ class Project(models.Model):
     timestamp = models.DateTimeField(auto_now=False,auto_now_add=True)
     deadline = models.DateField(auto_now=False,auto_now_add=False)
     keywords = models.ManyToManyField(Keyword)
+    url = models.URLField(null=True,blank=True)
     created_by = models.ForeignKey(User,default=1)
     objects = ProjectManager()
 

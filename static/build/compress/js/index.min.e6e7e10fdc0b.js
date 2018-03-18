@@ -433,7 +433,15 @@ var instance=$(this).data('select2');if(instance==null&&window.console&&console.
 ret=instance[options].apply(instance,args);});if($.inArray(options,thisMethods)>-1){return this;}
 return ret;}else{throw new Error('Invalid arguments for Select2: '+options);}};}
 if($.fn.select2.defaults==null){$.fn.select2.defaults=Defaults;}
-return Select2;});return{define:S2.define,require:S2.require};}());var select2=S2.require('jquery.select2');jQuery.fn.select2.amd=S2;return select2;}));;(function($){var init=function($element,options){$element.select2(options)}
+return Select2;});return{define:S2.define,require:S2.require};}());var select2=S2.require('jquery.select2');jQuery.fn.select2.amd=S2;return select2;}));;$(document).ready(function(){var $recommendations=$('.recommendations')
+var target=document.getElementById('recommendations');var spinner=new Spinner({top:'150%',left:"25%",radius:5,color:'#000'}).spin(target);console.log(spinner)
+var id=$('input[name="id"]').val()
+if(!id){id=0;}
+$.ajax({method:'GET',url:'/user/ajax/getIndexRecommendations',data:{id:id},success:function(data){console.log(data.recommendations)
+$.each(data.recommendations,function(index,recommendation){$recommendations.append('<tr><td><a style="display:block;" '+' href="/project/single/'+recommendation.slug+'">'+recommendation.title+'</a></td></tr>')})
+spinner.stop()
+},error:function(err){spinner.stop()
+}})});(function($){var init=function($element,options){$element.select2(options)}
 var initHeavy=function($element,options){var settings=$.extend({ajax:{data:function(params){var result={term:params.term,page:params.page,bitch:"bitch",field_id:$element.data('field_id')}
 var dependentFields=$element.data('select2-dependent-fields')
 if(dependentFields){dependentFields=dependentFields.trim().split(/\s+/)
@@ -450,29 +458,8 @@ if(tag.type==1){return tag.text}else{if(tag.color){return container.css("backgro
 console.log(params)
 return{id:params.term,text:params.term,color:"red"}},})
 var x=$('#id_summary').djangoSelect2({width:'100%'})
-var x=$('#id_organization').djangoSelect2({width:'100%',allowClear:true,placeholder:"Enter Company Name"})
-var x=$('#id_posted_by').djangoSelect2({width:'100%',allowClear:true,placeholder:"Posted By ..."})})}(this.jQuery));$(document).ready(function(){var $recommendations=$('.recommendations')
-var target=document.getElementById('recommendations');var spinner=new Spinner({top:'150%',left:"25%",radius:5,color:'#000'}).spin(target);console.log(spinner)
-var id=$('input[name="id"]').val()
-if(!id){id=0;}
-$.ajax({method:'GET',url:'/user/ajax/getIndexRecommendations',data:{id:id},success:function(data){console.log(data.recommendations)
-$.each(data.recommendations,function(index,recommendation){$recommendations.append('<tr><td><a style="display:block;" '+' href="/project/single/'+recommendation.slug+'">'+recommendation.title+'</a></td></tr>')})
-spinner.stop()
-},error:function(err){spinner.stop()
-}})});$(document).ready(function(){$('#button-id-reset').click(function(){$('[id^=detail-]').each(function(){$this=$(this)
+var x=$('#id_company').djangoSelect2({width:'100%'})})}(this.jQuery));$(document).ready(function(){$('#button-id-reset').click(function(){$('[id^=detail-]').each(function(){$this=$(this)
 $this.find('select.django-select2').empty().trigger('change')
 $this.find('select.select.sf').val("0")
 $this.find('input').val("")
-$this.find('input').prop("checked",false);})})});;$(document).ready(function(){var $recommendations=$('.project-recommendations')
-var target=document.getElementById('project-recommendations');var spinner=new Spinner({top:'150%',left:"25%",radius:5,color:'#000'}).spin(target);$.ajax({method:'GET',url:'/project/ajax/getDetailRecommendations',data:{id:$('input[name="id"]').val()},success:function(data){console.log(data)
-$.each(data.keywords,function(index,keyword){$recommendations.append('<a style="display:block;" '+' href="/project/single/'+keyword.slug+'">'+keyword.title+'</a>')})
-spinner.stop()},error:function(err){spinner.stop()
-console.log($('input[name="id"]').val())}})
-$('#myModal button[name="submit"]').click(function(e){e.preventDefault()
-var l=Ladda.create(this);l.start()
-$.ajax({method:'GET',url:'/user/ajax/sendInterest',data:{id:$('input[name="id"]').val(),description:$('textarea[name="description"]').val()},success:function(data){if(data.amount){$('#modalBtn').html("Send Interest")
-$('.count').html(data.amount)
-toastr.success('Succesfully sent!')}
-l.stop()
-$('#myModal').modal('toggle')},error:function(err){toastr.error(err.responseJSON.error)
-l.stop()}})})})}).call(this);
+$this.find('input').prop("checked",false);})})});}).call(this);

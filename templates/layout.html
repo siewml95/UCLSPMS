@@ -13,7 +13,7 @@
     <title> Notice-Board | {{title}} </title>
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
 
-    <link rel="icon" href="../../favicon.ico">
+    <link rel="icon" href="{% static 'project/favicon.ico' %}">
     <!-- Bootstrap core CSS-->
     {% stylesheet 'my_app' %}
     <!--
@@ -30,7 +30,7 @@
             <span class="ion-grid icon-sm"></span>
         </button>
         <a class="navbar-brand hero-heading" href="/">
-          NoticeBoard
+          SPP
         {% if user.is_authenticated %}
          {% if user.profile.type == 3 %}
            <span style="color:gba(255, 255, 255, 0.8)"> - Staff</span>
@@ -50,7 +50,15 @@
               <li class="nav-item mr-3"><a class="nav-link page-scroll" href="/user/profile">Profile</a></li>
               <li class="nav-item mr-3"><a class="nav-link page-scroll" href="/user/logout">Logout</a></li>
               {% else %}
-              <li  class="nav-item mr-3"><a class="nav-link page-scroll" href="/user/register">Register</a></li>
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Register
+                  </a>
+                  <ul class="dropdown-menu" >
+                    <li><a class="dropdown-item" href="/user/register">Student</a></li>
+                    <li><a class="dropdown-item" href="/user/staff_request/">Staff</a></li>
+                  </ul>
+                </li>
               <li  class="nav-item mr-3"><a class="nav-link page-scroll" href="/user/login">Login</a></li>
               {% endif %}
             </ul>

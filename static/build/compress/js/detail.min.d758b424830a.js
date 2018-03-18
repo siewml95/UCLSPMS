@@ -450,8 +450,7 @@ if(tag.type==1){return tag.text}else{if(tag.color){return container.css("backgro
 console.log(params)
 return{id:params.term,text:params.term,color:"red"}},})
 var x=$('#id_summary').djangoSelect2({width:'100%'})
-var x=$('#id_organization').djangoSelect2({width:'100%',allowClear:true,placeholder:"Enter Company Name"})
-var x=$('#id_posted_by').djangoSelect2({width:'100%',allowClear:true,placeholder:"Posted By ..."})})}(this.jQuery));$(document).ready(function(){var $recommendations=$('.recommendations')
+var x=$('#id_company').djangoSelect2({width:'100%'})})}(this.jQuery));$(document).ready(function(){var $recommendations=$('.recommendations')
 var target=document.getElementById('recommendations');var spinner=new Spinner({top:'150%',left:"25%",radius:5,color:'#000'}).spin(target);console.log(spinner)
 var id=$('input[name="id"]').val()
 if(!id){id=0;}

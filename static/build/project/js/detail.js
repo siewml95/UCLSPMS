@@ -29,7 +29,8 @@ $(document).ready(function(){
       data : {id: $('input[name="id"]').val(),description: $('textarea[name="description"]').val()},
       success : function(data) {
          if(data.amount) {
-           $('#modalBtn').html("Send Interest " + data.amount)
+           $('#modalBtn').html("Send Interest")
+           $('.count').html(data.amount)
            toastr.success('Succesfully sent!')
          }
          l.stop()
@@ -41,6 +42,6 @@ $(document).ready(function(){
       }
     })
   })
-  
+
 
 })
