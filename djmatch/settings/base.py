@@ -12,10 +12,10 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 from os.path import join, dirname
-#from dotenv import load_dotenv
+from dotenv import load_dotenv
 from ..finders import MyStaticFilesConfig
-#dotenv_path = join(dirname(__file__), '../../.env')
-#load_dotenv(dotenv_path)
+dotenv_path = join(dirname(__file__), '../../.env')
+load_dotenv(dotenv_path)
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -105,23 +105,11 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'djmatch',
         'USER': 'djmatch',
-        'PASSWORD': 'Qazwsx12@',
+        'PASSWORD': 'xxxx',
         'HOST': '127.0.0.1',
     }
 }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'heroku_89c0b34174e3d16',
-        'USER': 'b78e5634f17644',
-        'PASSWORD': '7a57fde5',
-        'HOST': 'us-cdbr-iron-east-05.cleardb.net',
-        'OPTIONS': {
-            'sql_mode': 'traditional',
-        }
-    }
-}
 '''
 SELECT2_CSS = ''
 SELECT2_JS = ''
@@ -213,9 +201,9 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 #STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 SESSION_ENGINE  = "django.contrib.sessions.backends.cached_db"
 
-AWS_ACCESS_KEY_ID = 'AKIAIKKLZZHMF7NXV5GA'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'notice-board-static'
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID"),
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY"),
+AWS_STORAGE_BUCKET_NAME = os.environ.get('notice-board-static'),
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',

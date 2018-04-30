@@ -1,5 +1,5 @@
 from django.test import TestCase, RequestFactory
-from ..models import Keyword,Project
+from ..models import Keyword,Project,Organization
 from cuser.models import CUser as User
 import datetime
 
@@ -28,8 +28,10 @@ class ProjectModelTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
+        cls.organization = Organization.objects.create(title="UCL",status=True)
+        cls.organization.save()
         user = User.objects.create_user(email="siewml9512223@gmail.")
-        Project.objects.create(title="Test Project",summary="testing project",slug="test-project",company="UCL",created_by=user,deadline=datetime.datetime.now())
+        Project.objects.create(title="Test Project",summary="testing project",slug="test-project",organization=cls.organization,created_by=user,deadline=datetime.datetime.now())
 
     def test_title_label(self):
         project = Project.objects.get(id=1)
@@ -47,10 +49,10 @@ class ProjectModelTest(TestCase):
         self.assertEquals(field_label,'slug')
 
 
-    def test_company_label(self):
+    def test_organization_label(self):
         project = Project.objects.get(id=1)
-        field_label = project._meta.get_field('company').verbose_name
-        self.assertEquals(field_label,'company')
+        field_label = project._meta.get_field('organization').verbose_name
+        self.assertEquals(field_label,'organization')
 
     def test_created_by_label(self):
         project = Project.objects.get(id=1)

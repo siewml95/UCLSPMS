@@ -3,10 +3,20 @@ from django.contrib.staticfiles.testing import LiveServerTestCase
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium import webdriver
 from cuser.models import CUser as User
-from .models import Project
+from ..models import Project,Organization
 from django.urls import reverse
 import datetime
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+import time,os
+
+def load_driver():
+    if os.environ.get("DRIVER") == "MOZILLA":
+        return webdriver.Firefox()
+    elif os.environ.get("DRIVER") == "PHANTOMJS":
+        return webdriver.PhantomJS()
+    else :
+         return webdriver.Chrome()
 
 def login(self,url,email,password):
     self.client.login(email=email, password=password) #Native django test client
@@ -24,15 +34,17 @@ class ClientProjectTest(LiveServerTestCase):
          user.profile.type = 3
          user.profile.is_verified = True
          user.profile.save()
+         organization = Organization.objects.create(title="UCL",status=True)
+         organization.save()
          #super().setUpClass()
          cls.users = []
          cls.projects = []
          for x in range(1,12):
             print(x)
-            project = Project.objects.create(title="Test Project {}".format(x),summary="testing project",slug="test-project-{}".format(x),company="UCL",created_by=user,status=2,deadline=(datetime.datetime.now() + datetime.timedelta(days=1)))
+            project = Project.objects.create(title="Test Project {}".format(x),summary="testing project",slug="test-project-{}".format(x),organization=organization,created_by=user,status=2,deadline=(datetime.datetime.now() + datetime.timedelta(days=1)))
             cls.projects.append(project)
 
-         cls.selenium = webdriver.Chrome()
+         cls.selenium = load_driver()
          cls.selenium.implicitly_wait(10)
 
      @classmethod
@@ -73,9 +85,10 @@ class ClientCreateProjectTest(LiveServerTestCase):
         user.profile.type = 3
         user.profile.is_verified = True
         user.profile.save()
-
+        #organization = Organization.objects.create(title="UCL",status=True)
+        #organization.save()
         #super().setUpClass()
-        cls.selenium = webdriver.Chrome()
+        cls.selenium = load_driver()
         cls.selenium.implicitly_wait(10)
 
     @classmethod
@@ -94,8 +107,12 @@ class ClientCreateProjectTest(LiveServerTestCase):
         title_input.send_keys('Project 1')
         summary_input = self.selenium.find_element_by_name("summary")
         summary_input.send_keys('Summary 1')
-        company_input = self.selenium.find_element_by_name("company")
-        company_input.send_keys('Company')
+        organization_input = self.selenium.find_elements_by_class_name('select2-search__field')[1]
+        organization_input.send_keys('UCL\n')
+        time.sleep(3)
+        organization_input.send_keys(Keys.ENTER)
+
+                #self.selenium.find_elements_by_tag_name("body").send_keys(Keys.ENTER);
         deadline_input = self.selenium.find_element_by_name('deadline')
         #deadline_input.send_keys(datetime.datetime.now())
         deadline_input.send_keys("01012020")
@@ -104,8 +121,8 @@ class ClientCreateProjectTest(LiveServerTestCase):
           if option.text == "Active":
             option.click()
         resp = self.selenium.find_element_by_xpath('//input[@value="Submit"]').submit()
-        self.selenium.implicitly_wait(1000000)
-
+        time.sleep(5)
+        print(resp)
         self.assertEquals(self.selenium.current_url,expected_url)
 
 
@@ -117,10 +134,12 @@ class ClientUpdateProjectTest(LiveServerTestCase):
         user.profile.type = 3
         user.profile.is_verified = True
         user.profile.save()
-        project = Project.objects.create(id=100,title="Test Project",summary="testing project",slug="test-project",company="UCL",created_by=user,deadline=datetime.datetime.now())
+        organization = Organization.objects.create(title="UCL",status=True)
+        organization.save()
+        project = Project.objects.create(id=100,title="Test Project",summary="testing project",slug="test-project",organization=organization,created_by=user,deadline=datetime.datetime.now())
         project.save()
         #super().setUpClass()
-        cls.selenium = webdriver.Chrome()
+        cls.selenium = load_driver()
         cls.selenium.implicitly_wait(10)
 
     @classmethod
@@ -137,8 +156,8 @@ class ClientUpdateProjectTest(LiveServerTestCase):
         title_input.send_keys('Project 1')
         summary_input = self.selenium.find_element_by_name("summary")
         summary_input.send_keys('Summary 1')
-        company_input = self.selenium.find_element_by_name("company")
-        company_input.send_keys('Company')
+        organization_input = self.selenium.find_element_by_class_name('select2-search__field')
+        organization_input.send_keys('UCL')
         deadline_input = self.selenium.find_element_by_name('deadline')
         deadline_input.send_keys("01012020")
         status_input = self.selenium.find_element_by_name('status')

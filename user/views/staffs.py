@@ -77,7 +77,9 @@ class UserProfileProjectView(LoginRequiredMixin,StaffRequiredMixin,PagedFiltered
     def get_context_data(self, **kwargs):
           context = super(UserProfileProjectView, self).get_context_data(**kwargs)
           search_query = self.get_queryset()
-          table = self.table_class(search_query)
+          print("search query")
+          print(search_query)
+          table = self.table_class(search_query.order_by("-timestamp"))
           RequestConfig(self.request,paginate={'per_page': self.paginate_by}).configure(table)
           context['table'] = table
           context["page_name"] = "project"
@@ -104,7 +106,7 @@ class UserProfileStaffInterestView(LoginRequiredMixin,StaffRequiredMixin,PagedFi
     def get_context_data(self, **kwargs):
           context = super(UserProfileStaffInterestView, self).get_context_data(**kwargs)
           search_query = self.get_queryset()
-          table = self.table_class(search_query)
+          table = self.table_class(search_query.order_by("-timestamp"))
           RequestConfig(self.request,paginate={'per_page': self.paginate_by}).configure(table)
           context['table'] = table
           context["page_name"] = "staff_interest"

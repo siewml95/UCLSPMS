@@ -1,0 +1,106 @@
+1525049727856	geckodriver	INFO	geckodriver 0.19.1
+1525049727879	geckodriver	INFO	Listening on 127.0.0.1:50893
+1525049729145	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-profile" "/tmp/rust_mozprofile.mLQagIUQSZov"
+
+(firefox:1020): Gtk-WARNING **: Theme parsing error: gtk-widgets.css:23:18: not a number
+
+(firefox:1020): Gtk-WARNING **: Theme parsing error: gtk-widgets.css:23:18: Expected a string.
+
+(firefox:1020): Gtk-WARNING **: Theme parsing error: gtk-widgets.css:815:10: not a number
+
+(firefox:1020): Gtk-WARNING **: Theme parsing error: gtk-widgets.css:815:24: Using Pango syntax for the font: style property is deprecated; please use CSS syntax
+
+(firefox:1020): Gtk-WARNING **: Theme parsing error: gtk-widgets.css:1953:14: not a number
+
+(firefox:1020): Gtk-WARNING **: Theme parsing error: gtk-widgets.css:1953:14: Expected a string.
+
+(firefox:1020): Gtk-WARNING **: Theme parsing error: nautilus.css:50:71: Using one color stop with linear-gradient() is deprecated.
+
+(firefox:1020): Gtk-WARNING **: Theme parsing error: nautilus.css:51:71: Using one color stop with linear-gradient() is deprecated.
+
+(firefox:1020): Gtk-WARNING **: Theme parsing error: gtk-lubuntu.css:252:14: not a number
+
+(firefox:1020): Gtk-WARNING **: Theme parsing error: gtk-lubuntu.css:252:14: Expected a string.
+1525049731780	addons.xpi	WARN	Add-on langpack-en-ZA@firefox.mozilla.org is not compatible with application version.
+1525049731784	addons.xpi	WARN	Add-on langpack-en-ZA@firefox.mozilla.org is not compatible with application version.
+1525049731809	addons.xpi	WARN	Add-on langpack-en-GB@firefox.mozilla.org is not compatible with application version.
+1525049731811	addons.xpi	WARN	Add-on langpack-en-GB@firefox.mozilla.org is not compatible with application version.
+1525049732533	addons.xpi	WARN	Add-on langpack-en-ZA@firefox.mozilla.org is not compatible with application version.
+1525049732534	addons.xpi	WARN	Add-on langpack-en-GB@firefox.mozilla.org is not compatible with application version.
+1525049732541	addons.xpi	WARN	Add-on langpack-en-ZA@firefox.mozilla.org is not compatible with application version.
+1525049732542	addons.xpi	WARN	Add-on langpack-en-GB@firefox.mozilla.org is not compatible with application version.
+1525049732903	Marionette	INFO	Listening on port 2828
+
+(/usr/lib/firefox/plugin-container:1097): Gtk-WARNING **: Theme parsing error: gtk-widgets.css:23:18: not a number
+
+(/usr/lib/firefox/plugin-container:1097): Gtk-WARNING **: Theme parsing error: gtk-widgets.css:23:18: Expected a string.
+
+(/usr/lib/firefox/plugin-container:1097): Gtk-WARNING **: Theme parsing error: gtk-widgets.css:815:10: not a number
+
+(/usr/lib/firefox/plugin-container:1097): Gtk-WARNING **: Theme parsing error: gtk-widgets.css:815:24: Using Pango syntax for the font: style property is deprecated; please use CSS syntax
+
+(/usr/lib/firefox/plugin-container:1097): Gtk-WARNING **: Theme parsing error: gtk-widgets.css:1953:14: not a number
+
+(/usr/lib/firefox/plugin-container:1097): Gtk-WARNING **: Theme parsing error: gtk-widgets.css:1953:14: Expected a string.
+
+(/usr/lib/firefox/plugin-container:1097): Gtk-WARNING **: Theme parsing error: nautilus.css:50:71: Using one color stop with linear-gradient() is deprecated.
+
+(/usr/lib/firefox/plugin-container:1097): Gtk-WARNING **: Theme parsing error: nautilus.css:51:71: Using one color stop with linear-gradient() is deprecated.
+
+(/usr/lib/firefox/plugin-container:1097): Gtk-WARNING **: Theme parsing error: gtk-lubuntu.css:252:14: not a number
+
+(/usr/lib/firefox/plugin-container:1097): Gtk-WARNING **: Theme parsing error: gtk-lubuntu.css:252:14: Expected a string.
+1525049751628	geckodriver	INFO	geckodriver 0.19.1
+1525049751631	geckodriver	INFO	Listening on 127.0.0.1:58353
+1525049752851	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-profile" "/tmp/rust_mozprofile.3N5iSL3hxpz5"
+
+(firefox:1149): Gtk-WARNING **: Theme parsing error: gtk-widgets.css:23:18: not a number
+
+(firefox:1149): Gtk-WARNING **: Theme parsing error: gtk-widgets.css:23:18: Expected a string.
+
+(firefox:1149): Gtk-WARNING **: Theme parsing error: gtk-widgets.css:815:10: not a number
+
+(firefox:1149): Gtk-WARNING **: Theme parsing error: gtk-widgets.css:815:24: Using Pango syntax for the font: style property is deprecated; please use CSS syntax
+
+(firefox:1149): Gtk-WARNING **: Theme parsing error: gtk-widgets.css:1953:14: not a number
+
+(firefox:1149): Gtk-WARNING **: Theme parsing error: gtk-widgets.css:1953:14: Expected a string.
+
+(firefox:1149): Gtk-WARNING **: Theme parsing error: nautilus.css:50:71: Using one color stop with linear-gradient() is deprecated.
+
+(firefox:1149): Gtk-WARNING **: Theme parsing error: nautilus.css:51:71: Using one color stop with linear-gradient() is deprecated.
+
+(firefox:1149): Gtk-WARNING **: Theme parsing error: gtk-lubuntu.css:252:14: not a number
+
+(firefox:1149): Gtk-WARNING **: Theme parsing error: gtk-lubuntu.css:252:14: Expected a string.
+1525049753207	addons.xpi	WARN	Add-on langpack-en-ZA@firefox.mozilla.org is not compatible with application version.
+1525049753208	addons.xpi	WARN	Add-on langpack-en-ZA@firefox.mozilla.org is not compatible with application version.
+1525049753217	addons.xpi	WARN	Add-on langpack-en-GB@firefox.mozilla.org is not compatible with application version.
+1525049753218	addons.xpi	WARN	Add-on langpack-en-GB@firefox.mozilla.org is not compatible with application version.
+1525049753532	addons.xpi	WARN	Add-on langpack-en-ZA@firefox.mozilla.org is not compatible with application version.
+1525049753532	addons.xpi	WARN	Add-on langpack-en-GB@firefox.mozilla.org is not compatible with application version.
+1525049753537	addons.xpi	WARN	Add-on langpack-en-ZA@firefox.mozilla.org is not compatible with application version.
+1525049753538	addons.xpi	WARN	Add-on langpack-en-GB@firefox.mozilla.org is not compatible with application version.
+1525049753771	Marionette	INFO	Listening on port 2828
+
+(/usr/lib/firefox/plugin-container:1227): Gtk-WARNING **: Theme parsing error: gtk-widgets.css:23:18: not a number
+
+(/usr/lib/firefox/plugin-container:1227): Gtk-WARNING **: Theme parsing error: gtk-widgets.css:23:18: Expected a string.
+
+(/usr/lib/firefox/plugin-container:1227): Gtk-WARNING **: Theme parsing error: gtk-widgets.css:815:10: not a number
+
+(/usr/lib/firefox/plugin-container:1227): Gtk-WARNING **: Theme parsing error: gtk-widgets.css:815:24: Using Pango syntax for the font: style property is deprecated; please use CSS syntax
+
+(/usr/lib/firefox/plugin-container:1227): Gtk-WARNING **: Theme parsing error: gtk-widgets.css:1953:14: not a number
+
+(/usr/lib/firefox/plugin-container:1227): Gtk-WARNING **: Theme parsing error: gtk-widgets.css:1953:14: Expected a string.
+
+(/usr/lib/firefox/plugin-container:1227): Gtk-WARNING **: Theme parsing error: nautilus.css:50:71: Using one color stop with linear-gradient() is deprecated.
+
+(/usr/lib/firefox/plugin-container:1227): Gtk-WARNING **: Theme parsing error: nautilus.css:51:71: Using one color stop with linear-gradient() is deprecated.
+
+(/usr/lib/firefox/plugin-container:1227): Gtk-WARNING **: Theme parsing error: gtk-lubuntu.css:252:14: not a number
+
+(/usr/lib/firefox/plugin-container:1227): Gtk-WARNING **: Theme parsing error: gtk-lubuntu.css:252:14: Expected a string.
+[Child 1227] ###!!! ABORT: Aborting on channel error.: file /build/firefox-g0eMBM/firefox-52.0.1+build2/ipc/glue/MessageChannel.cpp, line 2143
+[Child 1227] ###!!! ABORT: Aborting on channel error.: file /build/firefox-g0eMBM/firefox-52.0.1+build2/ipc/glue/MessageChannel.cpp, line 2143

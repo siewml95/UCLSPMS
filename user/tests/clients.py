@@ -4,10 +4,18 @@ from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 from cuser.models import CUser as User
-from project.models import Project
-from .models import Interest
+from project.models import Project,Organization
+from ..models import Interest
 from django.urls import reverse
-import datetime
+import datetime,time,os
+
+def load_driver():
+    if os.environ.get("DRIVER") == "MOZILLA":
+        return webdriver.Firefox()
+    elif os.environ.get("DRIVER") == "PHANTOMJS":
+        return webdriver.PhantomJS()
+    else :
+        return webdriver.Chrome()
 
 def login(self,url,email,password):
     self.selenium.delete_all_cookies();
@@ -25,8 +33,7 @@ class ClientLoginTest(LiveServerTestCase):
     def setUp(cls):
         user = User.objects.create_user(email="siewml95@gmail.com",password="qwerty12")
 
-        #super().setUpClass()
-        cls.selenium = webdriver.Chrome()
+        cls.selenium = load_driver()
         cls.selenium.implicitly_wait(10)
 
     @classmethod
@@ -64,7 +71,7 @@ class ClientUserProfileTest(LiveServerTestCase):
         user.profile.is_verified = True
         user.profile.save()
         #super().setUpClass()
-        cls.selenium = webdriver.Chrome()
+        cls.selenium = load_driver()
         cls.selenium.implicitly_wait(10)
 
     @classmethod
@@ -86,6 +93,7 @@ class ClientUserProfileTest(LiveServerTestCase):
         updated_user = User.objects.get(id=1)
         self.assertEquals(updated_user.first_name,"First Name")
 
+
 class ClientUserProfilePasswordTest(LiveServerTestCase):
     @classmethod
     def setUp(cls):
@@ -95,7 +103,7 @@ class ClientUserProfilePasswordTest(LiveServerTestCase):
         user.profile.is_verified = True
         user.profile.save()
         #super().setUpClass()
-        cls.selenium = webdriver.Chrome()
+        cls.selenium = load_driver()
         cls.selenium.implicitly_wait(10)
 
     @classmethod
@@ -129,7 +137,7 @@ class ClientUserProfileTest(LiveServerTestCase):
         user.profile.is_verified = True
         user.profile.save()
         #super().setUpClass()
-        cls.selenium = webdriver.Chrome()
+        cls.selenium = load_driver()
         cls.selenium.implicitly_wait(10)
 
     @classmethod
@@ -156,7 +164,7 @@ class ClientUserRegisterTest(LiveServerTestCase):
     @classmethod
     def setUp(cls):
         #super().setUpClass()
-        cls.selenium = webdriver.Chrome()
+        cls.selenium = load_driver()
         cls.selenium.implicitly_wait(10)
 
     @classmethod
@@ -202,14 +210,16 @@ class ClientUserProfileStudentInterestTest(LiveServerTestCase):
         user.profile.save()
         cls.users = []
         cls.projects = []
+        cls.organization = Organization.objects.create(title="UCL",status=True)
+        cls.organization.save()
         for x in range(1,12):
             print(x)
-            project = Project.objects.create(title="Test Project {}".format(x),summary="testing project",slug="test-project-{}".format(x),company="UCL",created_by=staff,deadline=datetime.datetime.now())
+            project = Project.objects.create(title="Test Project {}".format(x),summary="testing project",slug="test-project-{}".format(x),organization=cls.organization,created_by=staff,deadline=datetime.datetime.now())
             cls.projects.append(project)
 
         for x in range(1,12):
             Interest.objects.create(user=user,project=cls.projects[x-1])
-        cls.selenium = webdriver.Chrome()
+        cls.selenium = load_driver()
         cls.selenium.implicitly_wait(10)
 
     @classmethod
@@ -222,14 +232,13 @@ class ClientUserProfileStudentInterestTest(LiveServerTestCase):
         #login(self,'/user/profile/projects/?page=2','siewml95@gmail.com', 'qwerty12')
         login(self,'/user/profile/project-interests/?page=2','siewml95@gmail.com', 'qwerty12')
         print("pageination2")
-        table = self.selenium.find_element_by_id("table")
+        table = self.selenium.find_element_by_tag_name("table")
         tbody = table.find_element(By.TAG_NAME,"tbody")
 
         rows = tbody.find_elements(By.TAG_NAME, "tr")
         for index,row in enumerate(rows):
             print(row)
             cols = row.find_elements(By.TAG_NAME, "td")  # note: index start from 0, 1 is col 2
-            href = cols[0].find_element(By.TAG_NAME,"a")
             if len(cols) >= 2 :
                   self.assertEquals(cols[0].text,self.projects[0].title)
                   #self.assertEquals(href.get_attribute("href"),'%s%s' % (self.live_server_url, '/project/{}/update/'.format(project.id)))
@@ -242,14 +251,12 @@ class ClientUserProfileStudentInterestTest(LiveServerTestCase):
 
         #self.selenium.get('%s%s' % (self.live_server_url, '/project/create/'))
         login(self,'/user/profile/project-interests/','siewml95@gmail.com', 'qwerty12')
-
-        table = self.selenium.find_element_by_id("table")
+        table = self.selenium.find_element_by_tag_name("table")
         tbody = table.find_element(By.TAG_NAME,"tbody")
 
         rows = tbody.find_elements(By.TAG_NAME, "tr")
         for index,row in enumerate(rows):
             cols = row.find_elements(By.TAG_NAME, "td")  # note: index start from 0, 1 is col 2
-            href = cols[0].find_element(By.TAG_NAME,"a")
             if len(cols) >= 2 :
                  self.assertEquals(cols[0].text,self.projects[10-index].title)
                  #self.assertEquals(href.get_attribute("href"),'%s%s' % (self.live_server_url, '/project/{}/update/'.format(project.id)))
@@ -265,7 +272,9 @@ class ClientUserProfileStaffInterestTest(LiveServerTestCase):
         user.profile.type = 3
         user.profile.is_verified = True
         user.profile.save()
-        cls.project = Project.objects.create(title="Test Project",summary="testing project",slug="test-project",company="UCL",created_by=user,deadline=datetime.datetime.now())
+        cls.organization = Organization.objects.create(title="UCL",status=True)
+        cls.organization.save()
+        cls.project = Project.objects.create(title="Test Project",summary="testing project",slug="test-project",organization=cls.organization,created_by=user,deadline=datetime.datetime.now())
         cls.users = []
 
         for x in range(1,12):
@@ -275,7 +284,7 @@ class ClientUserProfileStaffInterestTest(LiveServerTestCase):
             user.profile.save()
             cls.users.append(user)
             Interest.objects.create(user=user,project=cls.project)
-        cls.selenium = webdriver.Chrome()
+        cls.selenium = load_driver()
         cls.selenium.implicitly_wait(10)
 
     @classmethod
@@ -288,7 +297,7 @@ class ClientUserProfileStaffInterestTest(LiveServerTestCase):
         #login(self,'/user/profile/projects/?page=2','siewml95@gmail.com', 'qwerty12')
         login(self,'/user/profile/interests/?page=2','siewml95@gmail.com', 'qwerty12')
         print("pageination2")
-        table = self.selenium.find_element_by_id("table")
+        table = self.selenium.find_element_by_tag_name("table")
         tbody = table.find_element(By.TAG_NAME,"tbody")
 
         rows = tbody.find_elements(By.TAG_NAME, "tr")
@@ -297,7 +306,7 @@ class ClientUserProfileStaffInterestTest(LiveServerTestCase):
             cols = row.find_elements(By.TAG_NAME, "td")  # note: index start from 0, 1 is col 2
             href = cols[0].find_element(By.TAG_NAME,"a")
             if len(cols) >= 2 :
-                  self.assertEquals(cols[0].text,self.users[-1].email)
+                  self.assertEquals(cols[0].text,self.users[index].first_name + self.users[index].last_name )
                   #self.assertEquals(href.get_attribute("href"),'%s%s' % (self.live_server_url, '/project/{}/update/'.format(project.id)))
                   self.assertEquals(cols[1].text,self.project.title)
 
@@ -310,7 +319,7 @@ class ClientUserProfileStaffInterestTest(LiveServerTestCase):
         #self.selenium.get('%s%s' % (self.live_server_url, '/project/create/'))
         login(self,'/user/profile/interests/','siewml95@gmail.com', 'qwerty12')
 
-        table = self.selenium.find_element_by_id("table")
+        table = self.selenium.find_element_by_tag_name("table")
         tbody = table.find_element(By.TAG_NAME,"tbody")
 
         rows = tbody.find_elements(By.TAG_NAME, "tr")
@@ -318,7 +327,7 @@ class ClientUserProfileStaffInterestTest(LiveServerTestCase):
             cols = row.find_elements(By.TAG_NAME, "td")  # note: index start from 0, 1 is col 2
             href = cols[0].find_element(By.TAG_NAME,"a")
             if len(cols) >= 2 :
-                 self.assertEquals(cols[0].text,self.users[index].email)
+                 self.assertEquals(cols[0].text,self.users[index].first_name + self.users[index].last_name )
                  #self.assertEquals(href.get_attribute("href"),'%s%s' % (self.live_server_url, '/project/{}/update/'.format(project.id)))
                  self.assertEquals(cols[1].text,self.project.title)
 
@@ -335,11 +344,14 @@ class ClientUserProfileProjectTest(LiveServerTestCase):
         user.profile.is_verified = True
         user.profile.save()
         cls.projects = []
+        cls.organization = Organization.objects.create(title="UCL",status=True)
+        cls.organization.save()
         for x in range(1,12):
-            print(x)
-            project = Project.objects.create(title="Test Project {}".format(x),summary="testing project",slug="test-project-{}".format(x),company="UCL",created_by=user,deadline=datetime.datetime.now())
+            time.sleep(0.1)
+            project = Project.objects.create(title="Test Project {}".format(x),summary="testing project",slug="test-project-{}".format(x),organization=cls.organization,created_by=user,deadline=datetime.datetime.now())
             cls.projects.append(project)
-        cls.selenium = webdriver.Chrome()
+        print(cls.projects)
+        cls.selenium = load_driver()
         cls.selenium.implicitly_wait(10)
 
     @classmethod
@@ -348,11 +360,12 @@ class ClientUserProfileProjectTest(LiveServerTestCase):
 
 
     def test_pagination(self):
+
         print("pagination")
         #login(self,'/user/profile/projects/?page=2','siewml95@gmail.com', 'qwerty12')
         login(self,'/user/profile/projects/?page=2','siewml95@gmail.com', 'qwerty12')
         print("pageination2")
-        table = self.selenium.find_element_by_id("table")
+        table = self.selenium.find_element_by_tag_name("table")
         tbody = table.find_element(By.TAG_NAME,"tbody")
 
         rows = tbody.find_elements(By.TAG_NAME, "tr")
@@ -373,7 +386,7 @@ class ClientUserProfileProjectTest(LiveServerTestCase):
         #self.selenium.get('%s%s' % (self.live_server_url, '/project/create/'))
         login(self,'/user/profile/projects/','siewml95@gmail.com', 'qwerty12')
 
-        table = self.selenium.find_element_by_id("table")
+        table = self.selenium.find_element_by_tag_name("table")
         tbody = table.find_element(By.TAG_NAME,"tbody")
 
         rows = tbody.find_elements(By.TAG_NAME, "tr")
@@ -383,6 +396,7 @@ class ClientUserProfileProjectTest(LiveServerTestCase):
             href = cols[1].find_element(By.TAG_NAME,"a")
             print(href.get_attribute("href"))
             if len(cols) >= 2 :
+                  print("cols " + cols[1].text)
                   self.assertEquals(cols[1].text,project.title)
                   self.assertEquals(href.get_attribute("href"),'%s%s' % (self.live_server_url, '/project/{}/update/'.format(project.id)))
             else :

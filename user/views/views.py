@@ -238,7 +238,7 @@ class UserProfileInterestView(LoginRequiredMixin,StudentRequiredMixin,PagedFilte
     def get_context_data(self, **kwargs):
           context = super(UserProfileInterestView, self).get_context_data(**kwargs)
           search_query = self.get_queryset()
-          table = self.table_class(search_query)
+          table = self.table_class(search_query.order_by("-timestamp"))
           RequestConfig(self.request,paginate={'per_page': self.paginate_by}).configure(table)
           context["page_name"] = "interest"
           context["title"] = self.title
