@@ -51,6 +51,7 @@ python manage.py createsuperuser
 Then, go to /admin and enter the credential to login as admin
 
 
+
 ## Running as development
 ```
 python3 manage.py collectstatic
@@ -60,6 +61,10 @@ python3 manage.py runserver
 
 ## Working Product
 https://djmatch.herokuapp.com
+
+The admin credential is :
+email - test@gmail.com
+password - qwerty12
 
 ## Testing
 There are three possible Web browsers to test on. Chrome, Mozilla and PhantomJS. But you need to install the driver for each broswer.
